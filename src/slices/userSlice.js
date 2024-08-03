@@ -65,9 +65,7 @@ export const fetchUserDetails = createAsyncThunk(
     'user/fetchUserDetails',
     async (_, {rejectWithValue}) => {
         try {
-            const response = await axiosInstance.get(`/api/user/fetchUserDetails`, {
-              withCredentials: true, // Ensure cookies are included
-            });
+            const response = await axiosInstance.get(`/api/user/fetchUserDetails`);
           
             return response.data;
           } catch (error) {
@@ -163,6 +161,8 @@ const userSlice = createSlice({
             .addCase(fetchUserDetails.fulfilled, (state, action) => {
                 state.loading = false;
                 state.user = action.payload.user;
+        
+                
                 state.status = true;
                 state.isLogin = true; 
             })
