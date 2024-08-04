@@ -36,7 +36,7 @@ const store = configureStore({
       },
       
     }),
-    devTools: false
+
 })
 
 export default store;

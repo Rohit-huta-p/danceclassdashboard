@@ -23,6 +23,7 @@ const Register = () => {
             dispatch(registerUser(register_data));
            
         } catch (e) {
+            console.log(error);
             
         }
     }
@@ -40,7 +41,7 @@ const Register = () => {
                     </h1>
 
                     {/* form */}
-                    <form onSubmit={ handleRegister } className='w-full flex flex-col items-center'>
+                    <form onSubmit={ (e) => handleRegister(e) } className='w-full flex flex-col items-center'>
                         <div className='p-4 w-10/12'>
                            <div className=''>
                                 <input type="text" placeholder='Name' className=' p-2 bg-transparent focus:outline-none' 

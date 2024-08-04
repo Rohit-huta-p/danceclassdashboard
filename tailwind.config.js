@@ -19,6 +19,21 @@ module.exports = {
       '2xl': '1536px',
       // => @media (min-width: 1536px) { ... }
     },
+
+    keyframes: {
+      sidebarOpen: {
+        '0%': { transform: 'translateX(-100%)' },
+        '100%': { transform: 'translateX(0)' },
+      },
+      sidebarClose: {
+        '0%': { transform: 'translateX(0)' },
+        '100%': { transform: 'translateX(-100%)'},
+      },
+    },
+    animation: {
+      sidebarOpen: 'sidebarOpen 0.5s ease-out',
+      sidebarClose: 'sidebarClose 0.5s ease-out',
+    },
   },
   plugins: [],
 }

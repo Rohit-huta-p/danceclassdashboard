@@ -1,31 +1,32 @@
 
 import { useDispatch, useSelector } from 'react-redux'
-import { logout, reset } from '../slices/userSlice';
-import { Link } from 'react-router-dom';
+import { GiHamburgerMenu } from "react-icons/gi";
 
 
-const Navbar = () => {
-  
-    const dispatch = useDispatch();
-    const {isLogin} = useSelector((state) => state.user);
-    const handleLogout = async () => {
-        dispatch(logout());
-        dispatch(reset());
-    }
-
-    
-
+const Navbar = ({sidebarOpen, setsidebarOpen}) => {
     
   return (
-    <div className='bg-blue-500 h-[4rem] flex justify-end items-center overflow-hidden'>
-        <div  onClick={isLogin ? handleLogout: null }>
-          {isLogin ? 
-              <button className='bg-white px-3 py-2 rounded mr-4'>Logout</button> 
-              : 
-              <Link to='/login'> <button className='bg-white px-3 py-2 rounded mr-4'>Login </button></Link>
-                }
+    <>
+
+      {/* MEDIUM SCREEN */}
+      <div className='hidden md:block'>
+        <div className='bg-blue-500 h-[4rem] flex justify-between items-center'>
+          <ul>
+            <li>some </li>
+            <li>some </li>
+            <li>some </li>
+          </ul>
         </div>
+      </div>
+
+    {/* MOBILE SCREEN */}
+    <div className='md:hidden'>
+      <div className='bg-blue-500 h-[4rem] flex justify-between items-center'>
+        <GiHamburgerMenu className='' size={25} color='white' onClick={() => setsidebarOpen(true)}/>
+      </div>
+       
     </div>
+  </>
   )
 }
 

@@ -1,9 +1,9 @@
-import {useEffect, useState} from 'react'
+import { useState} from 'react'
 import Register from "./Screens/Register";
 import Admin from './Screens/Admin'
 
 import {Provider, useDispatch, useSelector} from 'react-redux'
-import store from './store'
+
 
 import {Route, Routes, BrowserRouter as Router, Navigate} from 'react-router-dom'
 import Cookies  from 'js-cookie';
@@ -12,31 +12,34 @@ import { setIsLoggedIn } from './slices/userSlice';
 import Login from './Screens/Login';
 import AddStudent from './Screens/Admin/AddStudent';
 import Attendance from './Screens/Admin/Attendance';
+import Sidebar from './components/Sidebar';
 
 
 function App() {
-
+  const [sidebarOpen, setsidebarOpen] = useState(false)
   const {isLogin} = useSelector((state) => state.user);
-  const dispatch = useDispatch();
-
-
-
 
   return (
 
     
       <div className="">
         <Router>
-          <Navbar />
+          <Navbar sidebarOpen={sidebarOpen} setsidebarOpen={setsidebarOpen}/>
+          <Sidebar sidebarOpen={sidebarOpen} setsidebarOpen={setsidebarOpen}/>
           {
             isLogin ?  (
-              
-              <Routes>
-                  
-                  <Route path="/" exact element={<Admin />}/>
-                  <Route path="/attendance"  element={<Attendance />}/>
-                  <Route path="*" element={<Navigate to="/" />} />
-              </Routes>
+              <div>
+                {
+                  sidebarOpen ? (<div className='w-screen h-screen fixed z-10 top-0 bg-black/20' onClick={() => setsidebarOpen(false)}></div>): (<div></div>)
+                }
+                <Routes>
+                    
+                    <Route path="/" exact element={<Admin />}/>
+                    <Route path="/attendance"  element={<Attendance />}/>
+                    <Route path="*" element={<Navigate to="/" />} />
+                </Routes>
+              </div>
+            
               ) : (
 
                 // Not LoggedIn

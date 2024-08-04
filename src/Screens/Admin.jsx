@@ -49,7 +49,6 @@ const Admin = () => {
 
       <div className='mt-5 p-2'>
         <button className='bg-blue-200 px-3 py-2 rounded active:bg-blue-100' onClick={() => setIsAdd(true)}>Add Student</button>
-        <Link to='/attendance'><button className='bg-blue-200 px-3 py-2 rounded active:bg-blue-100' >Attedance</button></Link>
       </div>
 
         {isAdd && (

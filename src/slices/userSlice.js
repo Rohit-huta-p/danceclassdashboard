@@ -4,6 +4,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import Cookies from 'js-cookie';
 
 import axiosInstance from "../axiosInstance.js";
+import { useDispatch } from "react-redux";
 
 
 export const registerUser = createAsyncThunk(
@@ -117,7 +118,7 @@ const userSlice = createSlice({
             })
             .addCase(registerUser.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload;
+                state.error = action.payload.error;
             })
 
 
@@ -130,6 +131,7 @@ const userSlice = createSlice({
                 state.loading = false;
                 state.error = null;
                 state.isLogin = true;
+        
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.loading = false;

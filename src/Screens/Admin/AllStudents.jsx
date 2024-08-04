@@ -46,14 +46,17 @@ const AllStudents = ({ students, setStudents }) => {
     };
     const handleInputChange = (e) => {
       setFormData({ ...formData, [e.target.name]: e.target.value });
+      
     };
     const UpdateStudent = async (id) => {
-      try {
-        console.log(formData.feeStatus);
+        try {
+            
         const updatedStudent = new FormData();
-        updatedStudent.append('feeStatus', formData.feeStatus);
         
-        const res = await axiosInstance.put(`/admin/updatestudent/${id}`, updatedStudent, {
+        updatedStudent.append('feeStatus', formData.feeStatus);
+        console.log(updatedStudent);
+        
+        const res = await axiosInstance.put(`/api/admin/updatestudent/${id}`, updatedStudent, {
           headers: {
             'Content-Type': 'multipart/form-data',
             },
@@ -61,6 +64,7 @@ const AllStudents = ({ students, setStudents }) => {
         console.log(res.data.data);
         const updatedStudentData = res.data.data;
         setStudents(students.map(student => (student._id === id ? updatedStudentData : student)));
+        closeUpdateModal()
       } catch (error) {
         
       }
@@ -205,10 +209,12 @@ const downloadFeeHistory = async (id, student) => {
 
             {popUpdate && selectedStudent && (
                 <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-                    <div className="bg-white w-1/3 rounded-lg shadow-lg p-5 relative">
+                    <div className="bg-white w-2/3 rounded-lg shadow-lg p-5 relative">
+                    {/* close modal */}
                         <button onClick={closeUpdateModal} className="absolute top-2 right-2 text-gray-500 hover:text-gray-800">X</button>
+                    
                         <h2 className="text-lg font-semibold mb-4">Update {selectedStudent.name}</h2>
-                        <div className="flex items-center rounded w-full border px-3 py-2 mb-4">
+                        <div className="flex rounded w-full border px-3 py-2 mb-4">
                             <label htmlFor="feeStatus">Fee Status: </label>
                             <select
                                 name="feeStatus"
@@ -216,14 +222,13 @@ const downloadFeeHistory = async (id, student) => {
                                 value={formData.feeStatus}
                                 onChange={ (e) => handleInputChange(e)}
                             >
-                                <option value="done">Done</option>
+                                <option value="paid">Paid</option>
                                 <option value="pending">Pending</option>
                             </select>
                         </div>
                         <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-800"
                             onClick={() => {
                                 UpdateStudent(selectedStudent._id);
-                                closeUpdateModal();
                             }}
                         >
                             Update
