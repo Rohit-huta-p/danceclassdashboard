@@ -25,7 +25,7 @@ const Login = () => {
     <div className='h-screen'>
     <div className='flex justify-center items-center h-full'>
         {/* card */}
-        <div className='shadow-inner shadow-xl bg-white w-5/12 py-[2rem] flex flex-col items-center justify-center rounded-[8%]'>  
+        <div className='shadow-inner shadow-xl bg-white w-3/4 md:w-2/6 py-[2rem] px-4 flex flex-col items-center justify-center rounded-[8%]'>  
 
             <h1 className='text-3xl p-4'>
                Login
@@ -56,7 +56,7 @@ const Login = () => {
             </form>
 
             {loading && <p>Loading...</p>}
-            {error && <p className='text-sm' style={{ color: 'red' }}>Registration failed: {error}</p>}
+            {error && <p className='text-sm text-center mt-2' style={{ color: 'red' }}>{error}</p>}
 
 
             <div className='flex justify-start w-9/12 mt-2'>

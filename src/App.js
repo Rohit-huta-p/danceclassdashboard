@@ -25,10 +25,10 @@ function App() {
       <div className="">
         <Router>
           <Navbar sidebarOpen={sidebarOpen} setsidebarOpen={setsidebarOpen}/>
-          <Sidebar sidebarOpen={sidebarOpen} setsidebarOpen={setsidebarOpen}/>
           {
             isLogin ?  (
               <div>
+                <Sidebar sidebarOpen={sidebarOpen} setsidebarOpen={setsidebarOpen}/>
                 {
                   sidebarOpen ? (<div className='w-screen h-screen fixed z-10 top-0 bg-black/20' onClick={() => setsidebarOpen(false)}></div>): (<div></div>)
                 }

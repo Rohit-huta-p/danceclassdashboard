@@ -35,12 +35,8 @@ const Sidebar = ({sidebarOpen, setsidebarOpen}) => {
                         </Link>
                         <li>Pending</li>
                     </ul>
-                    <div  onClick={isLogin ? handleLogout: null }>
-                        {isLogin ? 
-                            <button className='bg-white px-3 py-2 rounded mr-4'>Logout</button> 
-                            : 
-                            <Link to='/login'> <button className='bg-white px-3 py-2 rounded mr-4'>Login </button></Link>
-                            }
+                    <div  onClick={handleLogout}>
+                       <button className='bg-white px-3 py-2 rounded mr-4'>Logout</button> 
                     </div>
                 </div>
                 

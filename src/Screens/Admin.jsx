@@ -16,6 +16,7 @@ const Admin = () => {
   const [isAdd, setIsAdd] = useState(false)
 
   const [students, setStudents] = useState([]);
+  
   const fetchData = async () => {
     try {
       const res = await axiosInstance.get(`/api/admin/students`);
@@ -33,7 +34,14 @@ const Admin = () => {
   }, [])
   
   const addStudentToList = (newStudent) => {
-    setStudents([...students, newStudent]);
+    setStudents((prevStudents) => {
+      if (Array.isArray(prevStudents)) {
+        return [...prevStudents, newStudent];
+      } else {
+        // Handle the case where prevStudents is not an array
+        return [newStudent];
+      }
+    })
   };
 
   return (
@@ -43,7 +51,7 @@ const Admin = () => {
     <div className=''>
        {
        user && (
-          <h1 className='text-3xl mt-2'>Welcome Admin {user.username}</h1>
+          <h1 className='text-3xl mt-2 ml-4'>Welcome {user.username}</h1>
           )
         }
 
