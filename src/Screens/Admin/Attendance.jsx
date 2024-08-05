@@ -10,7 +10,7 @@ import { GlobalContext } from '../../contexts/GlobalContexts';
 import axiosInstance from '../../axiosInstance';
 
 const Attendance = () => {
-  const [filter, setFilter] = useState('A');
+  const [filter, setFilter] = useState('all');
   const {batches} = useContext(GlobalContext)
   const batch = batches[filter]; // Get the batch time string using the filter key
 

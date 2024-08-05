@@ -30,13 +30,12 @@ const [currentPath, setcurrentPath] = useState(window.location.pathname)
             isLogin && <ul className='flex items-center justify-end w-full'>
                   <li className='mr-5'>
                       <Link to='/attendance'>
-                              <li className={`px-2 relative ${clicked === 'attendance' ? 'bg-blue-200' :'' }`} onClick={() => setclicked('attendance')}>
+                              <li className={`px-2 relative `} onClick={() => setclicked('attendance')}>
                                   <div className='w-[5px] h-full top-0 left-0 rounded-e bg-blue-500 absolute'></div>
-                                  <p className='ml-3'>Attendance</p>
+                                  <p className={`ml-3 ${clicked === 'attendance' ? 'bg-blue-400 px-2   text-white' : 'text-white' }`}>Attendance</p>
                               </li>
                       </Link> 
                     </li>
-                  <li className='mr-5'>Pending </li>
                   
                 </ul>
           }
@@ -61,17 +60,13 @@ const [currentPath, setcurrentPath] = useState(window.location.pathname)
 
         {/* LOGIN LOGOUT BUTTONS */}
         <div className=''>
-          {isLogin ? (
-                <div onClick={handleLogout}>
-                  <button className='bg-white px-3 py-2 rounded mr-4'>Logout</button>
-                </div>
-              ) : (
+          {isLogin == false && 
                 <Link to={currentPath === '/login' ? '/signup' : '/login'}>
                   <button className='bg-white px-3 py-2 rounded mr-4'>
                     {currentPath === '/login' ? 'Signup' : 'Login'}
                   </button>
                 </Link>
-              )}
+            }
           </div>
         {isLogin && 
           <GiHamburgerMenu className='' size={25} color='white' onClick={() => setsidebarOpen(true)}/>

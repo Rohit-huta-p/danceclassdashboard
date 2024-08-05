@@ -99,7 +99,7 @@ const downloadFeeHistory = async (id, student) => {
     try {
 
         openFeeHistoryModal(student);
-        const response = await axios.get(`http://localhost:8000/api/admin/downloadFeeHistory/${id}`);
+        const response = await axiosInstance.get(`/api/admin/downloadFeeHistory/${id}`);
         setFeeHistory(response.data.feeHistory);
     } catch (error) {
         console.error('Download error:', error);

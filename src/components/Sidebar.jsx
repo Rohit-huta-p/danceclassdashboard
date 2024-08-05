@@ -14,6 +14,7 @@ const Sidebar = ({sidebarOpen, setsidebarOpen}) => {
     const handleLogout = async () => {
         dispatch(logout());
         dispatch(reset());
+        setsidebarOpen(false);
     }
 
          
@@ -24,19 +25,19 @@ const Sidebar = ({sidebarOpen, setsidebarOpen}) => {
     <div className=''>
         {
             sidebarOpen &&
-                <div className={`z-20 fixed rounded-e-2xl h-screen top-0 bg-white w-6/12 md:w-1/4 ${sidebarOpen ? 'animate-sidebarOpen' : 'animate-sidebarClose'}`}>
+                <div className={`z-20 fixed rounded-e-2xl h-screen top-0 bg-white w-5/12 md:w-1/6 ${sidebarOpen ? 'animate-sidebarOpen' : 'animate-sidebarClose'}`}>
                     <p className='text-end p-4' onClick={() => setsidebarOpen(false)}>X</p>
                     <ul className='flex flex-col h-[60vh]'>
                         <Link to='/attendance'>
                             <li className={`mb-4 mt-5 px-2 py-2 relative ${clicked === 'attendance' ?'bg-blue-200' :'' }`} onClick={() => setclicked('attendance')}>
-                                <div className='w-[5px] h-full top-0 left-0 rounded-e bg-blue-500 absolute'></div>
+                                {clicked && <div className='w-[5px] h-full top-0 left-0 rounded-e bg-blue-500 absolute'></div>}
                                 <p className='ml-3'>Attendance</p>
                             </li>
                         </Link>
-                        <li>Pending</li>
+                        
                     </ul>
                     <div  onClick={handleLogout}>
-                       <button className='bg-white px-3 py-2 rounded mr-4'>Logout</button> 
+                       <button className='bg-blue-300 ml-3 px-3 py-2 rounded mr-4 '>Logout</button> 
                     </div>
                 </div>
                 

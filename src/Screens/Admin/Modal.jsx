@@ -1,14 +1,11 @@
 import React, { useState } from 'react'
-import { format ,parseISO } from 'date-fns';
 import moment from 'moment-timezone';
 const Modal = ({currStudent, closeModal}) => {
 
     
 
     const [currentDate, setCurrentDate] = useState(new Date());
-    console.log(currStudent);
-    currStudent.attendance.map(entry => console.log("ENTRY DATES", entry.date))
-
+ 
     const handlePrevMonth = () => {
         const newDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1); // Set to first day of previous month
         setCurrentDate(newDate);
@@ -68,20 +65,12 @@ const Modal = ({currStudent, closeModal}) => {
         // console.log("EVERY DATE FORMATTED: ", formattedDate);
        
         const foundAttendance = attendanceData.find((entry) => {
-            // console.log("ENTRY Date::::::",entry.date);
             const attendanceDate = formatDate(entry.date);
 
-            console.log("---->ATTEDNACE DATE FORMATED: ", attendanceDate);
-            // console.log(attendanceDate === formattedDate); 
-            // console.log(attendanceDate);
-        //   console.log("Comparing: EntryDate: ", attendanceDate, "-->every date: ", formattedDate);
-        
           return (attendanceDate === formattedDate);
         });
         
         if (foundAttendance) {
-
-         console.log(foundAttendance.status);
           return foundAttendance.status;
         } else {
           // Handle missing attendance data (e.g., return 'absent', or handle differently)
