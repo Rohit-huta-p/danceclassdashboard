@@ -28,6 +28,14 @@ const [currentPath, setcurrentPath] = useState(window.location.pathname)
         <div className={`bg-blue-500 h-[4rem] ${isLogin ? "flex justify-between items-center": "flex justify-end"}`}>
           {
             isLogin && <ul className='flex items-center justify-end w-full'>
+                <li className='mr-5'>
+                      <Link to='/'>
+                              <li className={`px-2 relative `} onClick={() => setclicked('home')}>
+                                  <div className='w-[5px] h-full top-0 left-0 rounded-e bg-blue-500 absolute'></div>
+                                  <p className={`ml-3 ${clicked === 'home' ? 'bg-blue-400 px-2   text-white' : 'text-white' }`}>Home</p>
+                              </li>
+                      </Link> 
+                    </li>
                   <li className='mr-5'>
                       <Link to='/attendance'>
                               <li className={`px-2 relative `} onClick={() => setclicked('attendance')}>
@@ -36,6 +44,7 @@ const [currentPath, setcurrentPath] = useState(window.location.pathname)
                               </li>
                       </Link> 
                     </li>
+                  
                   
                 </ul>
           }
@@ -69,7 +78,7 @@ const [currentPath, setcurrentPath] = useState(window.location.pathname)
             }
           </div>
         {isLogin && 
-          <GiHamburgerMenu className='' size={25} color='white' onClick={() => setsidebarOpen(true)}/>
+          <GiHamburgerMenu className='mr-4' size={25} color='white' onClick={() => setsidebarOpen(true)}/>
         }
       </div>
     </div>

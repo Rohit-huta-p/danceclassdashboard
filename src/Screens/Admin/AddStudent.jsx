@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { IoCloseCircleSharp } from "react-icons/io5";
 import axiosInstance from '../../axiosInstance';
-
+import '@dotlottie/player-component';
 const AddStudent = ({setIsAdd, addStudentToList}) => {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
@@ -64,6 +64,10 @@ const AddStudent = ({setIsAdd, addStudentToList}) => {
             setMessage(res.data.message);
             addStudentToList(res.data.student)
             resetFormData();
+            setTimeout(() => {
+              setMessage('');
+              setIsAdd(false)
+            }, 5000)
           } catch (err) {
             console.error('Upload error:', err);
             // Handle error, show error message
@@ -73,11 +77,13 @@ const AddStudent = ({setIsAdd, addStudentToList}) => {
 
   return (
     <div className='flex justify-center'>
-        <div className='p-3 bg-white w-9/12 rounded relative'>
-            <h1 className='p-2 text-center mt-5 text-2xl font-bold mb-5'>Add Student</h1>
+
+        <div className={`p-2 w-9/12 rounded relative bg-white`}>
+
+            <h1 className=' text-center mt-5 text-2xl font-bold mb-5'>Add Student</h1>
             <IoCloseCircleSharp size={23} className='absolute top-4 right-4 cursor-pointer text-red-400' onClick={() => setIsAdd(false)}/>
-            <div className='flex justify-center'>
-                <form action="" className='flex-col w-9/12 h-[80vh] space-y-4' onSubmit={handleForm}>
+            <div className={`flex justify-center`} >
+                <form action="" className=' flex-col w-9/12 h-content space-y-4' onSubmit={handleForm}>
                 {/* name */}
                     <input type="text" className='border px-3 py-2 rounded w-full' placeholder='Enter Name' name='name' value={formData.name} onChange={handleInputChange} />
                 {/* age */}
@@ -122,7 +128,21 @@ const AddStudent = ({setIsAdd, addStudentToList}) => {
                         <button className={`w-full bg-blue-500 text-white px-6 py-2 rounded ${loading ? 'opacity-50 pointer-events-none' : ''}`}>
                           {loading ? 'Adding...' : 'Add'}
                         </button>
-                        {message && (<p className='text-green-600'>{message}</p>)}
+                        {message && (
+                           <div className='absolute inset-0 flex items-center justify-center bg-green-200 bg-opacity-30'>
+                           <div className='bg-white p-5 rounded-lg shadow-lg text-center'>
+                              <dotlottie-player
+                                src="https://lottie.host/51a54f3f-ac0f-47ad-afd3-fef6757602e3/tssFSkaMXs.json"
+                                background="transparent"
+                                speed="1"
+                                style={{ width: '100px', height: '100px' }}
+                                autoplay
+                              ></dotlottie-player>
+                              <p className='text-green-600 mt-3'>{message}</p>
+                              <p className='text-gray-400 text-sm'>(added to table)</p>
+                           </div>
+                         </div>
+                        )}
                     </div>
                     
                 </form>

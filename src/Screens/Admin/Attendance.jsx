@@ -19,9 +19,11 @@ const Attendance = () => {
   
   
   const [students, setStudents] = useState([]);
+ 
+  let getFilteredStudents = [];
+  
 
-
-  const getFilteredStudents = useMemo(() => {
+  getFilteredStudents = useMemo(() => {
 
     if (filter === 'A') {
         return students.filter((student) => student.batch === batch);
@@ -31,6 +33,8 @@ const Attendance = () => {
         // console.log(students.filter((student) => student.batch === '7:00pm - 8:00pm'));
         return students.filter((student) => student.batch === batch);
     } else {
+      console.log(students);
+      
       return students;
     }
 
@@ -61,6 +65,8 @@ const Attendance = () => {
   const fetchData = async () => {
     try {
       const res = await axiosInstance.get('/api/admin/students');
+      console.log(res.data);
+      
       setStudents(res.data.students);
 
       // Handle success, redirect or show a message
@@ -107,13 +113,13 @@ const Attendance = () => {
 
       const res = await axiosInstance.post("api/admin/students/attendance", attendanceData);
 
-      const studentsWithMissingAttendance = students.filter(student => !attendanceData.find(data => data.id === student._id));
+      const AttendanceDone = students.filter(student => attendanceData.find(data => data.id === student._id));
       
-      setMissingAttendance(studentsWithMissingAttendance);
+      // setMissingAttendance(studentsWithMissingAttendance);
       
     
       
-      setStudents(studentsWithMissingAttendance);
+      // setStudents(studentsWithMissingAttendance);
     
       // console.log("DATA" ,res.data);
     } catch (error) {
@@ -164,8 +170,8 @@ const Attendance = () => {
         {
 
           getFilteredStudents.length === 0 ? (
-            <div className='h-[50vh]'>
-              <h2 className='text-center'>No students left</h2>
+            <div className='h-[50vh] w-screen'>
+              <h2 className='text-center w-full mt-5'>Oops No Students Left</h2>
             </div>
           ) :
           getFilteredStudents.map((student, index) => (
