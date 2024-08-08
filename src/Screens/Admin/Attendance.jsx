@@ -4,14 +4,16 @@ import { fetchUserDetails } from '../../slices/userSlice';
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { FaCircleInfo } from "react-icons/fa6";
 import { CiCircleCheck } from "react-icons/ci";
-import axios from 'axios';
 import Modal from './Modal';
 import { GlobalContext } from '../../contexts/GlobalContexts';
 import axiosInstance from '../../axiosInstance';
+import Search from '../../components/Search';
 
 const Attendance = () => {
   const [filter, setFilter] = useState('all');
   const {batches} = useContext(GlobalContext)
+  const [searchTerm, setsearchTerm] = useState('')
+
   const batch = batches[filter];
 
 
@@ -140,19 +142,24 @@ const Attendance = () => {
         
       </div>
       {/* SORT BY */}
-      <div className='text-end mr-4'>
-            <label htmlFor="filter">Sort By: </label>
-            <select
-                name="filter"
-                id="filter"
-                onChange={(e) => setFilter(e.target.value)}
-                value={filter}
-                className='bg-gray-200 p-1  focus:outline-none '
-            >
-                <option value="all">All</option>
-                <option value="A">A. 6:00 - 7:00pm</option>
-                <option value="B">B. 7:00 - 8:00pm</option>
-            </select>
+      <div>
+        <div>
+          <Search searchTerm={searchTerm} setsearchTerm={setsearchTerm}/>
+        </div>
+        <div className='text-end mr-4'>
+              <label htmlFor="filter">Sort By: </label>
+              <select
+                  name="filter"
+                  id="filter"
+                  onChange={(e) => setFilter(e.target.value)}
+                  value={filter}
+                  className='bg-gray-200 p-1  focus:outline-none '
+              >
+                  <option value="all">All</option>
+                  <option value="A">A. 6:00 - 7:00pm</option>
+                  <option value="B">B. 7:00 - 8:00pm</option>
+              </select>
+          </div>
         </div>
       
   
@@ -165,14 +172,14 @@ const Attendance = () => {
             </div>
           ) :
           getFilteredStudents.map((student, index) => (
-            <div key={index} className={`relative  p-4 rounded ${student.attendance === 'absent' ? 'bg-red-300' : 'bg-green-300'}`}>
-              { student.disabled && <div className='absolute inset-0 w-full h-full opacity-50 bg-black/60 cursor-not-allowed'></div>}
+            <div key={index} className={`relative  p-4 rounded ${student.attendance === 'absent' ? 'bg-red-300' : 'bg-green-300'} z-10`}>
+              { student.disabled && <div className='absolute z-20 inset-0 w-full h-full opacity-50 bg-black/60 cursor-not-allowed'></div>}
               <div className='flex flex-col items-center'>
                 {/* IMAGE */}
                 <div className='h-[4rem] w-[4rem] rounded-full' style={{ backgroundImage: `url(${student.Image})`, backgroundSize: 'cover' }}></div>
                 <h2 className=' mt-3'>{student.name}</h2>
               </div>
-              <FaCircleInfo className='absolute top-4 right-4' onClick={() => openModal(student._id)}/>
+              <FaCircleInfo className='absolute top-4 right-4 cursor-pointer' onClick={() => openModal(student._id)}/>
 
               <div className='flex justify-evenly mt-5 bg-white'>
                 <IoIosCloseCircleOutline size={45} color={student.attendance === 'absent' ? "red" : ""} className={ student.attendance === 'absent' ? `bg-red-300 border-2 py-2 w-full` : "border-2 py-2 w-full"}

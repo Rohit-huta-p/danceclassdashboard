@@ -10,6 +10,7 @@ import { Table } from './Table';
 import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from "react-icons/md";
 import Filter from '../../components/Filter';
 import { GlobalContext } from '../../contexts/GlobalContexts';
+import Search from '../../components/Search';
 
 
 
@@ -229,12 +230,7 @@ const downloadFeeHistory = async (id, student) => {
 
 {/* Search & filter */}
             <div className='flex justify-between items-center'>
-                <div className='flex bg-white w-fit p-3 items-center rounded mb-3'>
-                    <FaMagnifyingGlass size={25} className='p-1'/>
-                    <input type="search" name="" placeholder='Search' className='ml-2 focus:outline-none' 
-                            value={searchTerm}
-                            onChange={(e) => setsearchTerm(e.target.value)}/>
-                </div>
+                <Search searchTerm={searchTerm} setsearchTerm={setsearchTerm}/>
 
             {/* Filter */}
                 <div>
