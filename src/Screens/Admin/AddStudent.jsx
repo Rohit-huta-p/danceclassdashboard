@@ -102,7 +102,7 @@ const AddStudent = ({setIsAdd, addStudentToList}) => {
                     <div className='flex items-center rounded w-full border px-3 py-2'>
                         <label htmlFor="">Fee Status: </label>
                         <select name="feeStatus" value={formData.feeStatus} onChange={handleInputChange} className='ml-3 bg-amber-100 rounded px-3 py-1'>
-                            <option value="done">Done</option>
+                            <option value="paid">Done</option>
                             <option value="pending">Pending</option>
                         </select>
                     </div>
