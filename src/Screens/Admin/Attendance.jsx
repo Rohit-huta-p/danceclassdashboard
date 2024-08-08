@@ -13,7 +13,7 @@ const Attendance = () => {
   const [filter, setFilter] = useState('all');
   const {batches} = useContext(GlobalContext)
   const [searchTerm, setsearchTerm] = useState('')
-
+  
   const batch = batches[filter];
 
 
@@ -172,7 +172,7 @@ const Attendance = () => {
             </div>
           ) :
           getFilteredStudents.map((student, index) => (
-            <div key={index} className={`relative  p-4 rounded ${student.attendance === 'absent' ? 'bg-red-300' : 'bg-green-300'} z-10`}>
+            <div key={index} className={`relative  p-4 rounded ${student.attendance === 'absent' ? 'bg-red-300' : 'bg-green-300'}   z-10`}>
               { student.disabled && <div className='absolute z-20 inset-0 w-full h-full opacity-50 bg-black/60 cursor-not-allowed'></div>}
               <div className='flex flex-col items-center'>
                 {/* IMAGE */}

@@ -158,6 +158,7 @@ const AllStudents = ({ students, setStudents }) => {
         
       }
     }
+console.log(filter);
 
     
 // OPEN CLOSE MODAL
@@ -229,36 +230,11 @@ const downloadFeeHistory = async (id, student) => {
 {/* Table */}
 
 {/* Search & filter */}
-            <div className='flex justify-between items-center'>
+            <div className='flex flex-col mb-3 md:flex'>
                 <Search searchTerm={searchTerm} setsearchTerm={setsearchTerm}/>
-
-            {/* Filter */}
-                <div>
-                    {/* <Filter filter={filter} setFilter={setFilter}/> */}
-                    <select
-                        name="filter"
-                        id="filter"
-                        onChange={(e) => setFilter(e.target.value)}
-                        value={filter}
-                        className='bg-transparent text-purple-500 focus:outline-none'
-                    >
-                        <option value="all">All</option>
-                        <option value="pending">Pending</option>
-                        <option value="paid">Paid</option>
-                    </select>
-                    <select
-                        name="filter"
-                        id="filter"
-                        value={filter}
-                        onChange={(e) => setFilter(e.target.value)}
-                        className='bg-transparent text-purple-500 focus:outline-none'
-                    >
-                        <option value="" disabled>Batch</option>
-                        <option value="all">All</option>
-                        <option value="A">A. 6:00 - 7:00pm</option>
-                        <option value="B">B. 7:00 - 8:00pm</option>
-                    </select>
-                </div>
+                
+                    <Filter filter={filter} setFilter={setFilter}/>
+             
             </div>
             <div className="overflow-x-auto">
                 <div className=" min-w-full inline-block align-middle">
