@@ -12,8 +12,7 @@ import axiosInstance from '../../axiosInstance';
 const Attendance = () => {
   const [filter, setFilter] = useState('all');
   const {batches} = useContext(GlobalContext)
-  const batch = batches[filter]; // Get the batch time string using the filter key
-
+  const batch = batches[filter];
 
 
   
@@ -33,31 +32,15 @@ const Attendance = () => {
         // console.log(students.filter((student) => student.batch === '7:00pm - 8:00pm'));
         return students.filter((student) => student.batch === batch);
     } else {
-      console.log(students);
+     
+
       
       return students;
     }
 
 }, [filter, students]);
 
-
-//   const getFilteredStudents = useMemo(() => {
-//     if (filter === '6:00pm - 7:00pm') {
-//         const pendingStudents = students.filter((student) => student.batch === '6:00pm - 7:00pm');
-     
-//         return pendingStudents
-        
-//     } else if(filter === '7:00pm - 8:00pm'){
-//         console.log(students.filter((student) => student.batch === '7:00pm - 8:00pm'));
-//         return students.filter((student) => student.batch === '7:00pm - 8:00pm');
-//     } else {
-//       return students;
-//     }
-// }, [filter, students]);
-
-
   const [currStudent, setcurrStudent] = useState(null)
-  const [missingAttendance, setMissingAttendance] = useState([])
   const [attendanceData, setAttendanceData] = useState([]);
 
   const [open, setOpen] = useState(false);
@@ -65,7 +48,7 @@ const Attendance = () => {
   const fetchData = async () => {
     try {
       const res = await axiosInstance.get('/api/admin/students');
-      console.log(res.data);
+
       
       setStudents(res.data.students);
 
@@ -85,6 +68,7 @@ const Attendance = () => {
   const handleAttendanceClick = (index, clickedType) => {
     const updatedStudents = [...students];
     updatedStudents[index].attendance = clickedType === "absent" ? 'absent' : 'present';
+
     const existingIndex = attendanceData.findIndex(item => item.id === updatedStudents[index]._id);
 
 
@@ -115,11 +99,16 @@ const Attendance = () => {
 
       const AttendanceDone = students.filter(student => attendanceData.find(data => data.id === student._id));
       
-      // setMissingAttendance(studentsWithMissingAttendance);
-      
-    
-      
-      // setStudents(studentsWithMissingAttendance);
+            // Assuming that all students whose attendance was marked should be disabled
+            const updatedStudents = students.map(student => {
+              if (attendanceData.find(data => data.id === student._id)) {
+                  return { ...student, disabled: true };
+              }
+              return student;
+          });
+  
+          setStudents(updatedStudents); // Update the students state with the disabled property
+  
     
       // console.log("DATA" ,res.data);
     } catch (error) {
@@ -135,6 +124,7 @@ const Attendance = () => {
   const closeModal =() => {
       setOpen(false);
   }
+  console.log(students);
   
   return (
     <div>
@@ -171,11 +161,12 @@ const Attendance = () => {
 
           getFilteredStudents.length === 0 ? (
             <div className='h-[50vh] w-screen'>
-              <h2 className='text-center w-full mt-5'>Oops No Students Left</h2>
+              <h2 className='text-center text-amber-600 text-3xl w-full mt-5'>No Students</h2>
             </div>
           ) :
           getFilteredStudents.map((student, index) => (
-            <div key={index} className={`relative bg-white p-4 rounded ${student.attendance === 'absent' ? 'bg-red-300' : 'bg-green-300'}`}>
+            <div key={index} className={`relative  p-4 rounded ${student.attendance === 'absent' ? 'bg-red-300' : 'bg-green-300'}`}>
+              { student.disabled && <div className='absolute inset-0 w-full h-full opacity-50 bg-black/60 cursor-not-allowed'></div>}
               <div className='flex flex-col items-center'>
                 {/* IMAGE */}
                 <div className='h-[4rem] w-[4rem] rounded-full' style={{ backgroundImage: `url(${student.Image})`, backgroundSize: 'cover' }}></div>

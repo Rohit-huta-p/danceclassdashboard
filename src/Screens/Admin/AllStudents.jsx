@@ -1,11 +1,15 @@
 import axios from 'axios';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { IoTriangle } from "react-icons/io5";
+import { FaMagnifyingGlass } from "react-icons/fa6";
+
 import { CiCircleInfo } from "react-icons/ci";
 import axiosInstance from '../../axiosInstance';
 
 import { Table } from './Table';
 import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from "react-icons/md";
+import Filter from '../../components/Filter';
+import { GlobalContext } from '../../contexts/GlobalContexts';
 
 
 
@@ -15,13 +19,17 @@ const AllStudents = ({ students, setStudents }) => {
     const [studentsPerPage, setStudentsPerPage] = useState(2); // Adjust as needed
     const [totalPages, setTotalPages] = useState(0);
   
-
-
     const [filter, setFilter] = useState('all');
     const [popUpdate, setPopUpdate] = useState(false);
     const [feeHistoryModal, setFeeHistoryModal] = useState(false);
     const [feeHistory, setFeeHistory] = useState([]);
     const [selectedStudent, setSelectedStudent] = useState(null);
+
+// Search
+    const [searchTerm, setsearchTerm] = useState('')
+   
+
+
 
     const [formData, setFormData] = useState({
       name: '',
@@ -32,33 +40,89 @@ const AllStudents = ({ students, setStudents }) => {
       balance: 0,
       image: null
     });
+
+
     const displayedStudents = (students) => ( 
         students.slice(
         (currentPage - 1) * studentsPerPage,  
         currentPage * studentsPerPage
       ));  
-    const getFilteredStudents = useMemo(() => {
-        console.log(filter);
 
-        
-        if (filter === 'pending') {
-            const pendingStudents = students.filter((student) => student.feeStatus === 'pending');
-            const numPages = Math.ceil(pendingStudents.length / studentsPerPage);
-            setTotalPages(numPages);
-            return displayedStudents(pendingStudents);
-            
-        } else if (filter === 'paid') {
-            console.log(students.filter((student) => student.feeStatus === 'paid'));
-            const paidStudents = students.filter((student) => student.feeStatus === 'paid');
-            const numPages = Math.ceil(paidStudents.length / studentsPerPage);
-            setTotalPages(numPages);
-            return displayedStudents(paidStudents);
-        } else {
-            const numPages = Math.ceil(students.length / studentsPerPage);
-            setTotalPages(numPages);
-            return displayedStudents(students);
+   
+
+      const searchStudents = () => {
+          if (searchTerm) {
+            let searchedStudents = students;
+            return searchedStudents.filter((student) =>
+                // name
+              student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            //   contact
+              student.contact.includes(searchTerm.toLowerCase())
+            );
+        }else{
+            return students
         }
-    }, [filter, students, currentPage,studentsPerPage]);
+      }
+      const {batches} = useContext(GlobalContext)
+
+      const filteredStudents = (searchedStudents, field ,filter) => {
+    
+        
+        let filteredStudents = [];
+        if(filter === 'all'){
+            
+            filteredStudents = searchedStudents;
+            console.log("ALL option: ", filteredStudents);
+        }else{
+            filteredStudents = searchedStudents.filter((student) => 
+                student[field] === filter 
+            );
+        }
+
+        console.log("FILTERED STUDENTS", filteredStudents);
+        
+        const numPages = Math.ceil(filteredStudents.length / studentsPerPage);
+        setTotalPages(numPages);
+        return displayedStudents(filteredStudents);
+      }
+    const getFilteredStudents = useMemo(() => {
+        // searched students
+        const searchedStudents = searchStudents();
+        const batch = batches[filter];
+        console.log(batch, filter);
+
+        switch (filter) {
+            case 'pending':
+                return filteredStudents(searchedStudents, 'feeStatus', filter);
+            case 'paid':
+                return  filteredStudents(searchedStudents, 'feeStatus', filter);
+            case 'A':
+                return filteredStudents(searchedStudents, 'batch', batch);
+            case 'B':
+                return filteredStudents(searchedStudents, 'batch', batch);
+               
+            default:
+                return filteredStudents(searchedStudents, '', 'all');;
+        }
+        
+        // if (filter === 'pending' || filter==='A') {
+         
+            
+        // } else if (filter === 'paid') {
+        //     const paidStudents = searchedStudents.filter((student) =>
+        //          student.feeStatus === 'paid' ||
+        //          student.batch === batch
+        //     );
+        //     const numPages = Math.ceil(paidStudents.length / studentsPerPage);
+        //     setTotalPages(numPages);
+        //     return displayedStudents(paidStudents);
+        // } else {
+        //     const numPages = Math.ceil(students.length / studentsPerPage);
+        //     setTotalPages(numPages);
+
+        //     return displayedStudents(searchedStudents);
+        // }
+    }, [filter, students, currentPage,studentsPerPage, searchTerm]);
 
     const deleteStudent = async (id) => {
         try {
@@ -78,14 +142,14 @@ const AllStudents = ({ students, setStudents }) => {
         const updatedStudent = new FormData();
         
         updatedStudent.append('feeStatus', formData.feeStatus);
-        console.log(updatedStudent);
+
         
         const res = await axiosInstance.put(`/api/admin/updatestudent/${id}`, updatedStudent, {
           headers: {
             'Content-Type': 'multipart/form-data',
             },
         })
-        console.log(res.data.data);
+
         const updatedStudentData = res.data.data;
         setStudents(students.map(student => (student._id === id ? updatedStudentData : student)));
         closeUpdateModal()
@@ -95,12 +159,11 @@ const AllStudents = ({ students, setStudents }) => {
     }
 
     
-
+// OPEN CLOSE MODAL
     const openUpdateModal = (student) => {
         setSelectedStudent(student);
         setPopUpdate(true);
     };
-
     const closeUpdateModal = () => {
         setSelectedStudent(null);
         setPopUpdate(false);
@@ -118,7 +181,7 @@ const AllStudents = ({ students, setStudents }) => {
     };
 
 
- 
+//  FEE HISTORY
 const downloadFeeHistory = async (id, student) => {
     try {
 
@@ -143,8 +206,6 @@ const downloadFeeHistory = async (id, student) => {
     return pageNumbers;
 };
   
-
-
   // Function to handle pagination logic (e.g., fetch more data if needed)
   const handlePagination = (page) => {
     // Implement your logic to fetch or retrieve data for the desired page  
@@ -158,8 +219,26 @@ const downloadFeeHistory = async (id, student) => {
         <div className="flex flex-col border-2 mt-5 p-5 h-screen">
             <div className='flex items-center justify-between'>
                 <h1 className='text-3xl mb-5'>All students</h1>
+                
+            </div>
+{/* <Table students={students}/> */}
+
+ 
+
+{/* Table */}
+
+{/* Search & filter */}
+            <div className='flex justify-between items-center'>
+                <div className='flex bg-white w-fit p-3 items-center rounded mb-3'>
+                    <FaMagnifyingGlass size={25} className='p-1'/>
+                    <input type="search" name="" placeholder='Search' className='ml-2 focus:outline-none' 
+                            value={searchTerm}
+                            onChange={(e) => setsearchTerm(e.target.value)}/>
+                </div>
+
+            {/* Filter */}
                 <div>
-                    <label htmlFor="filter">Sort By: </label>
+                    {/* <Filter filter={filter} setFilter={setFilter}/> */}
                     <select
                         name="filter"
                         id="filter"
@@ -171,19 +250,26 @@ const downloadFeeHistory = async (id, student) => {
                         <option value="pending">Pending</option>
                         <option value="paid">Paid</option>
                     </select>
+                    <select
+                        name="filter"
+                        id="filter"
+                        value={filter}
+                        onChange={(e) => setFilter(e.target.value)}
+                        className='bg-transparent text-purple-500 focus:outline-none'
+                    >
+                        <option value="" disabled>Batch</option>
+                        <option value="all">All</option>
+                        <option value="A">A. 6:00 - 7:00pm</option>
+                        <option value="B">B. 7:00 - 8:00pm</option>
+                    </select>
                 </div>
             </div>
-{/* <Table students={students}/> */}
-
- 
-
-{/* Table */}
             <div className="overflow-x-auto">
                 <div className=" min-w-full inline-block align-middle">
                     <div className="bg-white rounded-[2rem] p-2 overflow-hidden">
                         {
                             getFilteredStudents.length === 0 ? (
-                            <p className='text-center text-orange-400 w-full text-2xl'>All Pending</p>
+                            <p className='text-center text-orange-400 w-full text-2xl'>No Students</p>
                             ) : (
                             <table className="min-w-full divide-y divide-gray-200   dark:divide-neutral-700">
                             <thead>
