@@ -25,7 +25,7 @@ const Sidebar = ({sidebarOpen, setsidebarOpen}) => {
     <div className=''>
         {
             sidebarOpen &&
-                <div className={`z-20 fixed rounded-e-2xl h-screen top-0 bg-white w-5/12 md:w-1/6 ${sidebarOpen ? 'animate-sidebarOpen' : 'animate-sidebarClose'}`}>
+                <div className={`z-20 fixed rounded-e-2xl h-screen top-0 bg-white w-5/12 md:w-1/6  ${sidebarOpen ? 'animate-sidebarOpen' : 'animate-sidebarClose'}`}>
                     <p className='text-end p-4' onClick={() => setsidebarOpen(false)}>X</p>
                     <ul className='flex flex-col h-[60vh]'>
                         <Link to='/attendance'>

@@ -1,7 +1,10 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { batch, useDispatch } from 'react-redux';
 import { fetchUserDetails } from '../../slices/userSlice';
+
+// ICONS
 import { IoIosCloseCircleOutline } from "react-icons/io";
+import { LuRefreshCcw } from "react-icons/lu";
 import { FaCircleInfo } from "react-icons/fa6";
 import { CiCircleCheck } from "react-icons/ci";
 import Modal from './Modal';
@@ -13,7 +16,7 @@ const Attendance = () => {
   const [filter, setFilter] = useState('all');
   const {batches} = useContext(GlobalContext)
   const [searchTerm, setsearchTerm] = useState('')
-  
+
   const batch = batches[filter];
 
 
@@ -46,14 +49,11 @@ const Attendance = () => {
   const [attendanceData, setAttendanceData] = useState([]);
 
   const [open, setOpen] = useState(false);
-  // console.log(students);
-  const fetchData = async () => {
+
+  const refresh = async() => {
     try {
       const res = await axiosInstance.get('/api/admin/students');
-
-      
       setStudents(res.data.students);
-
       // Handle success, redirect or show a message
     } catch (err) {
       console.error('Upload error:', err);
@@ -62,13 +62,42 @@ const Attendance = () => {
   }
 
   useEffect(() => {
-    fetchData();
+    refresh();
+     // Load previously persisted student attendance data from local storage (if available)
+     const persistedData = localStorage.getItem('attendanceData');
+
+     
+     if (persistedData) {
+       try {
+         const parsedData = JSON.parse(persistedData);
+     
+         setAttendanceData(parsedData);
+         console.log(attendanceData);
+ 
+         // Update student disabled state based on attendance data
+         setStudents(students.map((student) => {
+           const attendanceRecord = attendanceData.find((data) => data.id === student._id);
+           const diable = {
+             ...student,
+             disabled: attendanceRecord && attendanceRecord.date === new Date().toISOString().slice(0, 10), // Check if attendance marked on same date
+           };
+           console.log(diable);
+           
+           return diable;
+         }));
+       } catch (error) {
+         console.error('Error parsing attendance data:', error);
+       }
+     }
+  
     
   }, [])
+  
   
 
   const handleAttendanceClick = (index, clickedType) => {
     const updatedStudents = [...students];
+
     updatedStudents[index].attendance = clickedType === "absent" ? 'absent' : 'present';
 
     const existingIndex = attendanceData.findIndex(item => item.id === updatedStudents[index]._id);
@@ -98,8 +127,6 @@ const Attendance = () => {
 
 
       const res = await axiosInstance.post("api/admin/students/attendance", attendanceData);
-
-      const AttendanceDone = students.filter(student => attendanceData.find(data => data.id === student._id));
       
             // Assuming that all students whose attendance was marked should be disabled
             const updatedStudents = students.map(student => {
@@ -110,8 +137,7 @@ const Attendance = () => {
           });
   
           setStudents(updatedStudents); // Update the students state with the disabled property
-  
-    
+          localStorage.setItem('attendanceData', JSON.stringify(attendanceData));
       // console.log("DATA" ,res.data);
     } catch (error) {
       
@@ -126,7 +152,6 @@ const Attendance = () => {
   const closeModal =() => {
       setOpen(false);
   }
-  console.log(students);
   
   return (
     <div>
@@ -142,23 +167,26 @@ const Attendance = () => {
         
       </div>
       {/* SORT BY */}
-      <div>
+      <div className='p-2'>
         <div>
           <Search searchTerm={searchTerm} setsearchTerm={setsearchTerm}/>
         </div>
-        <div className='text-end mr-4'>
-              <label htmlFor="filter">Sort By: </label>
-              <select
-                  name="filter"
-                  id="filter"
-                  onChange={(e) => setFilter(e.target.value)}
-                  value={filter}
-                  className='bg-gray-200 p-1  focus:outline-none '
-              >
-                  <option value="all">All</option>
-                  <option value="A">A. 6:00 - 7:00pm</option>
-                  <option value="B">B. 7:00 - 8:00pm</option>
-              </select>
+        <div className='flex justify-between items-center'>
+          <div className='text-end mr-4'>
+                <label htmlFor="filter">Sort By: </label>
+                <select
+                    name="filter"
+                    id="filter"
+                    onChange={(e) => setFilter(e.target.value)}
+                    value={filter}
+                    className='bg-gray-200 p-1  focus:outline-none '
+                >
+                    <option value="all">All</option>
+                    <option value="A">A. 6:00 - 7:00pm</option>
+                    <option value="B">B. 7:00 - 8:00pm</option>
+                </select>
+            </div>
+            <LuRefreshCcw size={18} className='mr-2' onClick={() => refresh()}/>
           </div>
         </div>
       
@@ -172,7 +200,7 @@ const Attendance = () => {
             </div>
           ) :
           getFilteredStudents.map((student, index) => (
-            <div key={index} className={`relative  p-4 rounded ${student.attendance === 'absent' ? 'bg-red-300' : 'bg-green-300'}   z-10`}>
+            <div key={index} className={`relative  p-4 rounded ${student.attendance === 'absent' ? 'bg-red-300' : 'bg-green-300'} z-10`}>
               { student.disabled && <div className='absolute z-20 inset-0 w-full h-full opacity-50 bg-black/60 cursor-not-allowed'></div>}
               <div className='flex flex-col items-center'>
                 {/* IMAGE */}
