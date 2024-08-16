@@ -60,6 +60,7 @@ const Modal = ({currStudent, closeModal}) => {
       }
     const getAttendanceStatus = (date) => {
         const attendanceData = currStudent.attendance;
+      //  console.log("MODAL",attendanceData);
        
         const formattedDate = formatDate(date); 
         // console.log("EVERY DATE FORMATTED: ", formattedDate);

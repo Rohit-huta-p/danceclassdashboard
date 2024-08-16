@@ -27,17 +27,26 @@ const Sidebar = ({sidebarOpen, setsidebarOpen}) => {
             sidebarOpen &&
                 <div className={`z-20 fixed rounded-e-2xl h-screen top-0 bg-white w-5/12 md:w-1/6  ${sidebarOpen ? 'animate-sidebarOpen' : 'animate-sidebarClose'}`}>
                     <p className='text-end p-4' onClick={() => setsidebarOpen(false)}>X</p>
-                    <ul className='flex flex-col h-[60vh]'>
-                        <Link to='/attendance'>
-                            <li className={`mb-4 mt-5 px-2 py-2 relative ${clicked === 'attendance' ?'bg-blue-200' :'' }`} onClick={() => setclicked('attendance')}>
+                    <ul className='flex flex-col h-[80vh]'>
+                        {/* HOME */}
+                        <li className={`px-2 py-2 relative ${clicked === 'home' ?'bg-blue-200' :'' }`} onClick={() => setclicked('home')}>
+                            <Link to='/'>
+                                {clicked && <div className='w-[5px] h-full top-0 left-0 rounded-e bg-blue-500 absolute'></div>}
+                                <p className='ml-3'>Home</p>
+                            </Link>
+                        </li>
+
+                        {/* ATTENDANCE */}
+                        <li className={`mb-4 mt-5 px-2 py-2 relative ${clicked === 'attendance' ?'bg-blue-200' :'' }`} onClick={() => setclicked('attendance')}>
+                            <Link to='/attendance'>
                                 {clicked && <div className='w-[5px] h-full top-0 left-0 rounded-e bg-blue-500 absolute'></div>}
                                 <p className='ml-3'>Attendance</p>
-                            </li>
-                        </Link>
+                            </Link>
+                        </li>
                         
                     </ul>
-                    <div  onClick={handleLogout}>
-                       <button className='bg-blue-300 ml-3 px-3 py-2 rounded mr-4 '>Logout</button> 
+                    <div  onClick={handleLogout} className='flex justify-end'>
+                       <button className='bg-blue-300 ml-3 px-3 py-2 rounded mr-4'>Logout</button> 
                     </div>
                 </div>
                 

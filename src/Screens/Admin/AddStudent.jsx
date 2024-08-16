@@ -27,7 +27,7 @@ const AddStudent = ({setIsAdd, addStudentToList}) => {
         dateOfJoining: '',
         batch: '6:00pm - 7:00pm',
         feeStatus: 'pending',
-        balance: 0,
+        balance: '',
         image: null
         });
       }
@@ -56,6 +56,7 @@ const AddStudent = ({setIsAdd, addStudentToList}) => {
         
         try {
           setLoading(true);
+          console.log("UPLOADED DATA", typeof uploadData.balance);
             const res = await axiosInstance.post(`/api/admin/addstudent`, uploadData, {
               headers: { 'Content-Type': 'multipart/form-data' }
             });
@@ -107,7 +108,7 @@ const AddStudent = ({setIsAdd, addStudentToList}) => {
                         </select>
                     </div>
                     {/* Balance */}
-                    <input type="text" className='border px-3 py-2 rounded w-full' placeholder="Enter balance remaining" name='balance'/>
+                    <input type="text" className='border px-3 py-2 rounded w-full' placeholder="Enter balance remaining" name='balance'  value={formData.balance} onChange={handleInputChange}/>
 
                     {/* File */}
                     <input type="file" className="block w-full text-sm text-gray-500

@@ -16,7 +16,7 @@ const Attendance = () => {
   const [filter, setFilter] = useState('all');
   const {batches} = useContext(GlobalContext)
   const [searchTerm, setsearchTerm] = useState('')
-
+  const [enable, setenable] = useState(false)
   const batch = batches[filter];
 
 
@@ -37,12 +37,11 @@ const Attendance = () => {
         // console.log(students.filter((student) => student.batch === '7:00pm - 8:00pm'));
         return students.filter((student) => student.batch === batch);
     } else {
-     
-
-      
+      // console.log(students);
       return students;
     }
 
+    
 }, [filter, students]);
 
   const [currStudent, setcurrStudent] = useState(null)
@@ -51,46 +50,13 @@ const Attendance = () => {
   const [open, setOpen] = useState(false);
 
   const refresh = async() => {
-    try {
       const res = await axiosInstance.get('/api/admin/students');
       setStudents(res.data.students);
-      // Handle success, redirect or show a message
-    } catch (err) {
-      console.error('Upload error:', err);
-      // Handle error, show error message
-    }
   }
+
 
   useEffect(() => {
     refresh();
-     // Load previously persisted student attendance data from local storage (if available)
-     const persistedData = localStorage.getItem('attendanceData');
-
-     
-     if (persistedData) {
-       try {
-         const parsedData = JSON.parse(persistedData);
-     
-         setAttendanceData(parsedData);
-         console.log(attendanceData);
- 
-         // Update student disabled state based on attendance data
-         setStudents(students.map((student) => {
-           const attendanceRecord = attendanceData.find((data) => data.id === student._id);
-           const diable = {
-             ...student,
-             disabled: attendanceRecord && attendanceRecord.date === new Date().toISOString().slice(0, 10), // Check if attendance marked on same date
-           };
-           console.log(diable);
-           
-           return diable;
-         }));
-       } catch (error) {
-         console.error('Error parsing attendance data:', error);
-       }
-     }
-  
-    
   }, [])
   
   
@@ -124,21 +90,12 @@ const Attendance = () => {
   const submitAttendance = async () => {
     
     try {
-
+    
 
       const res = await axiosInstance.post("api/admin/students/attendance", attendanceData);
+      refresh();
+
       
-            // Assuming that all students whose attendance was marked should be disabled
-            const updatedStudents = students.map(student => {
-              if (attendanceData.find(data => data.id === student._id)) {
-                  return { ...student, disabled: true };
-              }
-              return student;
-          });
-  
-          setStudents(updatedStudents); // Update the students state with the disabled property
-          localStorage.setItem('attendanceData', JSON.stringify(attendanceData));
-      // console.log("DATA" ,res.data);
     } catch (error) {
       
     }
@@ -152,6 +109,31 @@ const Attendance = () => {
   const closeModal =() => {
       setOpen(false);
   }
+
+  const today = new Date().toLocaleDateString('en-US', {
+    day: 'numeric',
+    year: 'numeric',
+    month: 'short',
+  });
+  const getAttendanceForToday = (attendance) => {
+    if (!Array.isArray(attendance)) {
+      console.error("Expected an array for attendance but got:", attendance);
+      return null;
+    }
+  
+    return attendance.find(att => 
+      new Date(att.date).toLocaleDateString('en-US', {
+        day: 'numeric',
+        year: 'numeric',
+        month: 'short',
+      }) === today
+    );
+  };
+
+
+
+
+  
   
   return (
     <div>
@@ -186,6 +168,18 @@ const Attendance = () => {
                     <option value="B">B. 7:00 - 8:00pm</option>
                 </select>
             </div>
+          {/* REFRESH */}
+              <div className='text-end'>
+                <button onClick={() => setenable(!enable)}>
+                  <div className='flex items-center'>
+                  {/*  */}
+                    <div className={` rounded w-[32px] h-[16px] relative ${enable ? 'bg-blue-200' : 'bg-white'}`}> 
+                      <div className={`bg-blue-500 w-[22px] h-[22px] rounded-full absolute top-[-3px]  
+                        transition-transform duration-300 ${enable ? 'translate-x-[14px]' : 'translate-x-[-2px]'}`}></div>
+                    </div>
+                  </div>
+                </button>
+              </div>
             <LuRefreshCcw size={18} className='mr-2' onClick={() => refresh()}/>
           </div>
         </div>
@@ -199,24 +193,46 @@ const Attendance = () => {
               <h2 className='text-center text-amber-600 text-3xl w-full mt-5'>No Students</h2>
             </div>
           ) :
-          getFilteredStudents.map((student, index) => (
-            <div key={index} className={`relative  p-4 rounded ${student.attendance === 'absent' ? 'bg-red-300' : 'bg-green-300'} z-10`}>
-              { student.disabled && <div className='absolute z-20 inset-0 w-full h-full opacity-50 bg-black/60 cursor-not-allowed'></div>}
+          getFilteredStudents.map((student, index) => {
+            const todayAttendance = getAttendanceForToday(student.attendance);
+            const cardColor = todayAttendance ? 
+                              (todayAttendance.status === 'absent' ? 'bg-red-300' : 'bg-green-300') : 
+                              'bg-white';
+            return (
+            <div key={index} className={`relative  p-4 rounded  z-10 ${cardColor}`}>
+      
               <div className='flex flex-col items-center'>
                 {/* IMAGE */}
-                <div className='h-[4rem] w-[4rem] rounded-full' style={{ backgroundImage: `url(${student.Image})`, backgroundSize: 'cover' }}></div>
+                <div
+                  className="h-[3rem] w-[3rem] rounded-full mr-3"
+                  style={{
+                      backgroundImage: `url(${student.Image})`,
+                      backgroundSize: "cover",
+                  }}
+                  ></div>
                 <h2 className=' mt-3'>{student.name}</h2>
               </div>
               <FaCircleInfo className='absolute top-4 right-4 cursor-pointer' onClick={() => openModal(student._id)}/>
 
               <div className='flex justify-evenly mt-5 bg-white'>
-                <IoIosCloseCircleOutline size={45} color={student.attendance === 'absent' ? "red" : ""} className={ student.attendance === 'absent' ? `bg-red-300 border-2 py-2 w-full` : "border-2 py-2 w-full"}
+
+                <IoIosCloseCircleOutline size={45} color="red" className={ student.attendance === 'absent' ? `bg-red-300 border-2 py-2 w-full` : "border-2 py-2 w-full"}
                      onClick={() => handleAttendanceClick(index, "absent")}
                      />
-                <CiCircleCheck size={45} color={student.attendance === 'present' ? "green" : ""} className={ student.attendance === 'present' ? `bg-green-300 border-2 py-2 w-full` : "border-2 py-2 w-full"}
+        {console.log("PRESENT THING: ",  student.attendance === 'present')}
+        {console.log("PRESENT STUDENT THING: ",  student.attendance)}
+                <CiCircleCheck size={45} color="green" className={ student.attendance === 'present' ? `bg-green-300 py-2 w-full` : "border-2 py-2 w-full"}
                      onClick={() => handleAttendanceClick(index, "present")}
                      />
               </div>
+              {
+                
+                  (getAttendanceForToday(student.attendance) && enable == false) && (
+                    <div className='absolute z-20 left-0 bottom-0 w-full h-3/4 bg-black/60 flex items-center justify-center text-white text-xl'>
+                      <p className='text-white z-30'>Marked</p>
+                    </div>
+                  )
+                }
               {
                 open && (
                   <>
@@ -227,8 +243,8 @@ const Attendance = () => {
               }
             </div>
             
-            
-          ))
+            )
+          })
         }
       </div>
       <div className='flex justify-center'>
