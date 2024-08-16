@@ -61,9 +61,9 @@ const DashBoard = () => {
 console.log(getMonthwiseValue);
 
   return (
-    <div className='mx-2 grid grid-cols-5 gap-2 justify-evenly '>
+    <div className='mx-2 md:grid md:grid-cols-5 md:gap-2 justify-evenly '>
       {/* card */}
-      <div className='bg-violet-400 flex flex-col h-[15rem] items-between justify-evenly col-span-1 inline-block p-2 rounded'>
+      <div className='bg-violet-400 mb-3 flex flex-col h-[18rem] items-between justify-evenly col-span-1 inline-block p-2 rounded'>
         <div className='flex items-center'>
           <BsCashCoin size={38} className='bg-white rounded p-1'/>
           <div>
