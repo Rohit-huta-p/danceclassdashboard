@@ -136,7 +136,7 @@ console.log(getMonthwiseValue);
               min: 0,            // Minimum value on the y-axis
               max: 30,         // Maximum value on the y-axis
               ticks: {
-                stepSize: 3,  // Sets the step size between values on the y-axis
+                stepSize: 2,  // Sets the step size between values on the y-axis
                 callback: function(value) {
                   return value + ' students'; // Customize y-axis labels
                 },
