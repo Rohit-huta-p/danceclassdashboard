@@ -14,6 +14,7 @@ import Search from '../../components/Search';
 
 const Attendance = () => {
   const [filter, setFilter] = useState('all');
+
   const {batches} = useContext(GlobalContext)
   const [searchTerm, setsearchTerm] = useState('')
   const [enable, setenable] = useState(false)
@@ -49,20 +50,32 @@ const Attendance = () => {
 
   const [open, setOpen] = useState(false);
 
+
+  const [refreshRotate, setRefreshRotate] = useState(false)
+  
   const refresh = async() => {
+    setRefreshRotate(true); // Start the spinning animation
+    try {
       const res = await axiosInstance.get('/api/admin/students');
       setStudents(res.data.students);
+    } finally {
+      setRefreshRotate(false); // Stop the spinning animation
+    }
   }
-
-
+  
+  
   useEffect(() => {
+  
     refresh();
+ 
   }, [])
   
   
 
-  const handleAttendanceClick = (index, clickedType) => {
+  const handleAttendanceClick = (student ,index, clickedType) => {
+    
     const updatedStudents = [...students];
+    // console.log("curent clicked: ",updatedStudents[index]);
 
     updatedStudents[index].attendance = clickedType === "absent" ? 'absent' : 'present';
 
@@ -75,25 +88,29 @@ const Attendance = () => {
         attendance: clickedType === "absent" ? 'absent' : 'present',
         date: new Date()
       }]);
-
-  
-     
+      
+      
+      
     } else {
       const updatedAttendanceData = [...attendanceData];
       updatedAttendanceData[existingIndex].attendance = clickedType === "absent" ? 'absent' : 'present';
-      updatedAttendanceData[existingIndex].date = new Date().toISOString();
+      updatedAttendanceData[existingIndex].date = new Date();
       setAttendanceData(updatedAttendanceData);
       
     }
   }
+  console.log("ATTENDANCE DATA",attendanceData);
   
   const submitAttendance = async () => {
     
     try {
+    console.log("Attendance Data: Submitted: ", attendanceData);
     
 
       const res = await axiosInstance.post("api/admin/students/attendance", attendanceData);
+      setAttendanceData([])
       refresh();
+      setRefreshRotate(false)
 
       
     } catch (error) {
@@ -115,9 +132,16 @@ const Attendance = () => {
     year: 'numeric',
     month: 'short',
   });
+
+  console.log(students);
+  
   const getAttendanceForToday = (attendance) => {
+
+      
+    // attendance.map(att => console.log(att.date))
+  
     if (!Array.isArray(attendance)) {
-      console.error("Expected an array for attendance but got:", attendance);
+      // console.error("Expected an array for attendance but got:", attendance);
       return null;
     }
   
@@ -138,7 +162,7 @@ const Attendance = () => {
   return (
     <div>
       <div className='flex flex-col items-center mb-5'>
-        <h1 className='text-4xl w-fit mb-4 mt-5'>Attendance</h1>
+        <h1 className='text-4xl w-fit mb-4 mt-5 '>Attendance</h1>
         <h2 className='font-bold bg-indigo-500 text-white px-3 w-fit py-2 rounded'>
           {new Date().toLocaleDateString('en-US', {
                   day: 'numeric',
@@ -153,7 +177,9 @@ const Attendance = () => {
         <div>
           <Search searchTerm={searchTerm} setsearchTerm={setsearchTerm}/>
         </div>
-        <div className='flex justify-between items-center'>
+        {/* SORTBY, REFRESH, ENABLE */}
+        <div className='flex justify-between items-center '>
+          {/* SORT BY */}
           <div className='text-end mr-4'>
                 <label htmlFor="filter">Sort By: </label>
                 <select
@@ -167,22 +193,31 @@ const Attendance = () => {
                     <option value="A">A. 6:00 - 7:00pm</option>
                     <option value="B">B. 7:00 - 8:00pm</option>
                 </select>
-            </div>
-          {/* REFRESH */}
-              <div className='text-end'>
-                <button onClick={() => setenable(!enable)}>
-                  <div className='flex items-center'>
-                  {/*  */}
-                    <div className={` rounded w-[32px] h-[16px] relative ${enable ? 'bg-blue-200' : 'bg-white'}`}> 
-                      <div className={`bg-blue-500 w-[22px] h-[22px] rounded-full absolute top-[-3px]  
-                        transition-transform duration-300 ${enable ? 'translate-x-[14px]' : 'translate-x-[-2px]'}`}></div>
-                    </div>
-                  </div>
-                </button>
-              </div>
-            <LuRefreshCcw size={18} className='mr-2' onClick={() => refresh()}/>
           </div>
+          {/* REFRESH, ENABLE */}
+            <div className='flex items-center '>
+                <div className=''>
+
+                  <button onClick={() => setenable(!enable)} className='mr-3'>
+                    <div className='shadow-lg'>
+                      <div 
+                        className={`rounded w-[34px] h-[14px] relative bg-gradient-to-r from-blue-200 to-white
+                                  transition-all duration-300`}
+                        > 
+                        <div className={`bg-blue-500 w-[21px] h-[21px] rounded-full absolute top-[-3px]  
+                          transition-transform duration-300 ${enable ? 'translate-x-[14px]' : 'translate-x-[-2px]'}`}></div>
+                      </div>
+                    </div>
+                  </button>
+                </div>
+
+
+              <LuRefreshCcw size={18} 
+              className={`transition-transform duration-300 ${refreshRotate ? 'animate-spinFast' : ''}`}
+              onClick={refresh}/>
+            </div>
         </div>
+      </div>
       
   
       <div className='ml-4 mr-4 grid grid-cols-2 md:grid md:grid-cols-5 gap-2'>
@@ -216,13 +251,13 @@ const Attendance = () => {
 
               <div className='flex justify-evenly mt-5 bg-white'>
 
+              {/*  */}
                 <IoIosCloseCircleOutline size={45} color="red" className={ student.attendance === 'absent' ? `bg-red-300 border-2 py-2 w-full` : "border-2 py-2 w-full"}
-                     onClick={() => handleAttendanceClick(index, "absent")}
+                     onClick={() => handleAttendanceClick(student,index, "absent")}
                      />
-        {console.log("PRESENT THING: ",  student.attendance === 'present')}
-        {console.log("PRESENT STUDENT THING: ",  student.attendance)}
+{/*  */}
                 <CiCircleCheck size={45} color="green" className={ student.attendance === 'present' ? `bg-green-300 py-2 w-full` : "border-2 py-2 w-full"}
-                     onClick={() => handleAttendanceClick(index, "present")}
+                     onClick={() => handleAttendanceClick(student,index, "present")}
                      />
               </div>
               {

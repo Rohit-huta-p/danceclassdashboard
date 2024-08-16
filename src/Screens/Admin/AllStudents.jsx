@@ -22,11 +22,14 @@ import { GlobalContext } from "../../contexts/GlobalContexts";
 import Search from "../../components/Search";
 
 const AllStudents = ({ students, setStudents }) => {
+
+  const [showMessage, setshowMessage] = useState(false);
+
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [confirmDelete, setconfirmDelete] = useState(false);
   
   const [imageOpen, setimageOpen] = useState(false);
- const imageOpenfun = (student) => {
+  const imageOpenfun = (student) => {
     setSelectedStudent(student);
     setimageOpen(true);
     
@@ -67,13 +70,13 @@ const AllStudents = ({ students, setStudents }) => {
     name: "",
     age: "",
     dateOfJoining: "",
+    contact: '',
     batch: "6:00pm - 7:00pm",
-    feeStatus: "",
-    balance: 0,
+    fees: '',
+    feesPaid: '',
     image: null,
   });
   
-  const [addSubtractbalance, setAddSubtractbalance] = useState('subtract')
 
   // Displayed students
   const displayedStudents = (students) =>
@@ -143,19 +146,17 @@ const AllStudents = ({ students, setStudents }) => {
   // Update Student
   const UpdateStudent = async (id) => {
     try {
-      const updatedStudent = new FormData();
-
-      updatedStudent.append("feeStatus", formData.feeStatus);
-      updatedStudent.append("balance", formData.balance);
-      if(addSubtractbalance === 'add'){
-        updatedStudent.append("addSubtractBalance", "add");
-      }else{
-        updatedStudent.append("addSubtractBalance", "subtract");
-      }
-
+      const uploadData = new FormData();
+      uploadData.append("name", formData.name);
+      uploadData.append("age", formData.age);
+      uploadData.append("contact", formData.contact);
+      uploadData.append("batch", formData.batch);
+      uploadData.append("dateOfJoining", formData.dateOfJoining);
+      uploadData.append("feesPaid", formData.feesPaid);
+      uploadData.append("fees", formData.fees);
       const res = await axiosInstance.put(
         `/api/admin/updatestudent/${id}`,
-        updatedStudent,
+        uploadData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -163,7 +164,9 @@ const AllStudents = ({ students, setStudents }) => {
         }
       );
 
-      const updatedStudentData = res.data.data;
+      const {success, message, data} = res.data
+      const updatedStudentData = data;
+      setshowMessage(success);
       setStudents(
         students.map((student) =>
           student._id === id ? updatedStudentData : student
@@ -173,6 +176,14 @@ const AllStudents = ({ students, setStudents }) => {
     } catch (error) {}
   };
 
+  useEffect(() => {
+    if (showMessage) {
+      const timer = setTimeout(() => {
+        setshowMessage(false);
+      }, 10000);
+      return () => clearTimeout(timer); // Cleanup the timeout if the component unmounts
+    }
+  }, [showMessage]);
   // OPEN CLOSE MODAL
   // update modal
   const openUpdateModal = (student) => {
@@ -300,17 +311,18 @@ const AllStudents = ({ students, setStudents }) => {
                             <p className="inline-block mr-2">Fee Status: </p>
                            
                             {
-                            student.balance > 0 ? (
+                            student.feesPaid != student.fees ? (
                             // pending
                                 <div className="flex items-center  rounded">
-                                    <p className="text-amber-600 bg-amber-300/30 px-1 text-[12px]">Pending{" "} <span className="">({student.balance}/-)</span></p>
+                                    <p className="text-amber-600 bg-amber-300/30 px-1 text-[12px]">Pending{" "} <span className="">({student.fees - student.feesPaid}/-)</span></p>
                                     <a onClick={() => downloadFeeHistory(student._id, student)}>
-                                    </a>
                                         <CiCircleInfo
                                             size={16}
                                             color="blue"
                                             className="ml-2 cursor-pointer"
-                                        />
+                                            
+                                            />
+                                    </a>
                                 </div>
                                 ) : (
                             // paid
@@ -362,6 +374,9 @@ const AllStudents = ({ students, setStudents }) => {
                           
                             {/* update, Delete */}
                             <div className="flex-col text-end text-sm font-medium">
+                              {
+                                showMessage &&  <p className="text-[14px] font-thin text-green-600">Updated Successfully</p>
+                              }
                             <button
                                 type="button"
                                 className="mr-3 inline text-xs font-semibold rounded-lg text-blue-600 hover:text-blue-800 disabled:opacity-50 "
@@ -469,30 +484,81 @@ const AllStudents = ({ students, setStudents }) => {
             <h2 className="text-lg font-semibold mb-4">
               Update {selectedStudent.name}
             </h2>
-            <div className="border rounded w-full px-3 py-2 mb-4">
-              {/* <div className="flex mb-2">
-                <label htmlFor="feeStatus">Fee Status: </label>
-                <select
-                  name="feeStatus"
-                  className="ml-3 bg-amber-100 rounded px-1 "
-                  value={formData.feeStatus}
-                  onChange={(e) => handleInputChange(e)}
-                >
-                  <option value="paid">Paid</option>
-                  <option value="pending">Pending</option>
-                </select>
-              </div> */}
-              <div className="flex mb-3">
-                <label htmlFor="feeStatus" className="mr-2" >Balance: </label>
-                <div className="flex items-center">
-                  <IoIosAddCircleOutline color="blue" size={20} className={`mr-1 cursor-pointer ${addSubtractbalance === 'add' && 'bg-blue-200 rounded '}`} onClick={() => setAddSubtractbalance('add')}/>
-                  <CiCircleMinus color="red" size={20} className={`cursor-pointer ${addSubtractbalance === 'subtract' && 'bg-red-200 rounded '}`} onClick={() => setAddSubtractbalance('subtract')}/>
-                </div>
-                  <input type="number" name="balance" placeholder="0" className="ml-3 font-thin w-full outline-none" 
-                  value={formData.balance}
+            <div className="border bg-gray-100 rounded w-full px-3 py-2 mb-4">
+              
+             
+              {/* NAME */}
+              <div className="flex p-1 bg-gray-100">
+                <label htmlFor="" className="mr-2">Name: </label>
+             
+                  <input type="text" name="name" placeholder="Name" className="bg-gray-100 ml-3 font-thin w-full outline-none" 
+                  value={formData.name}
                   onChange={(e) => handleInputChange(e)}/>
+              </div>
+              <hr />
+              {/* Age */}
+              <div className="flex py-1 ">
+                <label htmlFor="" className="mr-2" >Age: </label>
+               
+                  <input type="number" name="age" placeholder="0" className="bg-gray-100 ml-3 font-thin w-full outline-none" 
+                  value={formData.age}
+                  onChange={(e) => handleInputChange(e)}/>
+              </div>
+              <hr />
+
+              {/* Contact */}
+              <div className="flex py-1 ">
+                <label htmlFor="" className="mr-2" >Contact: </label>
+        
+                  <input type="text" name="contact" placeholder="XXXXXXXXXX" className="bg-gray-100 ml-3 font-thin w-full outline-none" 
+                  value={formData.contact}
+                  onChange={(e) => handleInputChange(e)}/>
+              </div>
+              <hr />
+
+              {/* BATCH */}
+              <div className="flex py-1 ">
+                <label htmlFor="feeStatus" className="mr-2" >Batch: </label>
+        
+                <select name="batch" id="" value={formData.batch} onChange={handleInputChange} className="bg-gray-100">
+                  <option selected="">Open this select menu</option>
+                  {Object.entries(batches).map(([key, value]) => (
+                    <option key={key} value={value}  >
+                      {`${key} - ${value}`}
+                    </option>
+                  ))}
+                </select>
                  
               </div>
+              <hr />
+
+              {/* Date of Joining */}
+              <div className="flex py-1 ">
+                <label htmlFor="feeStatus" className="mr-2" >Date Of Joining: </label>
+             
+                  <input type="date" name="dateOfJoining" placeholder="0" className="bg-gray-100 ml-3 font-thin w-full outline-none" 
+                  value={formData.dateOfJoining}
+                  onChange={(e) => handleInputChange(e)}/>
+              </div>
+              <hr />
+              {/* FEES */}
+              <div className="flex py-2">
+                <label htmlFor="feeStatus" className="mr-2" >Fees: </label>
+              
+                  <input type="number" name="fees" placeholder="0" className="bg-gray-100 ml-3 font-thin w-full outline-none" 
+                  value={formData.fees}
+                  onChange={(e) => handleInputChange(e)}/>
+              </div>
+              <hr />
+              {/* FEE STATUS */}
+              <div className="flex py-2">
+                <label htmlFor="feeStatus" className="mr-2" >FeesPaid: </label>
+              
+                  <input type="number" name="feesPaid" placeholder="0" className="bg-gray-100 ml-3 font-thin w-full outline-none" 
+                  value={formData.feesPaid}
+                  onChange={(e) => handleInputChange(e)}/>
+              </div>
+              <hr />
             </div>
             <button
               className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-800"
@@ -508,7 +574,7 @@ const AllStudents = ({ students, setStudents }) => {
 
       {feeHistoryModal && selectedStudent && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-          <div className="bg-white w-1/3 rounded-lg shadow-lg p-5 relative">
+          <div className="bg-white w-8/12 rounded-lg shadow-lg p-5 relative">
             <button
               onClick={closeFeeHistoryModal}
               className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
@@ -525,7 +591,7 @@ const AllStudents = ({ students, setStudents }) => {
                   <th className="py-2 px-4 border-b">Date</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="overflow-auto">
                 {feeHistory.map((entry) => (
                   <tr key={entry._id}>
                     <td className="py-2 px-4 border-b">{entry.status}</td>
