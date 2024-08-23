@@ -57,8 +57,9 @@ console.log(getMonthwiseValue);
 
   return (
     <div className='mx-2 md:grid md:grid-cols-5 md:gap-2 justify-evenly '>
-      {/* card */}
-      <div className='bg-indigo-600 mb-3 flex flex-col h-fit md:h-[18rem] items-between justify-evenly col-span-1 inline-block p-4 rounded'>
+      {/* COLLECTED AMOUNT CARD */}
+      <div className='bg-indigo-600 mb-3 flex justify-between col-span-1 inline-block p-4 rounded h-fit md:h-[18rem]' >
+        {/* --- */}
         <div className='flex items-center'>
           <BsCashCoin size={38} className='bg-white rounded p-1'/>
           <div className='text-white'>
@@ -68,9 +69,13 @@ console.log(getMonthwiseValue);
             <p className='ml-2'>Collected Amount</p>
           </div>
         </div>
-        <div className='flex justify-center w-full'>
+
+        {/* IMAGE  */}
+        <div className='flex justify-center w-full hidden md:block'>
           <img src={Money} alt="" className='h-auto w-7/12 md:w-36 ml-2' />
         </div>
+
+        {/* AMOUNT */}
         {totalAmount ? (
           <p className='flex text-white items-center justify-center mt-2 text-xl '>
             <FaIndianRupeeSign /> {totalAmount}/{totalFees}

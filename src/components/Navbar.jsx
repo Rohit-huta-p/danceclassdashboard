@@ -22,10 +22,12 @@ const [currentPath, setcurrentPath] = useState(window.location.pathname)
   }, [location]);
   return (
     <>
-
+  <nav className='bg-blue-500 h-[4rem] flex justify-between items-center px-2'>
+        <h1 className='text-white text-2xl'>Studio Flowie</h1>
+    <div>
       {/* MEDIUM SCREEN */}
       <div className='hidden md:block'>
-        <div className={`bg-blue-500 h-[4rem] ${isLogin ? "flex justify-between items-center": "flex justify-end"}`}>
+        <div className={` ${isLogin ? "flex justify-between items-center": "flex justify-end"}`}>
           {
             isLogin && <ul className='flex items-center justify-end w-full'>
                 <li className='mr-5'>
@@ -82,6 +84,8 @@ const [currentPath, setcurrentPath] = useState(window.location.pathname)
         }
       </div>
     </div>
+  </div>
+  </nav>
   </>
   )
 }

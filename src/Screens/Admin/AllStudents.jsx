@@ -325,9 +325,9 @@ const AllStudents = ({ students, setStudents }) => {
 
       
       {/* container */}
-      <div className="relative overflow-hidden flex flex-col items-center">
+      <div className="relative flex flex-col items-center">
         {/* INCLUDES Search & cards */}
-        <div className="md:flex ">
+        <div className="md:flex  ">
           {/* Search & filter */}
           <div className="mb-3 md:mr-3 ">
             <Search searchTerm={searchTerm} setsearchTerm={setsearchTerm} />
