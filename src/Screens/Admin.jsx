@@ -13,7 +13,8 @@ import DashBoard from './Admin/DashBoard';
 const Admin = () => {
   const dispatch = useDispatch();
   const {user, status, error, message, loading} = useSelector((state) => state.user)
-
+  console.log(user);
+  
   const [isAdd, setIsAdd] = useState(false)
 
   const [students, setStudents] = useState([]);
@@ -50,34 +51,40 @@ const Admin = () => {
        
 
     <div className=''>
-       {
-       user && (
-          <h1 className='text-3xl mt-2 ml-4'>Welcome {user.username}</h1>
-          )
+        {
+          user && (
+              <h1 className='text-3xl mt-2 ml-4'>Welcome {user.username}</h1>
+              )
         }
 
 
       <div className='mt-5 p-2'>
         <button className='bg-blue-200 px-3 py-2 rounded active:bg-blue-100' onClick={() => setIsAdd(true)}>Add Student</button>
       </div>
-        <DashBoard />
-
-        {isAdd && (
-            <div className=''>
-              <AddStudent setIsAdd={setIsAdd} addStudentToList={addStudentToList}/>
-            </div>
+       { 
+          user && (
+            user.isAdmin && (
+              <DashBoard />
             )
+          )
+        }
+        {
+          isAdd && (
+              <div className=''>
+                <AddStudent setIsAdd={setIsAdd} addStudentToList={addStudentToList}/>
+              </div>
+              )
         }
 
-      {
-        students ? (
-          <AllStudents students={students} setStudents={setStudents}/>
-        ) : (
-          <p className="text-center text-orange-400 w-full text-2xl">
-            No Students
-          </p>
-        )
-      }
+        {
+            students && students.length > 0 ? (
+              <AllStudents students={students} setStudents={setStudents} />
+            ) : (
+              <p className="text-center text-orange-400 w-full text-2xl">
+                No Students
+              </p>
+            )
+        }
     </div>
     </>
   )

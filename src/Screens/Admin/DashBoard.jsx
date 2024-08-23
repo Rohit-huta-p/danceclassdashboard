@@ -15,16 +15,11 @@ const DashBoard = () => {
 
     
   const [getMonthwiseValue, setGetMonthwiseValue] = useState([])
-  
-
-  // console.log(studentsPerMonth);
-  
-
   const getstudentsPerMonth = async (id) => {
     
     const res = await axiosInstance.get(`/api/admin/studentPerMonth/${id}`)
     setstudentsPerMonth(res.data.studentsPerMonth);
-        
+
   }
   
 
@@ -63,10 +58,10 @@ console.log(getMonthwiseValue);
   return (
     <div className='mx-2 md:grid md:grid-cols-5 md:gap-2 justify-evenly '>
       {/* card */}
-      <div className='bg-violet-400 mb-3 flex flex-col h-[18rem] items-between justify-evenly col-span-1 inline-block p-2 rounded'>
+      <div className='bg-indigo-600 mb-3 flex flex-col h-fit md:h-[18rem] items-between justify-evenly col-span-1 inline-block p-4 rounded'>
         <div className='flex items-center'>
           <BsCashCoin size={38} className='bg-white rounded p-1'/>
-          <div>
+          <div className='text-white'>
             <p className='ml-2 text-sm font-thin'>{
               new Date().toLocaleDateString("en-US", {month: "long"})
                 }</p>
@@ -74,10 +69,10 @@ console.log(getMonthwiseValue);
           </div>
         </div>
         <div className='flex justify-center w-full'>
-          <img src={Money} alt="" className='h-auto w-36 ml-2' />
+          <img src={Money} alt="" className='h-auto w-7/12 md:w-36 ml-2' />
         </div>
         {totalAmount ? (
-          <p className='flex items-center justify-center mt-2 text-xl '>
+          <p className='flex text-white items-center justify-center mt-2 text-xl '>
             <FaIndianRupeeSign /> {totalAmount}/{totalFees}
           </p>
         ) : (

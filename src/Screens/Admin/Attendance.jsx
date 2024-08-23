@@ -17,6 +17,7 @@ const Attendance = () => {
 
   const {batches} = useContext(GlobalContext)
   const [searchTerm, setsearchTerm] = useState('')
+  
   const [enable, setenable] = useState(false)
   const batch = batches[filter];
 
@@ -26,24 +27,38 @@ const Attendance = () => {
   const [students, setStudents] = useState([]);
  
   let getFilteredStudents = [];
-  
+  const searchStudents = () => {
+    if (searchTerm) {
+      let searchedStudents = students;
+      return searchedStudents.filter(
+        (student) =>
+          // name
+          student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          //   contact
+          student.contact.includes(searchTerm.toLowerCase())
+      );
+    } else {
+      return students;
+    }
+  };
+
 
   getFilteredStudents = useMemo(() => {
-
+    const searchedStudents = searchStudents();
     if (filter === 'A') {
-        return students.filter((student) => student.batch === batch);
+        return searchedStudents.filter((student) => student.batch === batch);
      
         
     } else if(filter === 'B'){
         // console.log(students.filter((student) => student.batch === '7:00pm - 8:00pm'));
-        return students.filter((student) => student.batch === batch);
+        return searchedStudents.filter((student) => student.batch === batch);
     } else {
       // console.log(students);
-      return students;
+      return searchedStudents;
     }
 
     
-}, [filter, students]);
+}, [filter, students, searchTerm]);
 
   const [currStudent, setcurrStudent] = useState(null)
   const [attendanceData, setAttendanceData] = useState([]);

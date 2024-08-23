@@ -86,7 +86,7 @@ const AddStudent = ({setIsAdd, addStudentToList}) => {
   return (
     <div className='flex justify-center'>
       <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 ">
-          <div className="bg-white w-8/12 rounded-lg shadow-lg p-5 relative max-h-[90vh]">
+          <div className="bg-white w-10/12 md:8/12 rounded-lg shadow-lg p-5 relative max-h-[90vh]">
             <button
               onClick={() => setIsAdd(false)}
               className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"

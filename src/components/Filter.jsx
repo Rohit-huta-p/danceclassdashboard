@@ -1,13 +1,17 @@
 import React, { useState } from 'react'
+import { FaDownload } from "react-icons/fa6";
 
 const Filter = ({filter ,setFilter}) => {
 
     const [selected, setselected] = useState('')
-
+    console.log(selected);
+    
     const handleFilterChange = (field, optionSelected) => {
         if(field === 'batch'){
-            setFilter(optionSelected.slice(0,1)); // Directly set the filter state
+            setFilter(optionSelected.slice(0,1));
+            
         }else{
+        
             
             setFilter(optionSelected)
         }
@@ -37,7 +41,7 @@ const Filter = ({filter ,setFilter}) => {
                 <ul className='z-40 bg-slate-600 text-white font-thin mt-1 rounded divide-y divide-gray-200 absolute left-0 top-[100%] w-[140%]  md:right-1'>
                 { 
                     options.map(option => (
-                            <button onClick={() => handleFilterChange('feeSattus' ,option)} className='w-full'>
+                            <button onClick={() => handleFilterChange('feeStatus' ,option)} className='w-full'>
                                 <li>{option}</li>
                             </button>
                     ))
@@ -46,6 +50,7 @@ const Filter = ({filter ,setFilter}) => {
                 )
         }
     }
+
 
     
   return (
@@ -107,6 +112,7 @@ const Filter = ({filter ,setFilter}) => {
                     )
                 }
            </button>
+
         </div>
        
     </div>

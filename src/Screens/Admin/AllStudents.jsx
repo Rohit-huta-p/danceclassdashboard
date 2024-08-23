@@ -8,6 +8,8 @@ import {
   MdKeyboardDoubleArrowLeft,
   MdKeyboardDoubleArrowRight,
 } from "react-icons/md";
+import { FaDownload } from "react-icons/fa6";
+
 import { CiCircleInfo } from "react-icons/ci";
 import { MdOutlineDelete } from "react-icons/md";
 import { IoIosAddCircleOutline } from "react-icons/io";
@@ -108,7 +110,11 @@ const AllStudents = ({ students, setStudents }) => {
   const getFilteredStudents = useMemo(() => {
     // searched students
     const searchedStudents = searchStudents();
+    console.log(batches);
+    console.log(filter);
+    
     const batch = batches[filter];
+
 
 
     switch (filter) {
@@ -207,7 +213,7 @@ const AllStudents = ({ students, setStudents }) => {
   };
 
   //  FEE HISTORY
-  const downloadFeeHistory = async (id, student) => {
+  const showFeeHistory = async (id, student) => {
     try {
       openFeeHistoryModal(student);
       const response = await axiosInstance.get(
@@ -235,27 +241,85 @@ const AllStudents = ({ students, setStudents }) => {
   };
 
 
-  const sendSms =  async (student) => {
+  const fetchPdf = async (name, amount) => {
     try {
-      const data = {
-        phone: student.contact,
-        message: "HI, It's Rohit here. Kindly pay the fees remaining before" 
-      }
-      console.log(data);
+      console.log(name, amount);
       
-      const res = await axiosInstance.post(`/send-sms`, data);
-      console.log(res.data);
-      
+        // Send the request to create the PDF
+        await axiosInstance.post('/api/admin/createPdf', {name, amount});
+        
+        // Fetch the generated PDF
+        const res = await axiosInstance.get('/api/admin/fetchPdf', { params: {name, amount},responseType: 'blob' });
+
+        // Create a Blob from the PDF stream
+        const pdfBlob = new Blob([res.data], { type: 'application/pdf' });
+
+        // Create a link element
+        const link = document.createElement('a');
+
+        // Set the link's href to the PDF Blob
+        link.href = window.URL.createObjectURL(pdfBlob);
+
+        // Set the download attribute with the desired file name
+        link.download = `${name}_${new Date().getMonth()}_${new Date().getFullYear()}.pdf`;
+
+        // Append the link to the body
+        document.body.appendChild(link);
+
+        // Programmatically click the link to trigger the download
+        link.click();
+
+        // Remove the link from the document
+        document.body.removeChild(link);
     } catch (error) {
+        console.error('Error downloading the PDF:', error);
+    }
+};
+
+
+
+  const donwload_monthlyReport = async (students) => {
+    try {
+
       
+        // Send the request to create the PDF
+        await axiosInstance.post('/api/admin/create-monthlyreport', students);
+        
+        // Fetch the generated PDF
+        const res = await axiosInstance.get('/api/admin/fetch-monthlyreport', { responseType: 'blob' });
+
+        // Create a Blob from the PDF stream
+        const pdfBlob = new Blob([res.data], { type: 'application/pdf' });
+
+        // Create a link element
+        const link = document.createElement('a');
+
+        // Set the link's href to the PDF Blob
+        link.href = window.URL.createObjectURL(pdfBlob);
+
+        // Set the download attribute with the desired file name
+        link.download = `${new Date().getMonth()}_${new Date().getFullYear()}_Fee_Report.pdf`;
+
+        // Append the link to the body
+        document.body.appendChild(link);
+
+        // Programmatically click the link to trigger the download
+        link.click();
+
+        // Remove the link from the document
+        document.body.removeChild(link);
+    } catch (error) {
+        console.error('Error downloading the PDF:', error);
     }
   }
 
+  console.log(filter);
+  
   return (
     <div className="mt-5 h-screen z-10">
       <div className="p-2">
         <h1 className="text-3xl mb-5">All students</h1>
-
+        <button onClick={() => donwload_monthlyReport(getFilteredStudents)}><FaDownload /></button>
       
       </div>
 
@@ -315,7 +379,8 @@ const AllStudents = ({ students, setStudents }) => {
                             // pending
                                 <div className="flex items-center  rounded">
                                     <p className="text-amber-600 bg-amber-300/30 px-1 text-[12px]">Pending{" "} <span className="">({student.fees - student.feesPaid}/-)</span></p>
-                                    <a onClick={() => downloadFeeHistory(student._id, student)}>
+                                    {/* <a onClick={() => fetchPdf(student.name, '400')}> */}
+                                    <a onClick={() => showFeeHistory(student._id, student)}>
                                         <CiCircleInfo
                                             size={16}
                                             color="blue"
@@ -329,7 +394,7 @@ const AllStudents = ({ students, setStudents }) => {
                                 
                                   <div className="flex items-center ">
                                     <p className="bg-green-200 text-gray-500 px-1 rounded text-[12px]"> Paid{" "} </p>
-                                    <a onClick={() => downloadFeeHistory(student._id, student)}>
+                                    <a onClick={() => showFeeHistory(student._id, student)}>
                                         <CiCircleInfo
                                             size={16}
                                             color="blue"
@@ -589,11 +654,13 @@ const AllStudents = ({ students, setStudents }) => {
                 <tr>
                   <th className="py-2 px-4 border-b">Status</th>
                   <th className="py-2 px-4 border-b">Date</th>
+                  <th className="py-2 px-4 border-b">Paid</th>
+                  <th className="py-2 px-4 border-b">Balance</th>
                 </tr>
               </thead>
               <tbody className="overflow-auto">
-                {feeHistory.map((entry) => (
-                  <tr key={entry._id}>
+                {feeHistory.map((entry, index) => (
+                  <tr key={entry._id} className={`${index%2 == 0 ? 'bg-gray-100/70': ''}`}>
                     <td className="py-2 px-4 border-b">{entry.status}</td>
                     <td className="py-2 px-4 border-b">
                       {new Date(entry.date).toLocaleDateString("en-US", {
@@ -601,6 +668,12 @@ const AllStudents = ({ students, setStudents }) => {
                         year: "numeric",
                         day: "numeric",
                       })}
+                    </td>
+                    <td className="py-2 px-4 border-b">
+                      {entry.currPaid}
+                    </td>
+                    <td className="py-2 px-4 border-b">
+                      {entry.balance}
                     </td>
                   </tr>
                 ))}
