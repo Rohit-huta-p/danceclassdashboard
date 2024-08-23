@@ -58,7 +58,7 @@ console.log(getMonthwiseValue);
   return (
     <div className='mx-2 md:grid md:grid-cols-5 md:gap-2 justify-evenly '>
       {/* COLLECTED AMOUNT CARD */}
-      <div className='bg-indigo-600 mb-3 flex justify-between col-span-1 inline-block p-4 rounded h-fit md:h-[18rem]' >
+      <div className='bg-indigo-600 mb-3 flex justify-between col-span-1 inline-block p-4 rounded h-fit md:h-[18rem] md:flex md:flex-col md:justify-center md:items-center' >
         {/* --- */}
         <div className='flex items-center'>
           <BsCashCoin size={38} className='bg-white rounded p-1'/>
