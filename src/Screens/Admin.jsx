@@ -53,21 +53,23 @@ const Admin = () => {
     <div className=''>
         {
           user && (
-              <h1 className='text-3xl mt-2 ml-4'>Welcome {user.username}</h1>
+              <h1 className='text-3xl mt-2 ml-4 mb-3'>Welcome {user.username}</h1>
               )
         }
 
 
+      
+       {/* { 
+          user && (
+            user.isAdmin && ( */}
+              <DashBoard />
+            {/* )
+          )
+        } */}
+
       <div className='mt-5 p-2'>
         <button className='bg-blue-200 px-3 py-2 rounded active:bg-blue-100' onClick={() => setIsAdd(true)}>Add Student</button>
       </div>
-       { 
-          user && (
-            user.isAdmin && (
-              <DashBoard />
-            )
-          )
-        }
         {
           isAdd && (
               <div className=''>
