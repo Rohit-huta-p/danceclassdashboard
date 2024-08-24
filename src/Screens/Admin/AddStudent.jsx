@@ -174,7 +174,7 @@ const AddStudent = ({setIsAdd, addStudentToList}) => {
                         autofill:pb-2"
                         name='batch' value={formData.batch} onChange={handleInputChange}
                         >
-                          <option selected="">Open this select menu</option>
+                        
                           {Object.entries(batches).map(([key, value]) => (
                             <option key={key} value={value}>
                               {`${key} - ${value}`}
