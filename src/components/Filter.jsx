@@ -55,7 +55,7 @@ const Filter = ({filter ,setFilter}) => {
     
   return (
 
-    <div className='flex md:flex md:flex-col md:items-end'>
+    <div className=' md:flex md:flex-col md:items-end'>
 
         {/* Batch */}
         <div className='relative mr-3 md:mb-2'>
@@ -87,7 +87,7 @@ const Filter = ({filter ,setFilter}) => {
             }
         </div>
         {/* Fee Status */}
-        <div className='relative mr-3'>
+        <div className='relative mt-2'>
             <button  className={`flex  px-2 py-1 ${selected ==='feeStatus' ? 'bg-gray-200' : "bg-white"}`} onClick={() => selected === 'feeStatus' ? setselected('') :setselected('feeStatus')}>
                 <p className='font-light text-sm'>Fee Status</p>
                 {

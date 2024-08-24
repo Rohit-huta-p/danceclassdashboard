@@ -50,21 +50,21 @@ const Register = () => {
                     <form onSubmit={ (e) => handleRegister(e) } className='w-full flex flex-col items-center'>
                         <div className='p-4 w-10/12'>
                            <div className=''>
-                                <input type="text" placeholder='Name' className=' p-2 bg-transparent focus:outline-none' 
+                                <input type="text" placeholder='Name' className='w-full p-2 bg-transparent focus:outline-none' 
                                  value={name}
                                  onChange={(e) => setName(e.target.value)}/>
                                 <hr />
                             </div>
                         
                             <div>
-                                <input type="email" placeholder='Email' className='p-2 bg-transparent focus:outline-none'
+                                <input type="email" placeholder='Email' className='w-full p-2 bg-transparent focus:outline-none'
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)} 
                                 />
                                 <hr />
                             </div>
                             <div>
-                                <input type="password" placeholder='New Password' className='p-2 bg-transparent focus:outline-none' 
+                                <input type="password" placeholder='New Password' className=' w-full p-2 bg-transparent focus:outline-none' 
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value) }/>
                                 <hr />

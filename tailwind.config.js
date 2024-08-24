@@ -24,9 +24,9 @@ module.exports = {
       },
     },
     screens: {
+      'max-xsm': {'max': '267px'},
       sm: '640px',
-      // => @media (min-width: 640px) { ... }
-
+ 
       md: '768px',
       // => @media (min-width: 768px) { ... }
 

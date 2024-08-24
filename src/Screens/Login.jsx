@@ -33,18 +33,18 @@ const Login = () => {
 
             {/* form */}
             <form onSubmit={ handleLogin } className='w-full flex flex-col items-center'>
-                <div className='p-4 w-10/12'>
+                <div className='px-1 w-full'>
               
                 
                     <div>
-                        <input type="email" placeholder='Email' className='p-3 bg-transparent focus:outline-none transition-all peer-'
+                        <input type="email" placeholder='Email' className='w-full p-3 bg-transparent focus:outline-none transition-all peer-'
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)} 
                         />
                         <hr />
                     </div>
                     <div>
-                        <input type="password" placeholder='Password' className='p-3 bg-transparent focus:outline-none' 
+                        <input type="password" placeholder='Password' className='w-full p-3 bg-transparent focus:outline-none' 
                         value={password}
                         onChange={(e) => setPassword(e.target.value) }/>
                         <hr />

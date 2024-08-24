@@ -150,6 +150,7 @@ const AllStudents = ({ students, setStudents }) => {
   };
 
   // Update Student
+  const [updatedStudentId, setUpdatedStudentId] = useState(null);
   const UpdateStudent = async (id) => {
     try {
       const uploadData = new FormData();
@@ -170,9 +171,10 @@ const AllStudents = ({ students, setStudents }) => {
         }
       );
 
-      const {success, message, data} = res.data
+      const {success, data} = res.data
       const updatedStudentData = data;
       setshowMessage(success);
+      setUpdatedStudentId(id);
       setStudents(
         students.map((student) =>
           student._id === id ? updatedStudentData : student
@@ -186,7 +188,8 @@ const AllStudents = ({ students, setStudents }) => {
     if (showMessage) {
       const timer = setTimeout(() => {
         setshowMessage(false);
-      }, 10000);
+        setUpdatedStudentId(null);
+      }, 3000);
       return () => clearTimeout(timer); // Cleanup the timeout if the component unmounts
     }
   }, [showMessage]);
@@ -325,29 +328,29 @@ const AllStudents = ({ students, setStudents }) => {
 
       
       {/* container */}
-      <div className="relative flex flex-col items-center">
-        {/* INCLUDES Search & cards */}
-        <div className="md:flex  ">
-          {/* Search & filter */}
-          <div className="mb-3 md:mr-3 ">
+      <div className="">
+        {/* Search & cards */}
+        <div className="mx-2 flex flex-col md:grid md:grid-cols-6">
+          {/*  - Search & filter */}
+          <div className="mb-3 md:mr-3 md:col-span-1 md:flex md:flex-col md:items-end">
             <Search searchTerm={searchTerm} setsearchTerm={setsearchTerm} />
             <Filter filter={filter} setFilter={setFilter} />
           </div>
 
           {/* Cards & pagination */}
-          <div className="">
+          <div className="max-xsm:w-1/12 md:col-span-5 ">
             {/* cards */}
-            <div className="md:mr-3">
+            <div className=" md:mr-3">
             {getFilteredStudents.length === 0 ? (
               <p className="text-center text-orange-400 w-full text-2xl">
                 No Students
               </p>
             ) : (
               <>
-                <div className="grid gap-y-2 ">
+                <div className="grid gap-y-2">
                   {getFilteredStudents.map((student) => (
                     // Card
-                    <div className="bg-white  rounded-lg p-3 w-[90vw] md:w-[70vw] shadow-lg">
+                    <div className={`bg-white  rounded-lg p-3 shadow-lg ${student._id === updatedStudentId ? 'bg-green-100' : ''}`}>
                       {/* card header */}
                       <div className="relative flex items-center mb-3 text-sm font-medium text-gray-800">
                         {/* contact */}
@@ -440,7 +443,7 @@ const AllStudents = ({ students, setStudents }) => {
                             {/* update, Delete */}
                             <div className="flex-col text-end text-sm font-medium">
                               {
-                                showMessage &&  <p className="text-[14px] font-thin text-green-600">Updated Successfully</p>
+                                showMessage && student._id === updatedStudentId ? <p className="text-[14px] font-thin text-green-600">Updated Successfully</p> : ""
                               }
                             <button
                                 type="button"
