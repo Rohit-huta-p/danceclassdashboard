@@ -25,7 +25,7 @@ const Filter = ({filter ,setFilter}) => {
         if(selected === 'batch'){
                 return (
                     <div className=''>
-                        <ul className='z-40 bg-slate-600 text-white font-thin mt-1 rounded divide-y divide-gray-200 absolute left-0 w-[200%]'>
+                        <ul className='z-40 bg-slate-600 text-white font-thin mt-1 rounded divide-y divide-gray-200 absolute left-0 w-3/5 md:w-[200%]'>
                         { 
                             options.map(option => (
                                     <button onClick={() => handleFilterChange('batch' ,option)} className='w-full'>
@@ -38,7 +38,7 @@ const Filter = ({filter ,setFilter}) => {
                 )
         }else if(selected === 'feeStatus'){
             return (
-                <ul className='z-40 bg-slate-600 text-white font-thin mt-1 rounded divide-y divide-gray-200 absolute left-0 top-[100%] w-[140%]  md:right-1'>
+                <ul className='z-40 bg-slate-600 text-white font-thin mt-1 rounded divide-y divide-gray-200 absolute left-0 top-[100%] w-3/5 md:w-[200%] md:right-1'>
                 { 
                     options.map(option => (
                             <button onClick={() => handleFilterChange('feeStatus' ,option)} className='w-full'>
