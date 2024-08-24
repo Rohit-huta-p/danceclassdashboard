@@ -27,6 +27,8 @@ const Attendance = () => {
   const [students, setStudents] = useState([]);
  
   let getFilteredStudents = [];
+  console.log("dfdsfs",!getFilteredStudents);
+  
   const searchStudents = () => {
     if (searchTerm) {
       let searchedStudents = students;
@@ -70,9 +72,17 @@ const Attendance = () => {
   
   const refresh = async() => {
     setRefreshRotate(true); // Start the spinning animation
+
+    
     try {
       const res = await axiosInstance.get('/api/admin/students');
-      setStudents(res.data.students);
+      console.log(res.data.students);
+      if(!res.data.students){
+        return []
+      }else{
+        setStudents(res.data.students);
+      }
+
     } finally {
       setRefreshRotate(false); // Stop the spinning animation
     }
@@ -114,13 +124,12 @@ const Attendance = () => {
       
     }
   }
-  console.log("ATTENDANCE DATA",attendanceData);
+
   
   const submitAttendance = async () => {
     
     try {
-    console.log("Attendance Data: Submitted: ", attendanceData);
-    
+
 
       const res = await axiosInstance.post("api/admin/students/attendance", attendanceData);
       setAttendanceData([])
@@ -148,7 +157,7 @@ const Attendance = () => {
     month: 'short',
   });
 
-  console.log(students);
+
   
   const getAttendanceForToday = (attendance) => {
 
