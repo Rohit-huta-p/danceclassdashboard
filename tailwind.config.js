@@ -16,12 +16,23 @@ module.exports = {
         spinFast: {
           to: { transform: 'rotate(-360deg)' },
         },
+        slide: {
+          '0%': { transform: 'translateX(-100%)', opacity: '0' },
+          '100%': { transform: 'translateX(0)', opacity: '1' },
+        },
+        fade: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
       },
       animation: {
         sidebarOpen: 'sidebarOpen 0.5s ease-out',
         sidebarClose: 'sidebarClose 0.5s ease-out',
         spinFast: 'spinFast 0.3s linear infinite', 
+        slide: 'slide 1s ease-out forwards',
+        fade: 'fade 1s ease-out forwards',
       },
+      
     },
     screens: {
       'max-xsm': {'max': '267px'},

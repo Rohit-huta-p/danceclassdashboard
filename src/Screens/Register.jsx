@@ -40,7 +40,7 @@ const Register = () => {
         <div className='h-screen'>
             <div className='flex justify-center items-center h-full'>
                 {/* card */}
-                <div className='shadow-inner shadow-xl bg-white w-3/4 md:w-2/6 py-[2rem] flex flex-col items-center justify-center rounded-[8%]'>  
+                <div className='shadow-inner shadow-xl bg-white w-3/6 md:w-4/6 py-[2rem] flex flex-col items-center justify-center rounded-[8%]'>  
 
                     <h1 className='text-3xl p-4'>
                        Register

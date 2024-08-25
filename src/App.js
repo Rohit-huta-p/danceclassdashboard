@@ -13,6 +13,7 @@ import Login from './Screens/Login';
 import AddStudent from './Screens/Admin/AddStudent';
 import Attendance from './Screens/Admin/Attendance';
 import Sidebar from './components/Sidebar';
+import Intro from './Screens/Intro';
 
 
 function App() {
@@ -41,13 +42,15 @@ function App() {
               </div>
             
               ) : (
-
-                // Not LoggedIn
+              // Not logged in
+                <div className='md:grid md:grid-cols-2'>
+                <Intro />
                 <Routes>
                   <Route path="/signup" exact element={<Register />}/>
                   <Route path="/login" exact element={<Login />}/>
                   <Route path="*" element={<Navigate to="/signup" />} />
                 </Routes>
+                </div>
                
               )
           }

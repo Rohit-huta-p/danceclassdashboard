@@ -81,7 +81,7 @@ console.log(getMonthwiseValue);
             <FaIndianRupeeSign /> {totalAmount}/{totalFees}
           </p>
         ) : (
-          <p className='flex items-center justify-center mt-2' >
+          <p className='flex items-center justify-center mt-2 text-white' >
             <FaIndianRupeeSign /> 0
           </p>
         )}

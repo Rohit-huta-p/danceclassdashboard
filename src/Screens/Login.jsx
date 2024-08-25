@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from '../slices/userSlice';
+import { loginUser, reset } from '../slices/userSlice';
 import { Link } from 'react-router-dom';
 const Login = () => {
 
@@ -21,6 +21,10 @@ const Login = () => {
             console.log(e);
         }
     }
+
+    useEffect(() => {
+        dispatch(reset());
+    }, [])
   return (
     <div className='h-screen'>
     <div className='flex justify-center items-center h-full'>
