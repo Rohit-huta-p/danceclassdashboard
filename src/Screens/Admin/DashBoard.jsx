@@ -63,10 +63,10 @@ console.log(getMonthwiseValue);
         <div className='flex items-center w-full'>
           <BsCashCoin size={38} className='bg-white rounded p-1'/>
           <div className='text-white'>
-            <p className='ml-2 text-sm font-thin'>{
+            <p className='ml-2 text-[14px] font-thin'>{
               new Date().toLocaleDateString("en-US", {month: "long"})
                 }</p>
-            <p className='ml-2'>Collected Fees</p>
+            <p className='ml-2 text-[14px] md:text-base'>Collected Fees</p>
           </div>
         </div>
 
@@ -77,7 +77,7 @@ console.log(getMonthwiseValue);
 
         {/* AMOUNT */}
         {totalAmount ? (
-          <p className='text-white text-xl '>
+          <p className='text-white text-sm flex items-center'>
             <FaIndianRupeeSign /> {totalAmount}/{totalFees}
           </p>
         ) : (
