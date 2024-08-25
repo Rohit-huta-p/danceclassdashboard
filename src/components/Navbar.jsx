@@ -4,7 +4,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { logout, reset } from '../slices/userSlice';
 import { Link, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-
+import icon from '../assets/icon.png'
 
 const Navbar = ({sidebarOpen, setsidebarOpen}) => {
   const [clicked, setclicked] = useState('')
@@ -22,8 +22,11 @@ const [currentPath, setcurrentPath] = useState(window.location.pathname)
   }, [location]);
   return (
     <>
-  <nav className='bg-blue-500 h-[4rem] flex justify-between items-center px-2 z-10 w-full'>
-        <h1 className='text-white text-2xl'>Studio Flowie</h1>
+  <nav className='bg-blue-800 h-[4rem] flex justify-between items-center px-2 z-10 w-full'>
+      <div className='flex items-center'>
+        <img src={icon} alt="" className='w-12'/>
+        <h1 className='text-white text-xl'>Studio Flowie</h1>
+      </div>
     <div>
       {/* MEDIUM SCREEN */}
       <div className='hidden md:block'>
@@ -33,16 +36,16 @@ const [currentPath, setcurrentPath] = useState(window.location.pathname)
                 <li className='mr-5'>
                       <Link to='/'>
                               <li className={`px-2 relative `} onClick={() => setclicked('home')}>
-                                  <div className='w-[5px] h-full top-0 left-0 rounded-e bg-blue-500 absolute'></div>
-                                  <p className={`ml-3 ${clicked === 'home' ? 'bg-blue-400 px-2   text-white' : 'text-white' }`}>Home</p>
+                                  {clicked === 'home' && <div className='w-[90%] h-0.5 bottom-[-5px] l rounded-e bg-slate-300 absolute'></div>}
+                                  <p className={`ml-3 ${clicked === 'home' ? 'text-white' : 'text-white' }`}>Home</p>
                               </li>
                       </Link> 
                     </li>
                   <li className='mr-5'>
                       <Link to='/attendance'>
                               <li className={`px-2 relative `} onClick={() => setclicked('attendance')}>
-                                  <div className='w-[5px] h-full top-0 left-0 rounded-e bg-blue-500 absolute'></div>
-                                  <p className={`ml-3 ${clicked === 'attendance' ? 'bg-blue-400 px-2   text-white' : 'text-white' }`}>Attendance</p>
+                              {clicked === 'attendance' && <div className='w-[90%] h-0.5 bottom-[-5px] l rounded-e bg-slate-300 absolute'></div>}
+                              <p className={`ml-3 ${clicked === 'attendance' ? 'text-white' : 'text-white' }`}>Attendance</p>
                               </li>
                       </Link> 
                     </li>
@@ -67,7 +70,7 @@ const [currentPath, setcurrentPath] = useState(window.location.pathname)
     {/* MOBILE SCREEN */}
     <div className='md:hidden'>
      
-      <div className='bg-blue-500 h-[4rem] flex justify-end items-center '>
+      <div className=''>
 
         {/* LOGIN LOGOUT BUTTONS */}
         <div className=''>

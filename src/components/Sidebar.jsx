@@ -31,7 +31,7 @@ const Sidebar = ({sidebarOpen, setsidebarOpen}) => {
                         {/* HOME */}
                         <li className={`px-2 py-2 relative ${clicked === 'home' ?'bg-blue-200' :'' }`} onClick={() => setclicked('home')}>
                             <Link to='/'>
-                                {clicked && <div className='w-[5px] h-full top-0 left-0 rounded-e bg-blue-500 absolute'></div>}
+                                {clicked === 'home' && <div className='w-[5px] h-full top-0 left-0 rounded-e bg-blue-500 absolute'></div>}
                                 <p className='ml-3'>Home</p>
                             </Link>
                         </li>
@@ -39,7 +39,7 @@ const Sidebar = ({sidebarOpen, setsidebarOpen}) => {
                         {/* ATTENDANCE */}
                         <li className={`mb-4 mt-5 px-2 py-2 relative ${clicked === 'attendance' ?'bg-blue-200' :'' }`} onClick={() => setclicked('attendance')}>
                             <Link to='/attendance'>
-                                {clicked && <div className='w-[5px] h-full top-0 left-0 rounded-e bg-blue-500 absolute'></div>}
+                                {clicked === 'attendance' && <div className='w-[5px] h-full top-0 left-0 rounded-e bg-blue-500 absolute'></div>}
                                 <p className='ml-3'>Attendance</p>
                             </Link>
                         </li>

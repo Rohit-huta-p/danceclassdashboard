@@ -3,6 +3,8 @@ import React, { useContext, useState } from 'react'
 import { IoCloseCircleSharp } from "react-icons/io5";
 import axiosInstance from '../../axiosInstance';
 import '@dotlottie/player-component';
+import { FaRegWindowClose } from "react-icons/fa";
+
 import { GlobalContext } from '../../contexts/GlobalContexts';
 const AddStudent = ({setIsAdd, addStudentToList}) => {
 
@@ -85,17 +87,19 @@ const AddStudent = ({setIsAdd, addStudentToList}) => {
 
   return (
     <div className='flex justify-center'>
-      <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 ">
-          <div className="bg-white w-10/12 md:8/12 rounded-lg shadow-lg p-5 relative max-h-[90vh]">
-            <button
-              onClick={() => setIsAdd(false)}
-              className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
-            >
-              X
-            </button>
-            <h2 className="text-lg font-semibold mb-4">
-              Add Student
-            </h2>
+      <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-60 ">
+          <div className="bg-white w-7/12 md:8/12 rounded-lg shadow-lg rounded relative max-h-[90vh]">
+            <div className=' w-full py-4 px-2 mb-4 flex items-center '>
+              <button
+                onClick={() => setIsAdd(false)}
+                className="absolute  top-3 right-4 text-gray-500 hover:text-gray-800"
+              >
+                <FaRegWindowClose size={20}/>
+              </button>
+              <h2 className=" text-xl text-center w-full font-semibold">
+                Add Student
+              </h2>
+            </div>
             <div className={`flex justify-center max-h-[75vh] overflow-y-auto`} >
                 <form action="" className=' flex-col w-9/12 h-content space-y-4 ' onSubmit={handleForm}>
                     {/* _________________________________ */}

@@ -58,20 +58,20 @@ console.log(getMonthwiseValue);
   return (
     <div className='mx-2 md:grid md:grid-cols-5 md:gap-2 justify-evenly '>
       {/* COLLECTED AMOUNT CARD */}
-      <div className='bg-indigo-600 mb-3 flex justify-between items-center col-span-1 p-3 rounded h-fit md:h-[18rem] max-xsm:flex max-xsm:flex-col md:flex md:flex-col md:justify-evenly md:items-center  md:p-2' >
+      <div className='bg-indigo-700 mb-3 flex justify-between items-center col-span-1 p-3 rounded h-fit md:h-[18rem] max-xsm:flex max-xsm:flex-col md:flex md:flex-col md:justify-evenly md:items-center  md:p-2' >
         {/* --- */}
-        <div className='flex items-center'>
+        <div className='flex items-center w-full'>
           <BsCashCoin size={38} className='bg-white rounded p-1'/>
           <div className='text-white'>
             <p className='ml-2 text-sm font-thin'>{
               new Date().toLocaleDateString("en-US", {month: "long"})
                 }</p>
-            <p className='ml-2'>Collected Amount</p>
+            <p className='ml-2'>Collected Fees</p>
           </div>
         </div>
 
         {/* IMAGE  */}
-        <div className='w-full hidden md:flex md:justify-center  md:block'>
+        <div className='w-full hidden  md:block md:flex md:justify-center'>
           <img src={Money} alt="" className='h-auto w-7/12 md:w-36' />
         </div>
 
@@ -134,9 +134,9 @@ console.log(getMonthwiseValue);
             y: {
               beginAtZero: true, // Starts the y-axis at 0
               min: 0,            // Minimum value on the y-axis
-              max: 30,         // Maximum value on the y-axis
+              max: 15,         // Maximum value on the y-axis
               ticks: {
-                stepSize: 2,  // Sets the step size between values on the y-axis
+                stepSize: 1,  // Sets the step size between values on the y-axis
                 callback: function(value) {
                   return value + ' students'; // Customize y-axis labels
                 },
