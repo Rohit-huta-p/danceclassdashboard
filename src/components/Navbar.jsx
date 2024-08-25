@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import icon from '../assets/icon.png'
 
 const Navbar = ({sidebarOpen, setsidebarOpen}) => {
-  const [clicked, setclicked] = useState('')
+
 const [currentPath, setcurrentPath] = useState(window.location.pathname)
   const dispatch = useDispatch();
   const {isLogin} = useSelector((state) => state.user);
@@ -35,17 +35,17 @@ const [currentPath, setcurrentPath] = useState(window.location.pathname)
             isLogin && <ul className='flex items-center justify-end w-full'>
                 <li className='mr-5'>
                       <Link to='/'>
-                              <li className={`px-2 relative `} onClick={() => setclicked('home')}>
-                                  {clicked === 'home' && <div className='w-[90%] h-0.5 bottom-[-5px] l rounded-e bg-slate-300 absolute'></div>}
-                                  <p className={`ml-3 ${clicked === 'home' ? 'text-white' : 'text-white' }`}>Home</p>
+                              <li className={`px-2 relative `} >
+                                  {currentPath === '/' && <div className='w-[90%] h-0.5 bottom-[-5px] l rounded-e bg-slate-300 absolute'></div>}
+                                  <p className={`ml-3 ${currentPath === '/' ? 'text-white' : 'text-white' }`}>Home</p>
                               </li>
                       </Link> 
                     </li>
                   <li className='mr-5'>
                       <Link to='/attendance'>
-                              <li className={`px-2 relative `} onClick={() => setclicked('attendance')}>
-                              {clicked === 'attendance' && <div className='w-[90%] h-0.5 bottom-[-5px] l rounded-e bg-slate-300 absolute'></div>}
-                              <p className={`ml-3 ${clicked === 'attendance' ? 'text-white' : 'text-white' }`}>Attendance</p>
+                              <li className={`px-2 relative `} >
+                              {currentPath === '/attendance' && <div className='w-[90%] h-0.5 bottom-[-5px] l rounded-e bg-slate-300 absolute'></div>}
+                              <p className={`ml-3 ${currentPath === '/attendance' ? 'text-white' : 'text-white' }`}>Attendance</p>
                               </li>
                       </Link> 
                     </li>

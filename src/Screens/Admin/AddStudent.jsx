@@ -260,7 +260,13 @@ const AddStudent = ({setIsAdd, addStudentToList}) => {
                     <div className='flex-col items-center'>
                         <button className={`w-full bg-blue-500 text-white px-6 py-2 rounded ${loading ? 'opacity-50 pointer-events-none' : ''}`}>
                           {loading ? 'Adding...' : 'Add'}
+                         
                         </button>
+                        {loading && (
+                             <div className='absolute inset-0 flex items-center bg-black/30 justify-center '>
+                              <dotlottie-player src="https://lottie.host/1572ab5e-e801-48df-96b1-c5f2506bfcdb/kSsbxuy1ti.json"  speed="2" style={{ width: '200px', height: '200px' }} loop autoplay></dotlottie-player>
+                             </div>
+                          )}
                         {message && (
                            <div className='absolute inset-0 flex items-center justify-center bg-green-200 bg-opacity-30'>
                            <div className='bg-white p-5 rounded-lg shadow-lg text-center'>
