@@ -88,7 +88,7 @@ const AddStudent = ({setIsAdd, addStudentToList}) => {
   return (
     <div className='flex justify-center'>
       <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-60 ">
-          <div className="bg-white w-7/12 md:8/12 rounded-lg shadow-lg rounded relative max-h-[90vh]">
+          <div className="bg-white w-10/12 md:8/12 rounded-lg shadow-lg rounded relative max-h-[90vh]">
             <div className=' w-full py-4 px-2 mb-4 flex items-center '>
               <button
                 onClick={() => setIsAdd(false)}
