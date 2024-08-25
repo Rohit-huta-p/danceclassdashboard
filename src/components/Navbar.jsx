@@ -22,7 +22,7 @@ const [currentPath, setcurrentPath] = useState(window.location.pathname)
   }, [location]);
   return (
     <>
-  <nav className='bg-blue-500 h-[4rem] flex justify-between items-center px-2'>
+  <nav className='bg-blue-500 h-[4rem] flex justify-between items-center px-2 z-10 w-full'>
         <h1 className='text-white text-2xl'>Studio Flowie</h1>
     <div>
       {/* MEDIUM SCREEN */}

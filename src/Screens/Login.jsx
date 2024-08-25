@@ -29,7 +29,7 @@ const Login = () => {
     <div className='h-screen'>
     <div className='flex justify-center items-center h-full'>
         {/* card */}
-        <div className='shadow-inner shadow-xl bg-white w-3/4 md:w-2/6 py-[2rem] px-4 flex flex-col items-center justify-center rounded-[8%]'>  
+        <div className='shadow-inner shadow-xl bg-white w-3/6 md:w-3/6 py-[4rem] px-4 flex flex-col items-center justify-center rounded-[8%]'>  
 
             <h1 className='text-3xl p-4'>
                Login
@@ -38,7 +38,6 @@ const Login = () => {
             {/* form */}
             <form onSubmit={ handleLogin } className='w-full flex flex-col items-center'>
                 <div className='px-1 w-full'>
-              
                 
                     <div>
                         <input type="email" placeholder='Email' className='w-full p-3 bg-transparent focus:outline-none transition-all peer-'

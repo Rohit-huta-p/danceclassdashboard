@@ -23,7 +23,7 @@ function App() {
   return (
 
     
-      <div className="">
+      <div className="relative ">
         <Router>
           <Navbar sidebarOpen={sidebarOpen} setsidebarOpen={setsidebarOpen}/>
           {
@@ -34,7 +34,6 @@ function App() {
                   sidebarOpen ? (<div className='w-screen h-screen fixed z-10 top-0 bg-black/20' onClick={() => setsidebarOpen(false)}></div>): (<div></div>)
                 }
                 <Routes>
-                    
                     <Route path="/" exact element={<Admin />}/>
                     <Route path="/attendance"  element={<Attendance />}/>
                     <Route path="*" element={<Navigate to="/" />} />
@@ -43,7 +42,7 @@ function App() {
             
               ) : (
               // Not logged in
-                <div className='md:grid md:grid-cols-2'>
+                <div className='bg-slate-900 md:bg-slate-100 md:grid md:grid-cols-2'>
                 <Intro />
                 <Routes>
                   <Route path="/signup" exact element={<Register />}/>
@@ -54,9 +53,6 @@ function App() {
                
               )
           }
-         
-
-      
         </Router>
         
       </div>
