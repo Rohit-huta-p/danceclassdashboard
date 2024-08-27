@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { registerUser, reset } from '../slices/userSlice';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import Loader from '../components/Loader';
+import {formError, getErrorMessage} from '../utilities/FormError';
 
 
 
@@ -12,6 +13,9 @@ const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate()
+
+    const data = {name, email, password};
+    const [errors, setErrors] = useState([]);
 
     const dispatch = useDispatch();
     const {loading, error, message} = useSelector( (state) => state.user);
@@ -23,16 +27,25 @@ const Register = () => {
     }
     const handleRegister = (e) => {
         e.preventDefault();
-        try {
-            const register_data = {name, email, password};
-            dispatch(registerUser(register_data));
-           
-        } catch (e) {
-            console.log(error);
+        const validationErrors = formError(data);
+        console.log(validationErrors);
+        
+        setErrors(validationErrors);
+        if(validationErrors.length == 0){
+            try {
+                const register_data = {name, email, password};
+                dispatch(registerUser(register_data));
             
+            } catch (e) {
+                console.log(error);
+                
+            }
+        }else {
+            return null;
         }
     }
- 
+
+  
     useEffect(() => {
       dispatch(reset())
       
@@ -61,6 +74,7 @@ const Register = () => {
                                  value={name}
                                  onChange={(e) => setName(e.target.value)}/>
                                 <hr />
+                                {getErrorMessage('name', errors)}
                             </div>
                         
                             <div>
@@ -69,12 +83,14 @@ const Register = () => {
                                         onChange={(e) => setEmail(e.target.value)} 
                                 />
                                 <hr />
+                                {getErrorMessage('email', errors)}
                             </div>
                             <div>
                                 <input type="password" placeholder='New Password' className=' w-full p-2 bg-transparent focus:outline-none' 
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value) }/>
                                 <hr />
+                                {getErrorMessage('password', errors)}
                             </div>
                         </div>
                         <button className='bg-blue-700 text-white px-3 py-2 rounded mt-4 w-9/12'>

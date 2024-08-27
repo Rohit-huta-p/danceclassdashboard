@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, reset } from '../slices/userSlice';
 import { Link } from 'react-router-dom';
-import { FaCircleInfo } from "react-icons/fa6";
+
 
 import Loader from '../components/Loader';
-import formError from '../components/FormError';
+import {formError, getErrorMessage} from '../utilities/FormError';
 const Login = () => {
 
     const [email, setEmail] = useState('');
@@ -18,32 +18,27 @@ const Login = () => {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        try {
-            setErrors(formError(data));
-
-            const login_data = {email, password};
-            dispatch(loginUser(login_data));
-            
-        } catch (e) {
-            console.log(e);
-        }
+      
+        const login_data = {email, password};
+            const validationErrors = formError(data);
+            setErrors(validationErrors);
+            if(validationErrors.length == 0){
+                try {
+                    dispatch(loginUser(login_data));
+                    
+                } catch (e) {
+                    console.log(e);
+                }
+            }else{
+                console.log('Validation errors');
+            }
     }
 
     useEffect(() => {
         dispatch(reset());
     }, [])
 
-    const getErrorMessage = (field) => {
-        if (errors.includes(field)) {
-            return (
-                <div className='flex items-center'>
-                    <FaCircleInfo size={13} color='red' className='mr-1'/>
-                    <p className='text-sm text-red-500'>Please enter {field}</p>
-                </div>
-        );
-        }
-        return null;
-    };
+    
     
   return (
     <div className='h-screen'>
@@ -66,7 +61,7 @@ const Login = () => {
                                 onChange={(e) => setEmail(e.target.value)} 
                         />
                         <hr />
-                        {getErrorMessage('email')}
+                        {getErrorMessage('email', errors)}
                     </div>
                     <div>
            
@@ -74,7 +69,7 @@ const Login = () => {
                         value={password}
                         onChange={(e) => setPassword(e.target.value) }/>
                         <hr />
-                        {getErrorMessage('password')}
+                        {getErrorMessage('password',errors)}
                     </div>
                 </div>
                 <button className='bg-blue-700 text-white px-3 py-2 rounded mt-4 w-9/12'>

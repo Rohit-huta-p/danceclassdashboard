@@ -1,6 +1,6 @@
 // src/hooks/useUpdateStudent.js
 import { useState } from "react";
-import axiosInstance from "../../../axiosInstance";
+import axiosInstance from "../axiosInstance";
 
 export const useUpdateStudent = (students, setStudents) => {
   const [selectedStudent, setSelectedStudent] = useState(null);
