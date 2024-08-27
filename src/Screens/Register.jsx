@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser, reset } from '../slices/userSlice';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
+import Loader from '../components/Loader';
 
 
 
@@ -10,12 +11,16 @@ const Register = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
+    const navigate = useNavigate()
 
     const dispatch = useDispatch();
     const {loading, error, message} = useSelector( (state) => state.user);
 
-
+    if(message){
+        setTimeout(() => {
+            navigate('/login');
+          }, 3000)
+    }
     const handleRegister = (e) => {
         e.preventDefault();
         try {
@@ -30,9 +35,11 @@ const Register = () => {
  
     useEffect(() => {
       dispatch(reset())
-    
-     
+      
     }, [])
+
+ 
+
     
    
 
@@ -40,7 +47,7 @@ const Register = () => {
         <div className='h-screen'>
             <div className='flex justify-center items-center h-full'>
                 {/* card */}
-                <div className='shadow-inner shadow-xl bg-white w-5/6 md:w-4/6 py-[2rem] flex flex-col items-center justify-center rounded md:rounded-[4%]'>  
+                <div className='relative shadow-inner shadow-xl bg-white w-5/6 md:w-4/6 py-[2rem] flex flex-col items-center justify-center rounded md:rounded-[4%]'>  
 
                     <h1 className='text-3xl p-4'>
                        Register
@@ -75,9 +82,16 @@ const Register = () => {
                         </button>
                     </form>
 
-                    {loading && <p>Loading...</p>}
+                    <Loader loading={loading}/>
                     {error && <p className='text-sm' style={{ color: 'red' }}>Registration failed: {error}</p>}
-                    {message && <p className='text-sm' style={{ color: 'green' }}>Sucessful: {message}</p>}
+                    {
+                        message && (
+                            <div>
+                                <p className='font-thin bg-green-200'>User created Successfully.</p>
+                                <p className='bg-green-200'>Redirecting to login...</p>
+                            </div>
+                        )
+                    }
 
 
                     <div className='flex justify-start w-9/12 mt-2'>

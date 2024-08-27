@@ -350,7 +350,7 @@ const AllStudents = ({ students, setStudents }) => {
                 <div className="grid gap-y-2">
                   {getFilteredStudents.map((student) => (
                     // Card
-                    <div className={`bg-white  rounded-lg p-3 shadow-lg ${student._id === updatedStudentId ? 'bg-green-100' : ''}`}>
+                    <div className={`rounded-lg p-3 shadow-lg ${student._id === updatedStudentId && showMessage ? 'bg-green-100' : 'bg-white '}`}>
                       {/* card header */}
                       <div className="relative flex items-center mb-3 text-sm font-medium text-gray-800">
                         {/* contact */}
@@ -536,7 +536,7 @@ const AllStudents = ({ students, setStudents }) => {
           )
         }
 
-
+{/* UPDATE MODAL */}
      
       {popUpdate && selectedStudent && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">

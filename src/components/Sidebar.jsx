@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, reset } from '../slices/userSlice';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const Sidebar = ({sidebarOpen, setsidebarOpen}) => {
 
+    const [currentPath, setcurrentPath] = useState(window.location.pathname)
     const [clicked, setclicked] = useState('')
 
 
@@ -16,8 +17,12 @@ const Sidebar = ({sidebarOpen, setsidebarOpen}) => {
         dispatch(reset());
         setsidebarOpen(false);
     }
-
-         
+    const location = useLocation();
+    useEffect(() => {
+      
+        setcurrentPath(location.pathname);
+    }, [location])
+    
       
   
 
@@ -29,17 +34,17 @@ const Sidebar = ({sidebarOpen, setsidebarOpen}) => {
                     <p className='text-end p-4' onClick={() => setsidebarOpen(false)}>X</p>
                     <ul className='flex flex-col h-[80vh]'>
                         {/* HOME */}
-                        <li className={`px-2 py-2 relative ${clicked === 'home' ?'bg-blue-200' :'' }`} onClick={() => setclicked('home')}>
+                        <li className={`px-2 py-2 relative ${currentPath === '/' ?'bg-blue-200' :'' }`} onClick={() => setclicked('home')}>
                             <Link to='/'>
-                                {clicked === 'home' && <div className='w-[5px] h-full top-0 left-0 rounded-e bg-blue-500 absolute'></div>}
+                                {currentPath === '/' && <div className='w-[5px] h-full top-0 left-0 rounded-e bg-blue-500 absolute'></div>}
                                 <p className='ml-3'>Home</p>
                             </Link>
                         </li>
 
                         {/* ATTENDANCE */}
-                        <li className={`mb-4 mt-5 px-2 py-2 relative ${clicked === 'attendance' ?'bg-blue-200' :'' }`} onClick={() => setclicked('attendance')}>
+                        <li className={`mb-4 mt-5 px-2 py-2 relative ${currentPath === '/attendance' ?'bg-blue-200' :'' }`} onClick={() => setclicked('attendance')}>
                             <Link to='/attendance'>
-                                {clicked === 'attendance' && <div className='w-[5px] h-full top-0 left-0 rounded-e bg-blue-500 absolute'></div>}
+                                {currentPath === '/attendance' && <div className='w-[5px] h-full top-0 left-0 rounded-e bg-blue-500 absolute'></div>}
                                 <p className='ml-3'>Attendance</p>
                             </Link>
                         </li>

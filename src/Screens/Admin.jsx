@@ -7,7 +7,9 @@ import AllStudents from './Admin/AllStudents';
 import { Link } from 'react-router-dom';
 import axiosInstance from '../axiosInstance';
 import DashBoard from './Admin/DashBoard';
-
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+import SkeletonAllStudents from './Admin/SkeletonAllStudents';
 
 
 const Admin = () => {
@@ -78,6 +80,8 @@ const Admin = () => {
               )
         }
 
+<SkeletonAllStudents />
+  
         {
             students && students.length > 0 ? (
               <AllStudents students={students} setStudents={setStudents} />

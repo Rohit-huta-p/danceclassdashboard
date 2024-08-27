@@ -17,8 +17,8 @@ module.exports = {
           to: { transform: 'rotate(-360deg)' },
         },
         slide: {
-          '0%': { transform: 'translateX(-100%)', opacity: '0' },
-          '100%': { transform: 'translateX(0)', opacity: '1' },
+          '0%': { transform: 'translateX(-90%)', opacity: '0'},
+          '100%': { transform: 'translateX(0)', opacity: '1',  },
         },
         fade: {
           '0%': { opacity: '0' },

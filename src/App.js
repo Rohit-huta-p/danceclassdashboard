@@ -2,24 +2,21 @@ import { useState} from 'react'
 import Register from "./Screens/Register";
 import Admin from './Screens/Admin'
 
-import {Provider, useDispatch, useSelector} from 'react-redux'
+import {useSelector} from 'react-redux'
 
 
-import {Route, Routes, BrowserRouter as Router, Navigate} from 'react-router-dom'
-import Cookies  from 'js-cookie';
+import {Route, Routes, BrowserRouter as Router, Navigate, useLocation} from 'react-router-dom'
+
 import Navbar from "./components/Navbar";
-import { setIsLoggedIn } from './slices/userSlice';
 import Login from './Screens/Login';
-import AddStudent from './Screens/Admin/AddStudent';
 import Attendance from './Screens/Admin/Attendance';
 import Sidebar from './components/Sidebar';
 import Intro from './Screens/Intro';
 
-
 function App() {
   const [sidebarOpen, setsidebarOpen] = useState(false)
   const {isLogin} = useSelector((state) => state.user);
-
+ 
   return (
 
     
@@ -44,11 +41,13 @@ function App() {
               // Not logged in
                 <div className='bg-slate-900 md:bg-slate-100 md:grid md:grid-cols-2'>
                 <Intro />
-                <Routes>
-                  <Route path="/signup" exact element={<Register />}/>
-                  <Route path="/login" exact element={<Login />}/>
-                  <Route path="*" element={<Navigate to="/signup" />} />
-                </Routes>
+      
+                  <Routes>
+                    <Route path="/signup" exact element={<Register />}/>
+                    <Route path="/login" exact element={<Login />}/>
+                    <Route path="*" element={<Navigate to="/signup" />} />
+                  </Routes>
+           
                 </div>
                
               )
