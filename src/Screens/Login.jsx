@@ -2,12 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, reset } from '../slices/userSlice';
 import { Link } from 'react-router-dom';
-
-
 import Loader from '../components/Loader';
 import {formError, getErrorMessage} from '../utilities/FormError';
-const Login = () => {
 
+const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const data = {email, password};
@@ -38,14 +36,17 @@ const Login = () => {
         dispatch(reset());
     }, [])
 
+
+   
     
     
   return (
     <div className='h-screen'>
+
     <div className='flex justify-center items-center h-full'>
         {/* card */}
         <div className='relative shadow-inner shadow-xl bg-white w-4/6 md:w-3/6 py-[4rem] px-4 flex flex-col items-center justify-center rounded md:rounded-[4%]'>  
-
+            
             <h1 className='text-3xl p-4'>
                Login
             </h1>

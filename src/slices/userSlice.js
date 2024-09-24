@@ -164,8 +164,6 @@ const userSlice = createSlice({
             .addCase(fetchUserDetails.fulfilled, (state, action) => {
                 state.loading = false;
                 state.user = action.payload.user;
-        
-                
                 state.status = true;
                 state.isLogin = true; 
             })

@@ -5,10 +5,9 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import store from './store';
 import { Provider } from 'react-redux';
-
+import { GlobalProvider } from './contexts/GlobalContexts';
 import {persistStore} from 'redux-persist';
 import { PersistGate } from 'redux-persist/lib/integration/react';
-import { GlobalProvider } from './contexts/GlobalContexts';
 import {disableReactDevTools} from '@fvilers/disable-react-devtools'
 if(process.env.NODE_ENV === 'production') disableReactDevTools();
 
@@ -21,9 +20,9 @@ root.render(
     <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <GlobalProvider>
-        <App />
+          <App />
       </GlobalProvider>
-      </PersistGate>
+    </PersistGate>
     </Provider>
   </React.StrictMode>
 );

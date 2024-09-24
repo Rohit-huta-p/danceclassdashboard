@@ -1,9 +1,18 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-
+import noProfilePic from '../../assets/np-profile-pic.png'
+import { useState } from 'react'
 const MdScreen = ({currentPath, isLogin, handleLogout}) => {
+  const [profileClicked, setprofileClicked] = useState(false)
+
+   // Only update state when the path changes
+   useEffect(() => {
+    window.location.pathname === '/profile' && setprofileClicked(false);
+    
+  }, [window.location.pathname]);
+  
   return (
-<>
+      <>
         {/* MEDIUM SCREEN */}
       <div className='hidden md:block'>
         <div className={` ${isLogin ? "flex justify-between items-center": "flex justify-end"}`}>
@@ -32,7 +41,36 @@ const MdScreen = ({currentPath, isLogin, handleLogout}) => {
 
           {/* LOGOUT */}
           {isLogin ? (          
-                <button className='bg-white px-3 py-2 h-fit rounded mr-4' onClick={handleLogout}>Logout</button>
+              <div className='relative'>
+                <button
+                className="h-10 w-10 rounded-full bg-no-repeat bg-cover overflow-hidden"
+                style={{
+                  backgroundImage: `url(${noProfilePic})`,
+                }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setprofileClicked(!profileClicked)}
+                }
+                >
+                  
+              </button>
+              {
+                profileClicked && (
+                  <ul className='absolute right-0 bg-slate-800 text-white rounded '>
+                    <div className='px-6 w-full cursor-pointer py-1 hover:bg-slate-700 '>
+                      <Link to='/profile'>Profile</Link>
+                    </div>
+                    <div className='w-full h-0.5 bg-gray-500 absolute left-0'></div>
+                    <div className='px-6 w-full cursor-pointer py-1 hover:bg-slate-700 '>
+                      <li className=''>
+                        <button className='' onClick={handleLogout}>Logout</button>
+                      </li>
+                    </div>
+                  </ul>
+                )
+              }
+             
+              </div>
           ) : (
             <div className='flex justify-end items-center'>
               <Link to={currentPath === '/login' ? '/signup' : '/login'}>

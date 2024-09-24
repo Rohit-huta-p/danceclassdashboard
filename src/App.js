@@ -12,6 +12,7 @@ import Login from './Screens/Login';
 import Attendance from './Screens/Admin/Attendance';
 import Sidebar from './components/Sidebar';
 import Intro from './Screens/Intro';
+import Profile from './Screens/Admin/Profile.jsx';
 
 function App() {
   const [sidebarOpen, setsidebarOpen] = useState(false)
@@ -31,9 +32,12 @@ function App() {
                   sidebarOpen ? (<div className='w-screen h-screen fixed z-10 top-0 bg-black/20' onClick={() => setsidebarOpen(false)}></div>): (<div></div>)
                 }
                 <Routes>
+       
                     <Route path="/" exact element={<Admin />}/>
                     <Route path="/attendance"  element={<Attendance />}/>
+                    <Route path="/profile"  element={<Profile />}/>
                     <Route path="*" element={<Navigate to="/" />} />
+      
                 </Routes>
               </div>
             

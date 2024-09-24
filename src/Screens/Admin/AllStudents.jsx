@@ -110,9 +110,7 @@ const AllStudents = ({ students, setStudents }) => {
   const getFilteredStudents = useMemo(() => {
     // searched students
     const searchedStudents = searchStudents();
-    console.log(batches);
-    console.log(filter);
-    
+ 
     const batch = batches[filter];
 
 
@@ -246,7 +244,7 @@ const AllStudents = ({ students, setStudents }) => {
 
   const fetchPdf = async (name, amount) => {
     try {
-      console.log(name, amount);
+
       
         // Send the request to create the PDF
         await axiosInstance.post('/api/admin/createPdf', {name, amount});
@@ -316,7 +314,7 @@ const AllStudents = ({ students, setStudents }) => {
     }
   }
 
-  console.log(filter);
+
   
   return (
     <div className="mt-5 h-screen z-10">
@@ -640,9 +638,11 @@ const AllStudents = ({ students, setStudents }) => {
         </div>
       )}
 
+
+{/* FEE HISTORY MODAL */}
       {feeHistoryModal && selectedStudent && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-          <div className="bg-white w-8/12 rounded-lg shadow-lg p-5 relative">
+          <div className="relative bg-white w-8/12 rounded-lg shadow-lg p-5 relative">
             <button
               onClick={closeFeeHistoryModal}
               className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
@@ -652,7 +652,16 @@ const AllStudents = ({ students, setStudents }) => {
             <h2 className="text-lg font-semibold mb-4">
               Fee History {selectedStudent.name}
             </h2>
-            <table className="min-w-full bg-white">
+            {
+              
+              feeHistory.map((entry, index) => (
+                <div className={`${index%2 == 0 ? 'bg-gray-100/70': ''}`}>
+                  <p className="bg-yellow-200 w-fit rounded-xl px-2">p</p>
+
+                </div>
+              ))
+            }
+            <table className="">
               <thead>
                 <tr>
                   <th className="py-2 px-4 border-b">Status</th>

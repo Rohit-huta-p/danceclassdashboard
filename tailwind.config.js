@@ -24,6 +24,13 @@ module.exports = {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
         },
+        maxHeight: {
+          '0': '0',
+          'full': '100%',
+        },
+        transitionProperty: {
+          height: 'max-height',
+        }
       },
       animation: {
         sidebarOpen: 'sidebarOpen 0.5s ease-out',

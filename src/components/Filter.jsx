@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { FaDownload } from "react-icons/fa6";
 
-const Filter = ({filter ,setFilter}) => {
+const Filter = ({filter, setFilter}) => {
 
     const [selected, setselected] = useState('')
     console.log(selected);
@@ -25,7 +25,7 @@ const Filter = ({filter ,setFilter}) => {
         if(selected === 'batch'){
                 return (
                     <div className=''>
-                        <ul className='z-40 bg-slate-600 text-white font-thin mt-1 rounded divide-y divide-gray-200 absolute left-0 w-3/5 md:w-[200%]'>
+                        <ul className='z-40 bg-slate-600 text-white font-thin mt-1 rounded divide-y divide-gray-200 absolute left-0 w-[200%] md:w-[200%]'>
                         { 
                             options.map(option => (
                                     <button onClick={() => handleFilterChange('batch' ,option)} className='w-full'>
@@ -38,7 +38,7 @@ const Filter = ({filter ,setFilter}) => {
                 )
         }else if(selected === 'feeStatus'){
             return (
-                <ul className='z-40 bg-slate-600 text-white font-thin mt-1 rounded divide-y divide-gray-200 absolute left-0 top-[100%] w-3/5 md:w-[200%] md:right-1'>
+                <ul className='z-40 bg-slate-600 text-white font-thin mt-1 rounded divide-y divide-gray-200 absolute left-0 top-[100%] w-11/12 md:w-[200%] md:right-1'>
                 { 
                     options.map(option => (
                             <button onClick={() => handleFilterChange('feeStatus' ,option)} className='w-full'>
@@ -55,7 +55,7 @@ const Filter = ({filter ,setFilter}) => {
     
   return (
 
-    <div className=' md:flex md:flex-col md:items-end'>
+    <div className='flex items-center md:flex md:flex-col md:items-end'>
 
         {/* Batch */}
         <div className='relative mr-3 md:mb-2'>
@@ -87,11 +87,11 @@ const Filter = ({filter ,setFilter}) => {
             }
         </div>
         {/* Fee Status */}
-        <div className='relative mt-2'>
+        <div className='relative'>
             <button  className={`flex  px-2 py-1 ${selected ==='feeStatus' ? 'bg-gray-200' : "bg-white"}`} onClick={() => selected === 'feeStatus' ? setselected('') :setselected('feeStatus')}>
                 <p className='font-light text-sm'>Fee Status</p>
                 {
-                        selected === 'batch' ? (
+                        selected === 'feeStatus' ? (
                             <svg className="rotate-180" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                 viewBox="0 0 24 24">
                                 <path fill="currentColor"
