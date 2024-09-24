@@ -21,8 +21,8 @@ const Profile = () => {
       <h1 className='text-3xl'>Profile</h1>
       <h1>Name:  {user && user.username}</h1>
      
-       <div className='bg-white rounded-lg shadow-inner grid grid-cols-3'>
-        <ul className='bg-blue-400 col-span-1'>
+       <div className=' md:bg-white md:rounded-lg md:shadow-inner md:grid md:grid-cols-3'>
+        <ul className='flex md:flex-col bg-blue-400 md:col-span-1'>
           {
             options.map((option, index) => (
               <li key={index} className={`py-2 h-fit px-5 hover:bg-white hover: cursor-pointer  ${selected === option ? 'bg-white' : 'rounded'}`} onClick={() => setSelected(option)}>

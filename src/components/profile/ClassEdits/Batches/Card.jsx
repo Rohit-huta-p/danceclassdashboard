@@ -128,9 +128,9 @@ const Card = ({
 
   return (
     <div className="">
-      <div>
+      <div className="">
         {allAgeGroups.length > 0 ? (
-          <div className="p-2 grid  gap-3">
+          <div className="p-2 grid gap-3">
             {allAgeGroups.map((groupName, index) => (
               <div
                 key={index}
@@ -276,21 +276,20 @@ const Card = ({
               </div>
             ))}
             {isAddBatch && (
-              <div className="ml-2 bg-blue-100/70 p-1 w-fit rounded-lg px-2 py-3">
-                <div className="flex">
+              <div className="flex justify-between bg-blue-100/70 p-1 w-full rounded-lg px-2 py-3">
                   <input
                     type="text"
                     name="Batch_category"
                     placeholder="Age Group"
                     value={ageGroupName}
-                    className="bg-transparent"
+                    className="bg-transparent w-full focus:outline-none"
                     onChange={(e) => setageGroupName(e.target.value)}
                   />
-                  <button type="button" onClick={() => addAgeGroupName()}>
+                  <button type="button" className="text-end" onClick={() => addAgeGroupName()}>
                     Add
                   </button>
                   <hr />
-                </div>
+
               </div>
             )}
           </div>
@@ -331,7 +330,7 @@ const Card = ({
           </div>
         )}
       </div>
-      <button onClick={() => setisAddBatch(true)}>+</button>
+      <button className="bg-blue-100 w-full rounded" onClick={() => setisAddBatch(true)}>+</button>
     </div>
   );
 };

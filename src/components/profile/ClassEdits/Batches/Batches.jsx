@@ -34,9 +34,7 @@ const rcInfo = async () => {
 
     useEffect(() => {
         fetchAgeGroups(); 
-   
     }, []); 
-    
   return (
     <div className='mt-3'>
         {/* <button onClick={() => rcInfo()}>run</button> */}
