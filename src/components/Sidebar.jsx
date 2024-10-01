@@ -21,6 +21,7 @@ const Sidebar = ({sidebarOpen, setsidebarOpen}) => {
     useEffect(() => {
       
         setcurrentPath(location.pathname);
+        setsidebarOpen(false)
     }, [location])
     
       
@@ -46,6 +47,13 @@ const Sidebar = ({sidebarOpen, setsidebarOpen}) => {
                             <Link to='/attendance'>
                                 {currentPath === '/attendance' && <div className='w-[5px] h-full top-0 left-0 rounded-e bg-blue-500 absolute'></div>}
                                 <p className='ml-3'>Attendance</p>
+                            </Link>
+                        </li>
+                        {/* Profile */}
+                        <li className={`mb-4 mt-5 px-2 py-2 relative ${currentPath === '/profile' ?'bg-blue-200' :'' }`} onClick={() => setclicked('attendance')}>
+                            <Link to='/profile'>
+                                {currentPath === '/profile' && <div className='w-[5px] h-full top-0 left-0 rounded-e bg-blue-500 absolute'></div>}
+                                <p className='ml-3'>Profile</p>
                             </Link>
                         </li>
                         

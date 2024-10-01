@@ -12,7 +12,7 @@ const Batches = () => {
 
 const rcInfo = async () => {
    try {
-    const data = await axiosInstance.get('/api/vehicle');
+    const data = await axiosInstance.post('/api/vehicle');
     console.log(data);
     
    } catch (error) {
@@ -37,7 +37,7 @@ const rcInfo = async () => {
     }, []); 
   return (
     <div className='mt-3'>
-        {/* <button onClick={() => rcInfo()}>run</button> */}
+        <button onClick={() => rcInfo()}>run</button>
         {
             <Card allAgeGroups={allAgeGroups} setAllAgeGroups={setAllAgeGroups} batchTimings={batchTimings} setBatchTimings={setBatchTimings} fetchAgeGroups={fetchAgeGroups} />
         }

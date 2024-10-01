@@ -81,7 +81,8 @@ const AddStudent = ({ setIsAdd, addStudentToList }) => {
     if (formData.image) {
       uploadData.append("image", formData.image);
     }
-
+    console.log("Upload Data",uploadData);
+    
     try {
       setLoading(true);
       // console.log("UPLOADED DATA", typeof uploadData.balance);

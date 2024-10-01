@@ -31,7 +31,7 @@ const InputField = ({ type, id, label, name, value, onChange }) => (
         value={value}
         onChange={onChange}
       >
-        {options.ageGroups.map((item, index) => (
+        {options && options.ageGroups.map((item, index) => (
           <option key={index} value={item}>{`${item}`}</option>
         ))}
       </select>
