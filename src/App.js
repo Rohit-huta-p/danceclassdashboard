@@ -1,8 +1,8 @@
-import { useState} from 'react'
+import { useEffect, useState} from 'react'
 import Register from "./Screens/Register";
 import Admin from './Screens/Admin'
 
-import {useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 
 
 import {Route, Routes, BrowserRouter as Router, Navigate, useLocation} from 'react-router-dom'
@@ -13,11 +13,18 @@ import Attendance from './Screens/Admin/Attendance';
 import Sidebar from './components/Sidebar';
 import Intro from './Screens/Intro';
 import Profile from './Screens/Admin/Profile.jsx';
+import { setLoginState } from './slices/userSlice.js';
 
 function App() {
   const [sidebarOpen, setsidebarOpen] = useState(false)
   const {isLogin} = useSelector((state) => state.user);
- 
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      dispatch(setLoginState(true)); // Make sure you are setting the login state correctly
+    }
+  }, [dispatch]);
   return (
 
     

@@ -101,6 +101,9 @@ const userSlice = createSlice({
             state.message = null;
             state.status = null;
             state.user = null;
+        },
+        setLoginState: (state) => {
+            state.isLogin = true;
         }
     },
     extraReducers: (builder) => {
@@ -128,17 +131,15 @@ const userSlice = createSlice({
             })
             .addCase(loginUser.fulfilled, (state, action) => {
                 Cookies.set("token", action.payload.token);
+                localStorage.setItem("token", action.payload.token)
                 state.loading = false;
                 state.error = null;
                 state.isLogin = true;
-        
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload.error ? action.payload.error : "Server error";
-                
-            }
-        )
+                state.error = "Server error";
+            })
 
 
             // Logout
@@ -181,5 +182,5 @@ const userSlice = createSlice({
     }
 })
 
-export const {setIsLoggedIn, reset} = userSlice.actions;
+export const {setIsLoggedIn, reset, setLoginState} = userSlice.actions;
 export default userSlice.reducer;
