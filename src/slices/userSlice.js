@@ -138,7 +138,7 @@ const userSlice = createSlice({
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.loading = false;
-                state.error = "Server error";
+                state.error = action.payload.error;
             })
 
 
@@ -148,7 +148,7 @@ const userSlice = createSlice({
                 state.error = null;
             })
             .addCase(logout.fulfilled, (state, action) => {
-                Cookies.remove("token");
+                localStorage.removeItem("token");
                 state.loading = false;
                 state.error = null;
                 state.isLogin = false;
@@ -169,6 +169,7 @@ const userSlice = createSlice({
                 state.isLogin = true; 
             })
             .addCase(fetchUserDetails.rejected, (state, action) => {
+                localStorage.removeItem("token")
                 state.user = null
                 state.loading = false;
                 state.error = action.payload.error;

@@ -3,21 +3,20 @@ import React from 'react'
 const ProfileForm = () => {
 
   return (
-    <div>
-        <ul>
-            <li>fsdf</li>
-            <li>fsdf</li>
-            <li>fsdf</li>
-            <li>fsdf</li>
-            <li>fsdf</li>
-            <li>fsdf</li>
-            <li>fsdf</li>
-            <li>fsdf</li>
-            <li>fsdf</li>
-            <li>fsdf</li>
-            <li>fsdf</li>
-            <li>fsdf</li>
-        </ul>
+    <div className='bg-gray-100 min-h-92'>
+        <div>
+          <label htmlFor="">Studio Name:</label>
+          <input type="text" />
+        </div>
+        <div>
+          <label htmlFor="">Email:</label>
+          <input type="email" />
+        </div>
+        <div>
+          <label htmlFor="">Studio Name:</label>
+          <input type="text" />
+        </div>
+
     </div>
   )
 }

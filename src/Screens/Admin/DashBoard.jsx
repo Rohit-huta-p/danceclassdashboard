@@ -51,9 +51,6 @@ const DashBoard = () => {
       })
     });
   }, [])
-  console.log(studentsPerMonth);
-  
-console.log(getMonthwiseValue);
 
   return (
     <div className='mx-2 md:grid md:grid-cols-5 md:gap-2 justify-evenly '>

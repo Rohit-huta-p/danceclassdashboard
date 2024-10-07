@@ -16,7 +16,10 @@ const InputField = ({ type, id, label, name, value, onChange }) => (
     </div>
   );
   
-  const SelectField = ({ id, label, name, value, onChange, options }) => (
+  const SelectField = ({ id, label, name, value, onChange, options }) => {
+
+    
+    return (
     <div className="relative">
         <label htmlFor={id} 
         className={`absolute top-3 left-4 text-sm text-gray-500 transition-all 
@@ -31,12 +34,13 @@ const InputField = ({ type, id, label, name, value, onChange }) => (
         value={value}
         onChange={onChange}
       >
-        {options && options.ageGroups.map((item, index) => (
-          <option key={index} value={item}>{`${item}`}</option>
+        {options && options.map((batch, index) => (
+          <option key={index} value={batch.ageGroup}>{`${batch.ageGroup}`}</option>
         ))}
       </select>
     </div>
-  );
+    )
+  };
   
   const FileInput = ({ label, name, onChange }) => (
     <div className='bg-gray-100 p-2 rounded'>

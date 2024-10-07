@@ -12,8 +12,7 @@ import { FaDownload } from "react-icons/fa6";
 
 import { CiCircleInfo } from "react-icons/ci";
 import { MdOutlineDelete } from "react-icons/md";
-import { IoIosAddCircleOutline } from "react-icons/io";
-import { CiCircleMinus } from "react-icons/ci";
+
 
 // axiosInstatance
 import axiosInstance from "../../axiosInstance";
@@ -24,7 +23,7 @@ import { GlobalContext } from "../../contexts/GlobalContexts";
 import Search from "../../components/Search";
 
 const AllStudents = ({ students, setStudents }) => {
-
+  const { batches, ageGroups } = useContext(GlobalContext);
   const [showMessage, setshowMessage] = useState(false);
 
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -34,14 +33,14 @@ const AllStudents = ({ students, setStudents }) => {
   const imageOpenfun = (student) => {
     setSelectedStudent(student);
     setimageOpen(true);
-    
+
  }
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [studentsPerPage, setStudentsPerPage] = useState(8); // Adjust as needed
   const [totalPages, setTotalPages] = useState(0);  // Filter
   const [filter, setFilter] = useState("all");
-  const { batches } = useContext(GlobalContext);
+
 
   // Modal
   const [popUpdate, setPopUpdate] = useState(false);
@@ -88,46 +87,57 @@ const AllStudents = ({ students, setStudents }) => {
     );
 
   // Filter students after search
-  const filteredStudents = (searchedStudents, field, filter) => {
+  const filteredStudents = (searchedStudents, filter) => {
     let filteredStudents = [];
+
+    // searchedStudents.map(student => console.log(student.batch))
     if (filter === "all") {
       filteredStudents = searchedStudents;
-
     } else {
-      filteredStudents = searchedStudents.filter(
-        (student) => student[field] === filter
-      );
+      // searchedStudents.map(student => console.log(student.batch === filter))
+      if (filter !== 'pending' && filter !== 'paid') {
+        filteredStudents = searchedStudents.filter(
+          (student) => student.batch === filter
+        );
+      } else {
+        // Handle 'pending' or 'paid' filters
+ 
+        filteredStudents = searchedStudents.filter(
+          (student) => filter === 'pending' ? student.fees > 0 : student.fees <=0
+        );
+      }
+    
     }
 
-
-
+    
     const numPages = Math.ceil(filteredStudents.length / studentsPerPage);
     setTotalPages(numPages);
     return displayedStudents(filteredStudents);
   };
 
+
+
+
   // the final students displayed is in this list
   const getFilteredStudents = useMemo(() => {
     // searched students
     const searchedStudents = searchStudents();
- 
-    const batch = batches[filter];
-
-
-
-    switch (filter) {
-      case "pending":
-        return filteredStudents(searchedStudents, "feeStatus", filter);
-      case "paid":
-        return filteredStudents(searchedStudents, "feeStatus", filter);
-      case "A":
-        return filteredStudents(searchedStudents, "batch", batch);
-      case "B":
-        return filteredStudents(searchedStudents, "batch", batch);
-
-      default:
-        return filteredStudents(searchedStudents, "", "all");
+    // console.log(filter);
+    
+  if (filter !== 'pending' && filter !== 'paid') {
+    // Loop through the ageGroups and check if filter matches
+    for (const ageGroup of ageGroups) {
+      if (filter === ageGroup) {
+        // Return filtered students for the matching age group
+        return filteredStudents(searchedStudents, filter);
+      }
     }
+    // If no ageGroup matches, return all students
+    return filteredStudents(searchedStudents, "all");
+  } else {
+    // Handle 'pending' or 'paid' filters
+    return filteredStudents(searchedStudents, filter);
+  }
   }, [filter, students, currentPage, studentsPerPage, searchTerm]);
 
   // DELETE STUDENTS
@@ -182,6 +192,7 @@ const AllStudents = ({ students, setStudents }) => {
     } catch (error) {}
   };
 
+
   useEffect(() => {
     if (showMessage) {
       const timer = setTimeout(() => {
@@ -191,6 +202,8 @@ const AllStudents = ({ students, setStudents }) => {
       return () => clearTimeout(timer); // Cleanup the timeout if the component unmounts
     }
   }, [showMessage]);
+
+
   // OPEN CLOSE MODAL
   // update modal
   const openUpdateModal = (student) => {
@@ -240,8 +253,6 @@ const AllStudents = ({ students, setStudents }) => {
   const handlePagination = (page) => {
     setCurrentPage(page);
   };
-
-
   const fetchPdf = async (name, amount) => {
     try {
 
@@ -275,9 +286,7 @@ const AllStudents = ({ students, setStudents }) => {
     } catch (error) {
         console.error('Error downloading the PDF:', error);
     }
-};
-
-
+  };
 
   const donwload_monthlyReport = async (students) => {
     try {
@@ -314,6 +323,8 @@ const AllStudents = ({ students, setStudents }) => {
     }
   }
 
+console.log(filter);
+
 
   
   return (
@@ -339,14 +350,14 @@ const AllStudents = ({ students, setStudents }) => {
           <div className="max-xsm:w-1/12 md:col-span-5 ">
             {/* cards */}
             <div className=" md:mr-3">
-            {getFilteredStudents.length === 0 ? (
+            {getFilteredStudents && getFilteredStudents.length <= 0 ? (
               <p className="text-center text-orange-400 w-full text-2xl">
-                No Students
+               No {filter} students
               </p>
             ) : (
               <>
                 <div className="grid gap-y-2">
-                  {getFilteredStudents.map((student) => (
+                  {getFilteredStudents && getFilteredStudents.map((student) => (
                     // Card
                     <div className={`rounded-lg p-3 shadow-lg ${student._id === updatedStudentId && showMessage ? 'bg-green-100' : 'bg-white '}`}>
                       {/* card header */}
@@ -588,9 +599,9 @@ const AllStudents = ({ students, setStudents }) => {
         
                 <select name="batch" id="" value={formData.batch} onChange={handleInputChange} className="bg-gray-100">
                   <option selected="">Open this select menu</option>
-                  {Object.entries(batches).map(([key, value]) => (
-                    <option key={key} value={value}  >
-                      {`${key} - ${value}`}
+                  {Object.entries(batches).map(batch => (
+                    <option key={batch.ageGroup} value={batch.ageGroup}>
+                      {batch.ageGroup}
                     </option>
                   ))}
                 </select>

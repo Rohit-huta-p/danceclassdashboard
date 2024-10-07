@@ -1,21 +1,22 @@
 import React, {useEffect, useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import { fetchUserDetails } from '../slices/userSlice';
-import AddStudent from './Admin/AddStudent';
-import axios from 'axios';
-import AllStudents from './Admin/AllStudents';
-import { Link } from 'react-router-dom';
-import axiosInstance from '../axiosInstance';
-import DashBoard from './Admin/DashBoard';
-import Skeleton from 'react-loading-skeleton'
+
+import AddStudent from './AddStudent'
+
+import AllStudents from './AllStudents';
+import DashBoard from './DashBoard';
+
+
 import 'react-loading-skeleton/dist/skeleton.css'
-import SkeletonAllStudents from './Admin/SkeletonAllStudents';
+import SkeletonAllStudents from './SkeletonAllStudents';
+import axiosInstance from '../../axiosInstance';
+import { fetchUserDetails } from '../../slices/userSlice';
 
 
 const Admin = () => {
   const dispatch = useDispatch();
   const {user, status, error, message, loading} = useSelector((state) => state.user)
-  console.log(user);
+  // console.log(user);
   
   const [isAdd, setIsAdd] = useState(false)
 
@@ -25,6 +26,8 @@ const Admin = () => {
     try {
       const res = await axiosInstance.get(`/api/admin/students`);
       setStudents(res.data.students);
+      const response = await axiosInstance.get('/api/user/fetchbatches')
+      // console.log(response.data);
       // Handle success, redirect or show a message
     } catch (err) {
       console.error('Upload error:', err);

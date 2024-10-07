@@ -14,12 +14,12 @@ import {
   SuccessMessage,
 } from "./Helper";
 const AddStudent = ({ setIsAdd, addStudentToList }) => {
-  
+
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const { batches } = useContext(GlobalContext);
 
-  // console.log(batches);
+  console.log(batches);
   
   // FORM DATA
   const [formData, setFormData] = useState({
@@ -36,12 +36,14 @@ const AddStudent = ({ setIsAdd, addStudentToList }) => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    console.log(name, value);
     
     // If batch is selected, find corresponding fees
     if (name === "batch") {
-      batches.batchTimings.map(batch => console.log(batch.ageGroup.includes(value)))
+
       
-      const selectedBatch = batches.batchTimings.find((batch) => batch.ageGroup.includes(value));
+      const selectedBatch = batches.find((batch) => batch.ageGroup === value);
+
       console.log(selectedBatch);
       
       if (selectedBatch) {
@@ -184,20 +186,13 @@ const AddStudent = ({ setIsAdd, addStudentToList }) => {
                 options={batches}
               />
 
-              {/* Fees Input */}
-              {/* <InputField
-                type="number"
-                id="hs-floating-input-fees"
-                label="Fees"
-                name="fees"
-                value={formData.fees}
-                onChange={handleInputChange}
-              /> */}
               <div className="relative ">
                 <label className="absolute top-0 p-2 text-sm transition-all ease-in-out duration-100 peer-focus:scale-90 peer-focus:-translate-y-1.5 text-gray-500">
                   Fees
                 </label>
-                <p className="peer p-2 pt-7 block w-full rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 bg-gray-300">{formData.fees}</p>
+                <p className="peer p-2 pt-7 block w-full rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 bg-gray-300">
+                  {formData.fees}
+                </p>
               </div>
 
               {/* Fees Paid Input */}

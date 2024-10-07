@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import axiosInstance from '../../../../axiosInstance'
 import Card from './Card'
-
-
-import axios from 'axios';
+import { GlobalContext } from '../../../../contexts/GlobalContexts'
 
 const Batches = () => {
-    const [allAgeGroups, setAllAgeGroups] = useState([])
+    const {ageGroups, setageGroups} = useContext(GlobalContext);
     const [batchTimings, setBatchTimings] = useState([])
 
+    
 
 const rcInfo = async () => {
    try {
@@ -21,25 +20,11 @@ const rcInfo = async () => {
    }
 }
 
-    const fetchAgeGroups = async () => {
-        try {
-            const response = await axiosInstance.get('/api/user/fetchagegroups')
-            const data = response.data
-            setAllAgeGroups(data.ageGroups)
-            setBatchTimings(data.batchTimings)
-        } catch (error) {
-            
-        }
-    }
-
-    useEffect(() => {
-        fetchAgeGroups(); 
-    }, []); 
   return (
     <div className='mt-3'>
-        <button onClick={() => rcInfo()}>run</button>
+        {/* <button onClick={() => rcInfo()}>run</button> */}
         {
-            <Card allAgeGroups={allAgeGroups} setAllAgeGroups={setAllAgeGroups} batchTimings={batchTimings} setBatchTimings={setBatchTimings} fetchAgeGroups={fetchAgeGroups} />
+            <Card ageGroups={ageGroups} setageGroups={setageGroups}   />
         }
   
     </div>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import axiosInstance from '../../../axiosInstance'
 import Batches from './Batches/Batches'
-import Fees from './Fees'
+
 
 const ClassEditForm = () => {
     const fields = ['Batches']

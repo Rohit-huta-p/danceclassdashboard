@@ -9,12 +9,12 @@ import {formError, getErrorMessage} from '../utilities/FormError';
 
 const Register = () => {
 
-    const [name, setName] = useState('');
+    const [studioName, setStudioName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate()
 
-    const data = {name, email, password};
+    const data = {studioName, email, password};
     const [errors, setErrors] = useState([]);
 
     const dispatch = useDispatch();
@@ -27,13 +27,15 @@ const Register = () => {
     }
     const handleRegister = (e) => {
         e.preventDefault();
+        console.log(studioName);
+        
         const validationErrors = formError(data);
         console.log(validationErrors);
         
         setErrors(validationErrors);
         if(validationErrors.length == 0){
             try {
-                const register_data = {name, email, password};
+                const register_data = {studioName, email, password};
                 dispatch(registerUser(register_data));
             
             } catch (e) {
@@ -70,11 +72,11 @@ const Register = () => {
                     <form onSubmit={ (e) => handleRegister(e) } className='w-full flex flex-col items-center'>
                         <div className='p-4 w-10/12'>
                            <div className=''>
-                                <input type="text" placeholder='Name' className='w-full p-2 bg-transparent focus:outline-none' 
-                                 value={name}
-                                 onChange={(e) => setName(e.target.value)}/>
+                                <input type="text" placeholder='studioName' className='w-full p-2 bg-transparent focus:outline-none' 
+                                 value={studioName}
+                                 onChange={(e) => setStudioName(e.target.value)}/>
                                 <hr />
-                                {getErrorMessage('name', errors)}
+                                {getErrorMessage('studioName', errors)}
                             </div>
                         
                             <div>

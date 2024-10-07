@@ -1,18 +1,19 @@
-import React, { useState } from 'react'
-import { FaDownload } from "react-icons/fa6";
+import React, { useContext, useState } from 'react'
+import { GlobalContext } from '../contexts/GlobalContexts';
+
 
 const Filter = ({filter, setFilter}) => {
 
     const [selected, setselected] = useState('')
-    console.log(selected);
+
+    const { batches } = useContext(GlobalContext);
+
     
     const handleFilterChange = (field, optionSelected) => {
         if(field === 'batch'){
-            setFilter(optionSelected.slice(0,1));
-            
+            console.log(optionSelected);
+            setFilter(optionSelected);
         }else{
-        
-            
             setFilter(optionSelected)
         }
         setselected(''); // Reset selected state after selection
@@ -20,16 +21,14 @@ const Filter = ({filter, setFilter}) => {
 
 
     const modalView = ( selected ,options) => {
-       
-        
         if(selected === 'batch'){
                 return (
                     <div className=''>
                         <ul className='z-40 bg-slate-600 text-white font-thin mt-1 rounded divide-y divide-gray-200 absolute left-0 w-[200%] md:w-[200%]'>
                         { 
-                            options.map(option => (
-                                    <button onClick={() => handleFilterChange('batch' ,option)} className='w-full'>
-                                        <li>{option.slice(0)}</li>
+                            batches.map(batch => (
+                                    <button onClick={() => handleFilterChange('batch' ,batch.ageGroup)} className='w-full'>
+                                        <li>{batch.ageGroup}</li>
                                     </button>
                             ))
                         }
@@ -82,7 +81,7 @@ const Filter = ({filter, setFilter}) => {
       
             {
                 selected === 'batch' && (
-                   modalView(selected,['All', 'A. 6:00pm - 7:00pm', 'B. 7:00pm - 8:00pm'])
+                   modalView(selected,batches)
                 )
             }
         </div>
