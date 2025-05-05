@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight, Search, History, IndianRupee } from 'lucide-react';
 import axiosInstance from '../../../../../axiosInstance';
+import Loader2 from '../../../../../components/Loader2';
 const { helper_fetchAllStudents, totalFeesPending_h } = require('../../../../../utilities/student_utils');
 function FeesManagement() {
 
   // Essentials
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [showHistory, setShowHistory] = useState(false);
@@ -66,7 +67,7 @@ function FeesManagement() {
 
   useEffect(() => {
     calCollectedAmount();
-    helper_fetchAllStudents(setLoading, setStudents)
+    helper_fetchAllStudents(setIsLoading, setStudents)
 
   }, [])
 
@@ -158,6 +159,8 @@ function FeesManagement() {
         </div>
 
         <div className="overflow-x-auto">
+
+         
           <table className="min-w-full divide-y divide-gray-200">
             <thead>
               <tr className="bg-gray-50">
@@ -178,56 +181,72 @@ function FeesManagement() {
                 </th>
               </tr>
             </thead>
+
             <tbody className="bg-white divide-y divide-gray-200">
-              {students.map((student) => (
-                <tr key={student.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-6 py-4">
-                    <div className="flex items-center">
-                      <img
-                        className="h-10 w-10 rounded-full object-cover"
-                        src={student.Image}
-                        alt={student.name}
-                      />
-                      <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">{student.name}</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-500">
-                    {student.batch}
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm">
-                      <div className="font-medium text-gray-900">₹{student.fees}</div>
-                      <div className="text-gray-500">
-                        Paid: ₹{student.feesPaid ? student.feesPaid : 0} • Pending: ₹{student.fees - student.feesPaid}
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                      student.fees - student.feesPaid <= 0
-                        ? 'bg-green-100 text-green-800' 
-                        : 'bg-yellow-100 text-yellow-800'
-                    }`}>
-                       {student.fees - student.feesPaid <= 0 ? 'Paid' : 'Pending'}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <button
-                      onClick={() => {
-                        setSelectedStudent(student);
-                        setShowHistory(true);
-                      }}
-                      className="inline-flex items-center px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                      <History className="w-4 h-4 mr-2" />
-                      History
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              {
+                isLoading ? (
+                  <tr>
+                    <td colSpan="5" className="text-center py-4">
+                      <Loader2 />
+                    </td>
+                  </tr>
+                ) : (
+                  <>
+                  {students.map((student) => (
+                    <tr key={student.id} className="hover:bg-gray-50 transition-colors">
+                      <td className="px-6 py-4">
+                        <div className="flex items-center">
+                          <img
+                            className="h-10 w-10 rounded-full object-cover"
+                            src={student.Image}
+                            alt={student.name}
+                          />
+                          <div className="ml-4">
+                            <div className="text-sm font-medium text-gray-900">{student.name}</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-500">
+                        {student.batch}
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="text-sm">
+                          <div className="font-medium text-gray-900">₹{student.fees}</div>
+                          <div className="text-gray-500">
+                            Paid: ₹{student.feesPaid ? student.feesPaid : 0} • Pending: ₹{student.fees - student.feesPaid}
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                          student.fees - student.feesPaid <= 0
+                            ? 'bg-green-100 text-green-800' 
+                            : 'bg-yellow-100 text-yellow-800'
+                        }`}>
+                           {student.fees - student.feesPaid <= 0 ? 'Paid' : 'Pending'}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-center">
+                        <button
+                          onClick={() => {
+                            setSelectedStudent(student);
+                            setShowHistory(true);
+                          }}
+                          className="inline-flex items-center px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        >
+                          <History className="w-4 h-4 mr-2" />
+                          History
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                  </>
+                )
+              }
+            
             </tbody>
+
+            
           </table>
         </div>
       </div>
@@ -257,7 +276,7 @@ function FeesManagement() {
             </div>
             <div className="px-6 py-4">
               <div className="space-y-4">
-                {selectedStudent.history.map((record, index) => (
+                {selectedStudent.feeHistory.map((record, index) => (
                   <div key={index} className="bg-gray-50 rounded-lg p-4">
                     <div className="flex justify-between items-center">
                       <div>
@@ -269,11 +288,11 @@ function FeesManagement() {
                           })}
                         </p>
                         <p className="text-sm text-gray-500 mt-1">
-                          Pending after payment: ₹{record.pending}
+                          Pending ₹{index == 0 ? selectedStudent.fees : record.balance}
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="text-lg font-medium text-green-600">₹{record.amount}</p>
+                        <p className="text-lg font-medium text-green-600">₹{ index == 0 ? 0 : record.currPaid}</p>
                         <p className="text-xs text-gray-500">Amount Paid</p>
                       </div>
                     </div>

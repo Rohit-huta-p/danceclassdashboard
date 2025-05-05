@@ -12,19 +12,39 @@ const StudentCard = ({
   onImageClick,
   isUpdated
 }) => {
+
+  const handleClick = (phoneNumber) => {
+
+
+    const message = 'Hello Rohit, I am interested in your services!';
+
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+    window.open(whatsappURL, '_blank');
+  };
   return (
     <div className={`rounded-lg p-3 shadow-lg ${isUpdated ? "bg-green-100" : "bg-white"}`}>
       {/* Card Header */}
-      <div className="relative flex items-center mb-3 text-sm font-medium text-gray-800">
-        <a href={`tel:${student.contact}`} className="absolute right-0" onClick={onCallStudent}>
-          <FaPhoneFlip color="blue" size={13} />
-        </a>
-        <div 
-          className="h-[3rem] w-[3rem] rounded-full mr-3"
-          style={{ backgroundImage: `url(${student.Image})`, backgroundSize: "cover" }}
-          onClick={() => onImageClick(student)}
-        ></div>
-        <p className="text-base text-center">{student.name}</p>
+      <div className="relative flex justify-between items-center mb-3 text-sm font-medium text-gray-800">
+        <div className="flex items-center">
+          <div 
+            className="h-[3rem] w-[3rem] rounded-full mr-3"
+            style={{ backgroundImage: `url(${student.Image})`, backgroundSize: "cover" }}
+            onClick={() => onImageClick(student)}
+          ></div>
+          <p className="text-base text-center">{student.name}</p>
+        </div>
+        <div className="flex items-center">
+          <a href={`tel:${student.contact}`} className="mr-4" onClick={onCallStudent}>
+            <FaPhoneFlip color="blue" size={20} />
+          </a>
+          <button
+              onClick={() => handleClick(student.contact)}
+              className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition"
+            >
+              WhatsApp
+          </button>
+        </div>
       </div>
 
       {/* Fee Status */}

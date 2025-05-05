@@ -1,3 +1,4 @@
+
 import axiosInstance from "../axiosInstance";
 
 export const helper_fetchAllStudents = async (setLoading, setStudents) => {
@@ -13,17 +14,26 @@ export const helper_fetchAllStudents = async (setLoading, setStudents) => {
       }
 }
 
-export const helper_calCollectedAmount = async (setTotalAmount) => {
-  const res = await axiosInstance.get(`api/admin/collectedAmount`);
-  // console.log( res.data.totalFees);
-  
-  setTotalAmount(res.data.totalAmount);
-
+export const helper_calCollectedAmount = async (setIsLoading,setTotalAmount) => {
+  setIsLoading(true);
+  try {
+    const res = await axiosInstance.get(`api/admin/collectedAmount`);
+    // console.log( res.data.totalFees);
+    
+    setTotalAmount(res.data.totalAmount);
+    setIsLoading(false);
+  } catch (error) {
+    setIsLoading(false);
+    console.log("Error fetching collected amount:", error);
+    
+  }
+ 
 }
 
 
 // FEES
 export const totalFeesPending_h = (students) => {
+;
   const pending = students.reduce((total, student) => {
     return total + (student.fees - student.feesPaid);
   }, 0);
