@@ -29,7 +29,7 @@ const Profile = () => {
       }
       {
         tabSelected === "Batches" && (
-          <div className="col-span-4">
+          <div className="p-2 ml-16 max-h-screen col-span-4 md:col-span-4">
             <Batches />
           </div>
         ) 
