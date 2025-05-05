@@ -3,8 +3,8 @@ import { NavLink } from 'react-router-dom';
 import { Users, IndianRupee, Video, CalendarCheck, Menu } from 'lucide-react';
 
 
-function Sidebar({tabSelected, setTabSelected}) {
-  const [collapsed, setCollapsed] = useState(false);
+function Sidebar({tabSelected, setTabSelected, collapsed, setCollapsed}) {
+
 
   useEffect(() => {
     const checkScreenSize = () => {
@@ -18,7 +18,7 @@ function Sidebar({tabSelected, setTabSelected}) {
   }, []);
 
   return (
-    <div className={`bg-white shadow-lg transition-all duration-300 h-screen ${collapsed ? 'w-16' : 'w-64'}`}>
+    <div className={`bg-white shadow-lg transition-all duration-300 h-screen  ${collapsed ? 'w-16' : 'w-64'}`}>
       <div className="p-4 flex justify-between items-center border-b ">
         {!collapsed && <h1 className="text-xl font-bold text-gray-800">Dance Studio</h1>}
         <button onClick={() => setCollapsed(!collapsed)} className="p-1 hover:bg-gray-100 rounded">

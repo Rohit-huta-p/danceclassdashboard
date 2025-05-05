@@ -83,8 +83,8 @@ function FeesManagement() {
   return (
     <div className="p-6">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">Fees Management</h1>
-        <p className="text-gray-600">Track and manage student fee payments</p>
+        <h1 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">Fees Management</h1>
+        <p className="text-sm text-gray-600">Track and manage student fee payments</p>
       </div>
 
       {/* Summary Cards */}
@@ -95,10 +95,10 @@ function FeesManagement() {
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-gray-500 text-sm font-medium">Total Collection</h3>
             <div className="bg-green-100 p-2 rounded-lg">
-              <IndianRupee className="w-5 h-5 text-green-600" />
+              <IndianRupee className="w-3 h-3 md:w-5 md:h-5 text-green-600" />
             </div>
           </div>
-          <p className="text-2xl font-bold text-gray-900">₹{totalAmount}</p>
+          <p className="text-xl md:text-2xl font-bold text-gray-900">₹{totalAmount}</p>
           <p className="text-sm text-gray-500 mt-2">+₹3,000 from last month</p>
         </div>
 
@@ -107,10 +107,10 @@ function FeesManagement() {
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-gray-500 text-sm font-medium">Pending Fees</h3>
             <div className="bg-yellow-100 p-2 rounded-lg">
-              <IndianRupee className="w-5 h-5 text-yellow-600" />
+              <IndianRupee className="w-3 h-3 md:w-5 md:h-5 text-yellow-600" />
             </div>
           </div>
-          <p className="text-2xl font-bold text-gray-900">₹{totalFeesPending}</p>
+          <p className="text-xl md:text-2xl font-bold text-gray-900">₹{totalFeesPending}</p>
           <p className="text-sm text-gray-500 mt-2">From {students.length} student</p>
         </div>
 
@@ -119,10 +119,10 @@ function FeesManagement() {
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-gray-500 text-sm font-medium">Total Students</h3>
             <div className="bg-blue-100 p-2 rounded-lg">
-              <IndianRupee className="w-5 h-5 text-blue-600" />
+              <IndianRupee className="w-3 h-3 md:w-5 md:h-5 text-blue-600" />
             </div>
           </div>
-          <p className="text-2xl font-bold text-gray-900">{students.length}</p>
+          <p className="text-xl md:text-2xl font-bold text-gray-900">{students.length}</p>
           <p className="text-sm text-gray-500 mt-2">All batches</p>
         </div>
       </div>

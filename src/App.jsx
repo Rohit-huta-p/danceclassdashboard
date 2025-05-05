@@ -34,7 +34,9 @@ function App() {
     
       <div className="relative ">
         <Router>
-          <Navbar sidebarOpen={sidebarOpen} setsidebarOpen={setsidebarOpen}/>
+          <div className='fixed top-0 w-full z-20'>
+            <Navbar sidebarOpen={sidebarOpen} setsidebarOpen={setsidebarOpen} />
+          </div>
           {
             isLogin ?  (
               <div>

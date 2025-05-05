@@ -8,19 +8,21 @@ const Profile = () => {
   const options = ["Profile", "Class edits"];
   const [selected, setSelected] = useState("Profile");
   const [tabSelected, setTabSelected] = useState("Fees_Management");
+  const [collapsed, setCollapsed] = useState(false);  
   const { user } = useSelector((state) => state.user);
   console.log(user);
  
   return (
     <div className="">
 
-    <div className="grid grid-cols-1 md:grid-cols-5">
-      <div className="col-span-1 md:col-span-1 ">
-        <Sidebar tabSelected={tabSelected} setTabSelected={setTabSelected}/> 
+    <div className="grid grid-cols-1 md:grid-cols-5 mt-16">
+      <div className="fixed left-0 col-span-1 md:col-span-1 ">
+        <Sidebar tabSelected={tabSelected} setTabSelected={setTabSelected} 
+        collapsed={collapsed} setCollapsed={setCollapsed}/> 
       </div>
       { 
         tabSelected === "Fees_Management" && (
-          <div className="col-span-4 md:col-span-4">
+          <div className="ml-16 max-h-screen col-span-4 md:col-span-4">
             <FeesManagement />
           </div>
         ) 
