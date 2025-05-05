@@ -1,21 +1,25 @@
 import '@dotlottie/player-component';
-const InputField = ({ type, id, label, name, value, onChange }) => (
-    <div className="relative">
-      <input
-        type={type}
-        id={id}
-        className="peer p-4 pt-7 block w-full rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 bg-gray-100"
-        name={name}
-        value={value}
-        onChange={onChange}
-        placeholder={label}
-      />
-      <label htmlFor={id} className="absolute top-0 p-4 text-sm transition-all ease-in-out duration-100 peer-focus:scale-90 peer-focus:-translate-y-1.5 text-gray-500">
-        {label}
-      </label>
-    </div>
-  );
+const InputField = ({ type, id, label, name, value, onChange,selectedBatch, options }) => {
+    
+    return (
+      <div className="relative">
+        <input
+          type={type}
+          id={id}
+          className="peer p-4 pt-7 block w-full rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 bg-gray-100"
+          name={name}
+          value={value}
+          onChange={onChange}
+          placeholder={label}
+        />
+        <label htmlFor={id} className="absolute top-0 p-4 text-sm transition-all ease-in-out duration-100 peer-focus:scale-90 peer-focus:-translate-y-1.5 text-gray-500">
+          {label}
+        </label>
+      </div>
+    )
+  }
   
+
   const SelectField = ({ id, label, name, value, onChange, options }) => {
 
     
@@ -35,7 +39,33 @@ const InputField = ({ type, id, label, name, value, onChange }) => (
         onChange={onChange}
       >
         {options && options.map((batch, index) => (
-          <option key={index} value={batch.ageGroup}>{`${batch.ageGroup}`}</option>
+          <option key={index} value={batch.batchTitle}>{`${batch.batchTitle}`}</option>
+        ))}
+      </select>
+    </div>
+    )
+  };
+  const SelectBatchField = ({ id, label, name, value, onChange, options }) => {
+
+    
+    return (
+    <div className="relative">
+        <label htmlFor={id} 
+        className={`absolute top-3 left-4 text-sm text-gray-500 transition-all 
+              duration-100 ease-in-out transform peer-placeholder-shown:translate-y-0 
+              peer-placeholder-shown:scale-100 peer-focus:scale-90 peer-focus:-translate-y-3`}>
+            {label}
+        </label>
+      <select
+        id={id}
+        className="peer p-4 pt-7 block w-full rounded-lg text-sm focus:border-blue-500 bg-gray-100"
+        name={name}
+        value={value}
+        onChange={onChange}
+      >
+        <option value={'Select Batch'}>{`Select Batch `}</option>
+        {options && options.map((batch, index) => (
+          <option key={index} value={batch.batchTitle}>{`${batch.batchTitle}`}</option>
         ))}
       </select>
     </div>
@@ -79,4 +109,4 @@ const InputField = ({ type, id, label, name, value, onChange }) => (
   );
   
 
-export {InputField,SelectField, FileInput, DateInput, LoadingIndicator ,SuccessMessage}
+export {InputField,SelectField, FileInput, DateInput, LoadingIndicator ,SuccessMessage, SelectBatchField}

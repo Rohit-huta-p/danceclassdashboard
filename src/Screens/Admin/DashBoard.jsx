@@ -33,6 +33,7 @@ const DashBoard = () => {
     setTotalAmount(res.data.totalAmount);
     setTotalFees(res.data.totalFees);
   }
+  
   useEffect(() => {
     calCollectedAmount();
     

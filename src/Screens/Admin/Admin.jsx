@@ -1,3 +1,9 @@
+/**
+ * Dashboard
+ * Add Student
+ * All students
+ * 
+ */
 import React, {useEffect, useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 
@@ -11,24 +17,24 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import SkeletonAllStudents from './SkeletonAllStudents';
 import axiosInstance from '../../axiosInstance';
 import { fetchUserDetails } from '../../slices/userSlice';
+import { LoadingIndicator } from './Helper';
 
 
 const Admin = () => {
   const dispatch = useDispatch();
-  const {user, status, error, message, loading} = useSelector((state) => state.user)
-  // console.log(user);
-  
+  const {user, status, error, message} = useSelector((state) => state.user)
   const [isAdd, setIsAdd] = useState(false)
-
   const [students, setStudents] = useState([]);
   
-  const fetchData = async () => {
+  const [loading, setLoading] = useState(false);
+
+  const fetchStudents = async () => {
     try {
+      setLoading(true);
       const res = await axiosInstance.get(`/api/admin/students`);
       setStudents(res.data.students);
-      const response = await axiosInstance.get('/api/user/fetchbatches')
-      // console.log(response.data);
-      // Handle success, redirect or show a message
+      setLoading(false);
+      
     } catch (err) {
       console.error('Upload error:', err);
       // Handle error, show error message
@@ -36,7 +42,7 @@ const Admin = () => {
   }
   useEffect(() => {
     dispatch(fetchUserDetails());
-    fetchData();
+    fetchStudents();
   
   }, [])
   
@@ -72,6 +78,8 @@ const Admin = () => {
           )
         } */}
 
+
+      {/* ADD STUDENT BUTTON */}
       <div className='mt-5 p-2'>
         <button className='bg-blue-200 px-3 py-2 rounded active:bg-blue-100' onClick={() => setIsAdd(true)}>Add Student</button>
       </div>
@@ -83,15 +91,22 @@ const Admin = () => {
               )
         }
 
-<SkeletonAllStudents />
+{/* <SkeletonAllStudents /> */}
   
+
+  {/* DISPLAYING ALL STUDENTS */}
         {
-            students && students.length > 0 ? (
-              <AllStudents students={students} setStudents={setStudents} />
+            loading ? (
+              <LoadingIndicator />
             ) : (
-              <p className="text-center text-orange-400 w-full text-2xl">
-                No Students
-              </p>
+              students &&
+              students.length > 0 ? (
+                <AllStudents fetchStudents={fetchStudents} students={students} setStudents={setStudents} />
+              ) : (
+                <p className="text-center text-orange-400 w-full text-2xl">
+                  No Students
+                </p>
+              )
             )
         }
     </div>

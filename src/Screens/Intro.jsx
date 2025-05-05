@@ -9,7 +9,9 @@ const Intro = () => {
       
     }, [])
     
+
   return (
+
     <div className='relative top-[4rem] md:top-0 md:bg-slate-900 text-white flex justify-center items-center'>
         <img src={icon}alt="fdf" className='z-10 w-[30%]'/>
         <div className='md:flex md:flex-col items-center'>

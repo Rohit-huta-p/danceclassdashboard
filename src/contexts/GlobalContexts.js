@@ -7,17 +7,25 @@ export const GlobalContext = createContext();
 
 // Create a provider component
 export const GlobalProvider = ({ children }) => {
+  const [isLoading, setIsLoading] = useState(false)
   const [batches, setBatches] = useState([])
-  const [ageGroups, setageGroups] = useState([])
+
+  const [batchTitles, setBatchTitles] = useState([])
+  const [isBatchesLoading, setisBatchesLoading] = useState(false)
 
   const { isLogin } = useSelector((state) => state.user); // Check if the user is logged in
 
   const fetchBatches = async () => {
+    setisBatchesLoading(true);
     try {
       const response = await axiosInstance.get('/api/user/fetchbatches')
-      const fetchedAgeGroups = response.data.batches.map(batch => batch.ageGroup)
-      setageGroups(fetchedAgeGroups);
+      const fetchedBatchNames = response.data.batches.map(batch => batch.batchName)
+      // setting batches
       setBatches(response.data.batches);
+      // setting Batch Names
+      setBatchTitles(fetchedBatchNames);
+
+      setisBatchesLoading(false)
     } catch (error) {
       console.log(error);
     }
@@ -35,7 +43,11 @@ export const GlobalProvider = ({ children }) => {
   
 
   return (
-    <GlobalContext.Provider value={{ batches, setBatches, ageGroups, setageGroups }}>
+    <GlobalContext.Provider value={{
+           batches, setBatches,
+           batchTitles, setBatchTitles, 
+           isBatchesLoading, 
+           isLoading, setIsLoading }}>
       {children}
     </GlobalContext.Provider>
   );

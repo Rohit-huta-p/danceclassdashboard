@@ -4,7 +4,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import Cookies from 'js-cookie';
 
 import axiosInstance from "../axiosInstance.js";
-import { useDispatch } from "react-redux";
 
 
 export const registerUser = createAsyncThunk(
@@ -30,10 +29,10 @@ export const registerUser = createAsyncThunk(
 
 export const loginUser = createAsyncThunk(
     'user/login',
-    async (dataa, {rejectWithValue}) => {
+    async (data, {rejectWithValue}) => {
         try {
            
-            const response = await axiosInstance.post(`/api/user/login`, dataa, {
+            const response = await axiosInstance.post(`/api/user/login`, data, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -47,18 +46,6 @@ export const loginUser = createAsyncThunk(
     }
 )
 
-export const logout = createAsyncThunk(
-    'user/logout',
-    async (_, {rejectWithValue}) => {
-        try {
-            const response = await axiosInstance.get(`/api/user/logout`)
-
-            return response.data;
-        } catch (error) {
-            return rejectWithValue(error)
-        }
-    }
-)
 
 
 
@@ -104,6 +91,12 @@ const userSlice = createSlice({
         },
         setLoginState: (state) => {
             state.isLogin = true;
+        },
+        logout: (state) => {
+            localStorage.removeItem("token");
+            state.loading = false;
+            state.error = null;
+            state.isLogin = false;
         }
     },
     extraReducers: (builder) => {
@@ -141,23 +134,6 @@ const userSlice = createSlice({
                 state.error = action.payload.error;
             })
 
-
-            // Logout
-            .addCase(logout.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(logout.fulfilled, (state, action) => {
-                localStorage.removeItem("token");
-                state.loading = false;
-                state.error = null;
-                state.isLogin = false;
-            })
-            .addCase(logout.rejected, (state, action) => {
-                state.loading = false;
-                state.error = null;
-            })
-
             // fetchUserDetails
             .addCase(fetchUserDetails.pending, (state) => {
                 state.loading = true;
@@ -183,5 +159,5 @@ const userSlice = createSlice({
     }
 })
 
-export const {setIsLoggedIn, reset, setLoginState} = userSlice.actions;
+export const { reset, setLoginState, logout} = userSlice.actions;
 export default userSlice.reducer;

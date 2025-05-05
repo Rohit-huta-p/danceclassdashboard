@@ -13,25 +13,31 @@ const Filter = ({filter, setFilter}) => {
         if(field === 'batch'){
             console.log(optionSelected);
             setFilter(optionSelected);
-        }else{
+        }else if(field === 'feeStatus'){
             setFilter(optionSelected)
+        }else{
+            setselected(''); // Reset selected state after selection
         }
-        setselected(''); // Reset selected state after selection
     };
 
 
-    const modalView = ( selected ,options) => {
+    const modalView = ( selected , options) => {
         if(selected === 'batch'){
                 return (
                     <div className=''>
                         <ul className='z-40 bg-slate-600 text-white font-thin mt-1 rounded divide-y divide-gray-200 absolute left-0 w-[200%] md:w-[200%]'>
-                        { 
-                            batches.map(batch => (
-                                    <button onClick={() => handleFilterChange('batch' ,batch.ageGroup)} className='w-full'>
-                                        <li>{batch.ageGroup}</li>
-                                    </button>
-                            ))
-                        }
+                        
+
+                            <button value={'All'} className='w-full' onClick={() => handleFilterChange('batch' , 'All')}>{'All'}</button>
+                            {
+                                batches.map(batch => (
+                                        <button onClick={() => handleFilterChange('batch' , batch.batchTitle)} className='w-full'>
+                                            <li>{batch.batchTitle}</li>
+                                        </button>
+                                ))
+                            }
+
+                    
                         </ul>
                     </div>
                 )
@@ -107,7 +113,7 @@ const Filter = ({filter, setFilter}) => {
                 
                 {
                     selected === 'feeStatus' && (
-                        modalView(selected,['all', 'pending', 'paid'])
+                        modalView(selected, ['all', 'pending', 'paid'])
                     )
                 }
            </button>

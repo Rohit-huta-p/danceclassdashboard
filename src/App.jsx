@@ -9,12 +9,14 @@ import {Route, Routes, BrowserRouter as Router, Navigate, useLocation} from 'rea
 
 import Navbar from "./components/Navbar";
 import Login from './Screens/Login';
-import Attendance from './Screens/Admin/Attendance';
-import Sidebar from './components/Sidebar';
+import Attendance from './Screens/Admin//Attendance/Attendance.jsx';
+import Sidebar from './components/Navbar/Sidebar.jsx';
 import Intro from './Screens/Intro';
-import Profile from './Screens/Admin/Profile.jsx';
+import Profile from './Screens/Admin/Profile/Profile.jsx';
 import { setLoginState } from './slices/userSlice.js';
 import Admin from './Screens/Admin/Admin.jsx';
+import TimeTable from './Screens/Admin/TimeTable/TimeTable.jsx';
+import FeesManagement from './Screens/Admin/Profile/components/FeesManagement/FeesManagement.jsx';
 
 function App() {
   const [sidebarOpen, setsidebarOpen] = useState(false)
@@ -40,11 +42,15 @@ function App() {
                 {
                   sidebarOpen ? (<div className='w-screen h-screen fixed z-10 top-0 bg-black/20' onClick={() => setsidebarOpen(false)}></div>): (<div></div>)
                 }
+
+                {/* LOGGED IN */}
                 <Routes>
        
                     <Route path="/" exact element={<Admin />}/>
                     <Route path="/attendance"  element={<Attendance />}/>
                     <Route path="/profile"  element={<Profile />}/>
+                    <Route path="/timetable"  element={<TimeTable />}/>
+                    <Route path="/fees"  element={<FeesManagement />}/>
                     <Route path="*" element={<Navigate to="/" />} />
       
                 </Routes>

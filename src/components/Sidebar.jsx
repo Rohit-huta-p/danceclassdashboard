@@ -1,73 +1,85 @@
-import React, { useEffect, useState } from 'react'
-import { GiHamburgerMenu } from "react-icons/gi";
-import { useDispatch, useSelector } from 'react-redux';
-import { logout, reset } from '../slices/userSlice';
-import { Link, useLocation } from 'react-router-dom';
-
-const Sidebar = ({sidebarOpen, setsidebarOpen}) => {
-
-    const [currentPath, setcurrentPath] = useState(window.location.pathname)
-    const [clicked, setclicked] = useState('')
+import React, { useEffect, useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import { Users, IndianRupee, Video, CalendarCheck, Menu } from 'lucide-react';
 
 
-    const dispatch = useDispatch();
-    const {isLogin} = useSelector((state) => state.user);
-    const handleLogout = async () => {
-        dispatch(logout());
-        dispatch(reset());
-        setsidebarOpen(false);
-    }
-    const location = useLocation();
-    useEffect(() => {
-      
-        setcurrentPath(location.pathname);
-        setsidebarOpen(false)
-    }, [location])
-    
-      
-  
+function Sidebar({tabSelected, setTabSelected}) {
+  const [collapsed, setCollapsed] = useState(false);
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setCollapsed(window.innerWidth < 768); // Tailwind's md breakpoint = 768px
+    };
+
+    checkScreenSize(); // Run on mount
+    window.addEventListener('resize', checkScreenSize);
+
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   return (
-    <div className=''>
-        {
-            sidebarOpen &&
-                <div className={`z-20 fixed rounded-e-2xl h-screen top-0 bg-white w-5/12 md:w-1/6  ${sidebarOpen ? 'animate-sidebarOpen' : 'animate-sidebarClose'}`}>
-                    <p className='text-end p-4' onClick={() => setsidebarOpen(false)}>X</p>
-                    <ul className='flex flex-col h-[80vh]'>
-                        {/* HOME */}
-                        <li className={`px-2 py-2 relative ${currentPath === '/' ?'bg-blue-200' :'' }`} onClick={() => setclicked('home')}>
-                            <Link to='/'>
-                                {currentPath === '/' && <div className='w-[5px] h-full top-0 left-0 rounded-e bg-blue-500 absolute'></div>}
-                                <p className='ml-3'>Home</p>
-                            </Link>
-                        </li>
+    <div className={`bg-white shadow-lg transition-all duration-300 h-screen ${collapsed ? 'w-16' : 'w-64'}`}>
+      <div className="p-4 flex justify-between items-center border-b ">
+        {!collapsed && <h1 className="text-xl font-bold text-gray-800">Dance Studio</h1>}
+        <button onClick={() => setCollapsed(!collapsed)} className="p-1 hover:bg-gray-100 rounded">
+          <Menu className="w-5 h-5" />
+        </button>
+      </div>
+      
+      <nav className="p-4">
 
-                        {/* ATTENDANCE */}
-                        <li className={`mb-4 mt-5 px-2 py-2 relative ${currentPath === '/attendance' ?'bg-blue-200' :'' }`} onClick={() => setclicked('attendance')}>
-                            <Link to='/attendance'>
-                                {currentPath === '/attendance' && <div className='w-[5px] h-full top-0 left-0 rounded-e bg-blue-500 absolute'></div>}
-                                <p className='ml-3'>Attendance</p>
-                            </Link>
-                        </li>
-                        {/* Profile */}
-                        <li className={`mb-4 mt-5 px-2 py-2 relative ${currentPath === '/profile' ?'bg-blue-200' :'' }`} onClick={() => setclicked('attendance')}>
-                            <Link to='/profile'>
-                                {currentPath === '/profile' && <div className='w-[5px] h-full top-0 left-0 rounded-e bg-blue-500 absolute'></div>}
-                                <p className='ml-3'>Profile</p>
-                            </Link>
-                        </li>
-                        
-                    </ul>
-                    <div  onClick={handleLogout} className='flex justify-end'>
-                       <button className='bg-blue-300 ml-3 px-3 py-2 rounded mr-4'>Logout</button> 
-                    </div>
-                </div>
-                
-            
-           
-        }
+      <button
+          onClick={() => setTabSelected("Fees_Management")}
+          className={
+            `flex items-center p-3 mb-2 rounded-lg transition-colors ${
+              tabSelected === "Fees_Management" ? 'bg-indigo-50 text-indigo-600' : 'text-gray-600 hover:bg-gray-100'
+            }
+`
+          }
+        >
+          <IndianRupee className="w-5 h-5" />
+          {!collapsed && <p className="ml-3">Fees Management</p>}
+        </button>
+
+        <button
+          onClick={() => setTabSelected("Batches")}
+          className={({ isActive }) =>
+            `flex items-center p-3 mb-2 rounded-lg transition-colors ${
+              isActive ? 'bg-indigo-50 text-indigo-600' : 'text-gray-600 hover:bg-gray-100'
+            }`
+          }
+        >
+          <Users className="w-5 h-5" />
+          {!collapsed && <span className="ml-3">Batch Management</span>}
+        </button>
+
+
+        <NavLink
+          to="/videos"
+          className={({ isActive }) =>
+            `flex items-center p-3 mb-2 rounded-lg transition-colors ${
+              isActive ? 'bg-indigo-50 text-indigo-600' : 'text-gray-600 hover:bg-gray-100'
+            }`
+          }
+        >
+          <Video className="w-5 h-5" />
+          {!collapsed && <span className="ml-3">Upload Videos</span>}
+        </NavLink>
+
+        <NavLink
+          to="/attendance"
+          className={({ isActive }) =>
+            `flex items-center p-3 mb-2 rounded-lg transition-colors ${
+              isActive ? 'bg-indigo-50 text-indigo-600' : 'text-gray-600 hover:bg-gray-100'
+            }`
+          }
+        >
+          <CalendarCheck className="w-5 h-5" />
+          {!collapsed && <span className="ml-3">Attendance</span>}
+        </NavLink>
+      </nav>
     </div>
-  )
+  );
 }
 
 export default Sidebar

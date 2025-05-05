@@ -10,6 +10,7 @@ import {
   FileInput,
   InputField,
   LoadingIndicator,
+  SelectBatchField,
   SelectField,
   SuccessMessage,
 } from "./Helper";
@@ -37,16 +38,23 @@ const AddStudent = ({ setIsAdd, addStudentToList }) => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     console.log(name, value);
-    
+      console.log(batches);
+      
     // If batch is selected, find corresponding fees
     if (name === "batch") {
 
       
-      const selectedBatch = batches.find((batch) => batch.ageGroup === value);
+      const selectedBatch = batches.find((batch) => batch.batchTitle === value);
 
       console.log(selectedBatch);
-      
-      if (selectedBatch) {
+      if(selectedBatch == undefined){
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          batch: "Select batch",
+          fees: 'Please select the batch',
+        }));
+      }
+      else if (selectedBatch) {
         setFormData((prevFormData) => ({
           ...prevFormData,
           batch: value,
@@ -87,7 +95,6 @@ const AddStudent = ({ setIsAdd, addStudentToList }) => {
     
     try {
       setLoading(true);
-      // console.log("UPLOADED DATA", typeof uploadData.balance);
       const res = await axiosInstance.post(
         `/api/admin/addstudent`,
         uploadData,
@@ -96,7 +103,6 @@ const AddStudent = ({ setIsAdd, addStudentToList }) => {
         }
       );
       setLoading(false);
-      // console.log("Uploaded:", res.data);
       setMessage(res.data.message);
       addStudentToList(res.data.student);
       resetFormData();
@@ -177,7 +183,7 @@ const AddStudent = ({ setIsAdd, addStudentToList }) => {
               />
 
               {/* Batch Select */}
-              <SelectField
+              <SelectBatchField
                 id="hs-floating-input-batch"
                 label="Batch"
                 name="batch"
@@ -186,18 +192,23 @@ const AddStudent = ({ setIsAdd, addStudentToList }) => {
                 options={batches}
               />
 
+              {/* FEES */}
               <div className="relative ">
-                <label className="absolute top-0 p-2 text-sm transition-all ease-in-out duration-100 peer-focus:scale-90 peer-focus:-translate-y-1.5 text-gray-500">
-                  Fees
-                </label>
-                <p className="peer p-2 pt-7 block w-full rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 bg-gray-300">
-                  {formData.fees}
-                </p>
+                <InputField
+                  type="text"
+                  id="hs-floating-input-fees"
+                  label="Fees"
+                  name="fees"
+                  value={formData.fees}
+                  onChange={handleInputChange}
+                  selectedBatch={formData.batch}
+                  options={batches}
+                />
               </div>
 
               {/* Fees Paid Input */}
               <InputField
-                type="number"
+                type="text"
                 id="hs-floating-input-feesPaid"
                 label="Fees Paid"
                 name="feesPaid"

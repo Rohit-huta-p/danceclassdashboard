@@ -1,25 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, reset } from '../slices/userSlice';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Loader from '../components/Loader';
 import {formError, getErrorMessage} from '../utilities/FormError';
 
 const Login = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const data = {email, password};
-    const [errors, setErrors] = useState([]);
-
-    const dispatch = useDispatch();
-    const {loading, error} = useSelector( (state) => state.user);
-
-    const handleLogin = async (e) => {
-        e.preventDefault();
-      
-        const login_data = {email, password};
+      const [email, setEmail] = useState('');
+       const [password, setPassword] = useState('');
+       const data = {email, password};
+       const dispatch = useDispatch();
+       const {loading, error, message} = useSelector( (state) => state.user);
+       const handleLogin = async (e) => {
+            e.preventDefault();
+        
+            const login_data = {email, password};
             const validationErrors = formError(data);
-            setErrors(validationErrors);
+            // setErrors(validationErrors);
             if(validationErrors.length == 0){
                 try {
                     dispatch(loginUser(login_data));
@@ -35,10 +32,6 @@ const Login = () => {
     useEffect(() => {
         dispatch(reset());
     }, [])
-
-
-   
-    
     
   return (
     <div className='h-screen'>
@@ -62,7 +55,7 @@ const Login = () => {
                                 onChange={(e) => setEmail(e.target.value)} 
                         />
                         <hr />
-                        {getErrorMessage('email', errors)}
+                        {/* {getErrorMessage('email', error)} */}
                     </div>
                     <div>
            
@@ -70,7 +63,7 @@ const Login = () => {
                         value={password}
                         onChange={(e) => setPassword(e.target.value) }/>
                         <hr />
-                        {getErrorMessage('password',errors)}
+                        {/* {getErrorMessage('password',error)} */}
                     </div>
                 </div>
                 <button className='bg-blue-700 text-white px-3 py-2 rounded mt-4 w-9/12'>
