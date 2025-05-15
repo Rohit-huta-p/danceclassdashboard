@@ -17,6 +17,8 @@ import { setLoginState } from './slices/userSlice.js';
 import Admin from './Screens/Admin/Admin.jsx';
 import TimeTable from './Screens/Admin/TimeTable/TimeTable.jsx';
 import FeesManagement from './Screens/Admin/Profile/components/FeesManagement/FeesManagement.jsx';
+import PaymentForm from './Screens/Admin/Profile/components/Payment/PaymentForm.jsx';
+import UploadVideos from './Screens/Admin/Profile/components/UploadVideos/UploadVideos.jsx';
 
 function App() {
   const [sidebarOpen, setsidebarOpen] = useState(false)
@@ -53,6 +55,8 @@ function App() {
                     <Route path="/profile"  element={<Profile />}/>
                     <Route path="/timetable"  element={<TimeTable />}/>
                     <Route path="/fees"  element={<FeesManagement />}/>
+                    <Route path="/uploadvideos"  element={<UploadVideos />}/>
+                    <Route path="/payment"  element={<PaymentForm />}/>
                     <Route path="*" element={<Navigate to="/" />} />
       
                 </Routes>

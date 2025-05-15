@@ -2,6 +2,8 @@ import { FaPhoneFlip } from "react-icons/fa6";
 import { TiPencil } from "react-icons/ti";
 import { CiCircleInfo } from "react-icons/ci";
 import { MdOutlineDelete } from "react-icons/md";
+import { FaWhatsapp } from "react-icons/fa";
+
 
 const StudentCard = ({ 
   student, 
@@ -13,7 +15,7 @@ const StudentCard = ({
   isUpdated
 }) => {
 
-  const handleClick = (phoneNumber) => {
+  const sendWhatsappText = (phoneNumber) => {
 
 
     const message = 'Hello Rohit, I am interested in your services!';
@@ -36,13 +38,12 @@ const StudentCard = ({
         </div>
         <div className="flex items-center">
           <a href={`tel:${student.contact}`} className="mr-4" onClick={onCallStudent}>
-            <FaPhoneFlip color="blue" size={20} />
+            <FaPhoneFlip className="text-sm text-blue-700"/>
           </a>
           <button
-              onClick={() => handleClick(student.contact)}
-              className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition"
+              onClick={() => sendWhatsappText(student.contact)}
             >
-              WhatsApp
+              <FaWhatsapp className="text-green-700 text-xl"/>
           </button>
         </div>
       </div>

@@ -159,8 +159,8 @@ const AttendanceModal = ({ currStudent, closeModal }) => {
 
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-      <div className="bg-white w-10/12 rounded-lg shadow-lg p-5 relative">
+    <div className=" flex items-center justify-center z-50 bg-black bg-opacity-50 ">
+      <div className="bg-white  rounded-lg shadow-lg p-5 relative">
         <button
           onClick={closeModal}
           className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
@@ -170,7 +170,7 @@ const AttendanceModal = ({ currStudent, closeModal }) => {
 
         <div className=" mb-2">
           <h4 className="text-lg font-bold text-center"> Monthly Attendance</h4>
-          <h3 className="text-center">{currStudent.name}</h3>
+          <h3 className="text-center">{currStudent.name}ssss</h3>
           {/*  */}
 
           <div class="flex items-center justify-center py-8 px-4">

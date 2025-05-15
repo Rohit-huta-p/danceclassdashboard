@@ -41,17 +41,17 @@ const Batches = () => {
 
         <section className="bg-white rounded-lg shadow p-6">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-lg font-medium text-gray-900 flex items-center gap-2">
-                <Users className="w-5 h-5" /> Batch Management
+              <h2 className="text-md md:text-lg font-medium text-gray-900 flex items-center gap-2">
+                <Users className="w-4 h-4 md:w-5 md:h-5" /> Batch Management
               </h2>
              
               {
                 !showAddBatch ? (
                   <button
-                  className="inline-flex items-center gap-2 rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
+                  className="inline-flex items-center rounded-md bg-indigo-600 px-2 py-1 md:px-4 md:py-1  text-sm font-medium text-white hover:bg-indigo-700"
                   onClick={() => setShowAddBatch(!showAddBatch)}
                 >
-                  <Plus className="w-4 h-4" /> Add New Batch
+                  <Plus className="w-4 h-4" /> 
                 </button>
                 ):  (
                   <button

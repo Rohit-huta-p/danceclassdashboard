@@ -61,12 +61,15 @@ const AllStudents = ({ students, setStudents }) => {
     );
   };
 
+
+  // Displayed Students
   const displayedStudents = (students) =>
     students.slice(
       (currentPage - 1) * studentsPerPage,
       currentPage * studentsPerPage
     );
 
+    // Filter Students with searched students
   const filterStudents = (searchedStudents, filter) => {
     let filteredStudents = [];
     
@@ -89,6 +92,8 @@ const AllStudents = ({ students, setStudents }) => {
     return displayedStudents(filteredStudents);
   };
 
+
+  // Final Filtered Students
   const getFilteredStudents = useMemo(() => {
     const searchedStudents = searchStudents();
     console.log(filter);
@@ -207,6 +212,7 @@ const AllStudents = ({ students, setStudents }) => {
     setImageOpen(false);
     setSelectedStudent(null);
   };
+  
 
   useEffect(() => {
     if (showMessage) {

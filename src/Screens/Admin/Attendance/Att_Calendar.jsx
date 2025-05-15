@@ -28,18 +28,18 @@ function Calendar({ studentHistory, selectedMonth, setSelectedMonth, selectedStu
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <button onClick={() => navigateMonth('prev')} className="p-2 hover:bg-gray-100 rounded-full">
-          <LuChevronLeft className="w-5 h-5" />
+      <div className="flex justify-between items-center mb-4">
+        <button onClick={() => navigateMonth('prev')} className="p-1 hover:bg-gray-100 rounded-full">
+          <LuChevronLeft className="w-4 h-4" />
         </button>
-        <h4 className="text-lg font-medium text-gray-900">{getMonthName(selectedMonth)}</h4>
-        <button onClick={() => navigateMonth('next')} className="p-2 hover:bg-gray-100 rounded-full">
-          <LuChevronRight className="w-5 h-5" />
+        <h4 className="text-base font-semibold text-gray-900">{getMonthName(selectedMonth)}</h4>
+        <button onClick={() => navigateMonth('next')} className="p-1 hover:bg-gray-100 rounded-full">
+          <LuChevronRight className="w-4 h-4" />
         </button>
       </div>
-      <div className="grid grid-cols-7 gap-2">
+      <div className="grid grid-cols-7 gap-1">
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-          <div key={day} className="text-center text-sm font-medium text-gray-500 py-2">
+          <div key={day} className="text-center text-xs font-semibold text-gray-500 py-1">
             {day}
           </div>
         ))}
@@ -50,15 +50,15 @@ function Calendar({ studentHistory, selectedMonth, setSelectedMonth, selectedStu
           return (
             <div
               key={date.toISOString()}
-              className={`${padding} py-4 rounded-lg flex items-center justify-center ${
+              className={`${padding} py-2 rounded-md flex items-center justify-center text-xs font-medium ${
                 status === 'not_marked'
-                  ? 'bg-gray-50 text-gray-500'
+                  ? 'bg-gray-50 text-gray-400'
                   : status
-                  ? 'bg-green-100 text-green-800'
-                  : 'bg-red-50 text-red-800'
+                  ? 'bg-green-100 text-green-700'
+                  : 'bg-red-50 text-red-700'
               }`}
             >
-              <span className="text-sm font-medium">{date.getDate()}</span>
+              {date.getDate()}
             </div>
           );
         })}

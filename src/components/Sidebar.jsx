@@ -33,50 +33,77 @@ function Sidebar({tabSelected, setTabSelected, collapsed, setCollapsed}) {
           className={
             `flex items-center p-3 mb-2 rounded-lg transition-colors ${
               tabSelected === "Fees_Management" ? 'bg-indigo-50 text-indigo-600' : 'text-gray-600 hover:bg-gray-100'
-            }
-`
+            }`
           }
         >
-          <IndianRupee className="w-5 h-5" />
+          <IndianRupee className="w-3 h-3 md:w-4 md:h-4" />
           {!collapsed && <p className="ml-3">Fees Management</p>}
         </button>
 
         <button
           onClick={() => setTabSelected("Batches")}
-          className={({ isActive }) =>
+          className={
             `flex items-center p-3 mb-2 rounded-lg transition-colors ${
-              isActive ? 'bg-indigo-50 text-indigo-600' : 'text-gray-600 hover:bg-gray-100'
+              tabSelected === "Batches" ? 'bg-indigo-50 text-indigo-600' : 'text-gray-600 hover:bg-gray-100'
             }`
           }
         >
-          <Users className="w-5 h-5" />
+          <Users className="w-3 h-3 md:w-4 md:h-4 " />
           {!collapsed && <span className="ml-3">Batch Management</span>}
         </button>
 
 
-        <NavLink
-          to="/videos"
-          className={({ isActive }) =>
+        <button
+          onClick={() => setTabSelected("UploadVideos")}
+          className={
             `flex items-center p-3 mb-2 rounded-lg transition-colors ${
-              isActive ? 'bg-indigo-50 text-indigo-600' : 'text-gray-600 hover:bg-gray-100'
+              tabSelected === "UploadVideos" ? 'bg-indigo-50 text-indigo-600' : 'text-gray-600 hover:bg-gray-100'
             }`
           }
         >
-          <Video className="w-5 h-5" />
-          {!collapsed && <span className="ml-3">Upload Videos</span>}
-        </NavLink>
+          <Video className="w-3 h-3 md:w-4 md:h-4 " />
+          {!collapsed && <span className="ml-3">Uplaod Videos</span>}
+        </button>
+
+
+        <button
+          onClick={() => setTabSelected("Payment")}
+          className={
+            `flex items-center p-3 mb-2 rounded-lg transition-colors ${
+              tabSelected === "Payment" ? 'bg-indigo-50 text-indigo-600' : 'text-gray-600 hover:bg-gray-100'
+            }`
+          }
+        >
+          <Users className="w-3 h-3 md:w-4 md:h-4 " />
+          {!collapsed && <span className="ml-3">Payment</span>}
+        </button>
+
+
+    
 
         <NavLink
           to="/attendance"
-          className={({ isActive }) =>
+          className={
             `flex items-center p-3 mb-2 rounded-lg transition-colors ${
-              isActive ? 'bg-indigo-50 text-indigo-600' : 'text-gray-600 hover:bg-gray-100'
+              tabSelected === "Attendance" ? 'bg-indigo-50 text-indigo-600' : 'text-gray-600 hover:bg-gray-100'
             }`
           }
         >
           <CalendarCheck className="w-5 h-5" />
           {!collapsed && <span className="ml-3">Attendance</span>}
         </NavLink>
+        {/* <NavLink
+          to="/payment"
+          onClick={() => setTabSelected("Payment")}
+          className={
+            `flex items-center p-3 mb-2 rounded-lg transition-colors ${
+              tabSelected === "Payment" ? 'bg-indigo-50 text-indigo-600' : 'text-gray-600 hover:bg-gray-100'
+            }`
+          }
+        >
+          <CalendarCheck className="w-5 h-5" />
+          {!collapsed && <span className="ml-3">Payment</span>}
+        </NavLink> */}
       </nav>
     </div>
   );
