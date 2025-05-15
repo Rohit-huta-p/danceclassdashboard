@@ -1,21 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { ChevronLeft, ChevronRight, Search, History, IndianRupee } from 'lucide-react';
 import axiosInstance from '../../../../../axiosInstance';
 import Loader2 from '../../../../../components/Loader2';
+import FeeHistoryModal from './components/FeeHistoryModal';
 const { helper_fetchAllStudents, totalFeesPending_h } = require('../../../../../utilities/student_utils');
 function FeesManagement() {
 
   // Essentials
   const [isLoading, setIsLoading] = useState(false);
-
-  const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [showHistory, setShowHistory] = useState(false);
+  const [students, setStudents] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null);
 
-  const [students, setStudents] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
   const [totalFees, setTotalFees] = useState(0);
   const [totalFeesPending, setTotalFeesPending] = useState(0);
+  
+  const [showHistory, setShowHistory] = useState(false);
+  
+  // MONTH NAVIGATION
+  const [currentMonth, setCurrentMonth] = useState(new Date());
+
+  
   const calCollectedAmount = async () => {
     try {
       const res = await axiosInstance.get(`api/admin/collectedAmount`);
@@ -34,36 +39,7 @@ function FeesManagement() {
     )));
   };
 
-  // const students = [
-  //   {
-  //     id: 1,
-  //     name: "Sarah Johnson",
-  //     image: "https://images.pexels.com/photos/1674752/pexels-photo-1674752.jpeg?auto=compress&cs=tinysrgb&w=200",
-  //     batch: "6:00 - 7:00 PM",
-  //     totalFees: 5000,
-  //     paidAmount: 3000,
-  //     pendingAmount: 2000,
-  //     status: "pending",
-  //     history: [
-  //       { date: "2024-03-01", amount: 2000, pending: 3000 },
-  //       { date: "2024-02-01", amount: 1000, pending: 2000 },
-  //     ]
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Michael Chen",
-  //     image: "https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=200",
-  //     batch: "7:00 - 8:00 PM",
-  //     totalFees: 5000,
-  //     paidAmount: 5000,
-  //     pendingAmount: 0,
-  //     status: "paid",
-  //     history: [
-  //       { date: "2024-03-01", amount: 3000, pending: 0 },
-  //       { date: "2024-02-01", amount: 2000, pending: 3000 },
-  //     ]
-  //   }
-  // ];
+
 
   useEffect(() => {
     calCollectedAmount();
@@ -76,7 +52,57 @@ function FeesManagement() {
   }, [students])
   
 
-  console.log(students);
+  const currMonthStudentHistory = useMemo(() => {
+    const currMonthHistory =[];
+    students.map((student) => {
+      const feeHistory = student.feeHistory;
+      // console.log("feeHistory",feeHistory);
+      console.log("Last History",feeHistory[feeHistory.length-1]);
+      feeHistory.map((record) => {
+        const month = new Date(record.date).getMonth();
+        const year = new Date(record.date).getFullYear();
+        const currMonth = currentMonth.getMonth();
+        const currYear = currentMonth.getFullYear();
+        // console.log("month",month, "year",year);
+        // console.log("currMonth",currMonth,"currYear",year);
+        if (month === currMonth && year === currYear) {
+          console.log("student: ", student.name,"record",record);
+          
+          currMonthHistory.push({
+            ...record,
+            student: student,
+            studentId: student._id,
+            fees: student.fees,
+            feesPaid: student.feesPaid
+          });
+        }
+      })
+        
+      
+    })
+    console.log("currMonthHistory",currMonthHistory);
+    const lastOccurrences = [];
+    const seen = new Set();
+    
+    for (let i = currMonthHistory.length - 1; i >= 0; i--) {
+      if (!seen.has(currMonthHistory[i].studentId)) {
+        seen.add(currMonthHistory[i].studentId);
+        lastOccurrences.push(currMonthHistory[i]);
+      }
+    }
+    
+    lastOccurrences.reverse(); 
+
+    
+    console.log("lastOccurrences",lastOccurrences);
+    
+    return lastOccurrences;
+    
+  }, [students, currentMonth]);
+  console.log("curr_1",currMonthStudentHistory);
+
+  console.log(selectedStudent && selectedStudent.feeHistory);
+  
   
 
   
@@ -192,22 +218,22 @@ function FeesManagement() {
                   </tr>
                 ) : (
                   <>
-                  {students.map((student) => (
+                  {currMonthStudentHistory.map((student) => (
                     <tr key={student.id} className="hover:bg-gray-50 transition-colors">
                       <td className="px-6 py-4">
                         <div className="flex items-center">
                           <img
                             className="h-10 w-10 rounded-full object-cover"
-                            src={student.Image}
-                            alt={student.name}
+                            src={student.student.Image}
+                            alt={student.student.name}
                           />
                           <div className="ml-4">
-                            <div className="text-sm font-medium text-gray-900">{student.name}</div>
+                            <div className="text-sm font-medium text-gray-900">{student.student.name}</div>
                           </div>
                         </div>
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-500">
-                        {student.batch}
+                        {student.student.batch}
                       </td>
                       <td className="px-6 py-4">
                         <div className="text-sm">
@@ -229,7 +255,7 @@ function FeesManagement() {
                       <td className="px-6 py-4 text-center">
                         <button
                           onClick={() => {
-                            setSelectedStudent(student);
+                            setSelectedStudent(student.student);
                             setShowHistory(true);
                           }}
                           className="inline-flex items-center px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -253,55 +279,7 @@ function FeesManagement() {
 
       {/* Fee History Modal */}
       {showHistory && selectedStudent && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-2xl">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-lg font-medium text-gray-900">
-                    Payment History
-                  </h3>
-                  <p className="text-sm text-gray-500 mt-1">{selectedStudent.name}</p>
-                </div>
-                <button
-                  onClick={() => setShowHistory(false)}
-                  className="text-gray-400 hover:text-gray-500 transition-colors"
-                >
-                  <span className="sr-only">Close</span>
-                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-            <div className="px-6 py-4">
-              <div className="space-y-4">
-                {selectedStudent.feeHistory.map((record, index) => (
-                  <div key={index} className="bg-gray-50 rounded-lg p-4">
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <p className="text-sm font-medium text-gray-900">
-                          {new Date(record.date).toLocaleDateString('en-US', {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric'
-                          })}
-                        </p>
-                        <p className="text-sm text-gray-500 mt-1">
-                          Pending ₹{index == 0 ? selectedStudent.fees : record.balance}
-                        </p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-lg font-medium text-green-600">₹{ index == 0 ? 0 : record.currPaid}</p>
-                        <p className="text-xs text-gray-500">Amount Paid</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+        <FeeHistoryModal selectedStudent={selectedStudent} setShowHistory={setShowHistory} />
       )}
     </div>
   );

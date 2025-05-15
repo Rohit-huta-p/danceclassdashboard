@@ -1,16 +1,23 @@
 import React from "react";
 
-const Fees_Management_tab = ({student}) => {
+const Fees_Management_tab = ({student, formData, handleInputChange, handleFileChange, batches}) => {
+  console.log(student);
+  
+   const calcPercent = () => {
+      const percent = ((student.feesPaid / student.fees) * 100).toFixed(0);
+      return percent.toString();
+    };
+  
   return (
     <div className="p-4">
-      <h2 className="text-xl">Fees Management</h2>
+
 
       {/* Fees Description card */}
       <div className="bg-gray-100 p-6 rounded-xl mt-5">
         <div className="flex justify-evenly">
           <div>
             <h2 className="text-sm">Total Fees</h2>
-            <p className="font-semibold">₹{student.fees}</p>
+            <p className="font-semibold">₹{student.fees || '11'}</p>
           </div>
           <div>
             <h2 className="text-sm">Paid Amount</h2>

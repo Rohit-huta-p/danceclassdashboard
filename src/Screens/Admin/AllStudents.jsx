@@ -5,7 +5,7 @@ import axiosInstance from "../../axiosInstance";
 
 // Components
 import StudentCard from "../../components/Students/StudentCard";
-import UpdateStudentModal from "../../components/Students/UpdateStudentModal";
+import UpdateStudentModal from "../Admin/Home/UpdateStudent/Update_Modal";
 import FeeHistoryModal from "../../components/Students/FeeHistoryModal";
 import ImageModal from "../../components/Students/ImageModal";
 import StudentPagination from "../../components/Students/StudentPagination";

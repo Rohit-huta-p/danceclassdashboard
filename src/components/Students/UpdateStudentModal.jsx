@@ -46,9 +46,11 @@ const UpdateStudentModal = ({
         </button>
         <h2 className="text-lg font-semibold mb-4">Update {student.name}</h2>
         {isMobile && (
-          <Update_Modal_Mob />
+          <Update_Modal_Mob student={student} />
         )}
-        <div className="md:grid md:grid-cols-2"></div>
+        <div className="md:grid md:grid-cols-2">
+
+        </div>
 
         <div className="flex justify-end">
           <button className="border-2 mr-3 px-4 py-1">Cancel</button>

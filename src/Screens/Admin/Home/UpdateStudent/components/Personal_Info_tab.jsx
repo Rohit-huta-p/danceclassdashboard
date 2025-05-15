@@ -1,23 +1,24 @@
 import React from 'react'
 
-const Personal_Info_Tab = ({student}) => {
+const Personal_Info_Tab = ({student, formData, handleInputChange, handleFileChange, batches}) => {
+
+  
   return (
     <>
 
    <div className="space-y-4 p-4 border-r-2 ">
-   <h2 className="text-xl">Personal Information</h2>
+
    {/* Name */}
    <div>
      <label className="block text-xs font-medium text-gray-700">
        Name
-
      </label>
      <input
        type="text"
        value={formData.name}
        name="name"
        onChange={handleInputChange}
-       className="mt-1 block w-full p-1 rounded-md outline-none  sm:text-sm"
+       className="mt-1 block w-full p-1 rounded-md outline-none sm:text-sm"
      />
    </div>
 
